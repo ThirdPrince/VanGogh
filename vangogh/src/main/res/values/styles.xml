@@ -1,0 +1,14 @@
+<resources>
+
+    <style name="Widget.Theme.VanGogh.MyView" parent="">
+        <item name="android:background">@color/gray_400</item>
+        <item name="exampleColor">@color/light_blue_400</item>
+    </style>
+
+    <style name="AnimateCheckBoxStyle">
+        <item name="color_checked">@color/checkbox_color</item>
+        <item name="color_unchecked">@android:color/white</item>
+        <item name="color_unchecked_stroke">@color/checkbox_unchecked_color</item>
+        <item name="color_tick">@android:color/white</item>
+    </style>
+</resources>
