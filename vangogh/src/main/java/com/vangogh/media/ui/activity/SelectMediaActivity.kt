@@ -42,10 +42,10 @@ class SelectMediaActivity : AppCompatActivity() {
             //这是系统的方法
             requestPermissions(permissions,0)
         }else{
-          //  initSelectFragment()
+            initSelectFragment()
         }
-        selectMediaFragment = SelectMediaFragment.newInstance("","")
-        FragmentUtils.replaceFragment(this,android.R.id.content,selectMediaFragment)
+       // selectMediaFragment = SelectMediaFragment.newInstance("","")
+        //FragmentUtils.replaceFragment(this,android.R.id.content,selectMediaFragment)
 
     }
 
