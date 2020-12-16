@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/titleViewBg"
         android:layout_alignBottom="@id/titleViewBg"
+        android:layout_centerVertical="true"
         android:padding="15dp"
         android:src="?attr/picture.leftBack.icon" />
     <RelativeLayout
@@ -23,9 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/pictureLeftBack"
         android:layout_marginTop="10dp"
+        android:background="@drawable/picture_album_bg"
         android:orientation="horizontal">
-
-
 
         <TextView
             android:id="@+id/picture_title"
@@ -73,6 +73,7 @@
         android:layout_marginRight="15dp"
         android:background="@drawable/picture_send_button_default_bg"
         android:gravity="center"
+        android:text="@string/media_send"
         android:textColor="?picture.right.textColor"
         android:textSize="16sp" />
 

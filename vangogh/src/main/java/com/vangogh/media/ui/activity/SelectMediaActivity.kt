@@ -5,29 +5,22 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.media.vangogh.R
-import com.vangogh.media.adapter.MediaItemAdapter
+import com.vangogh.media.adapter.MediaGridItemAdapter
 import com.vangogh.media.divider.GridSpacingItemDecoration
-import com.vangogh.media.ui.fragment.BaseFragment
 import com.vangogh.media.ui.fragment.SelectMediaFragment
-import com.vangogh.media.utils.FragmentUtils
 import com.vangogh.media.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 /**
  * @author dhl
  * MediaPicker UI
- * contains  image video
+ * contains  image video show media in grid
  *
  */
 class SelectMediaActivity : AppCompatActivity() {
@@ -47,7 +40,7 @@ class SelectMediaActivity : AppCompatActivity() {
 
 
     private lateinit var mediaViewModel: MediaViewModel
-    private lateinit var mediaItemAdapter: MediaItemAdapter
+    private lateinit var mediaItemAdapter: MediaGridItemAdapter
 
     val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
     lateinit var selectMediaFragment: SelectMediaFragment
@@ -64,7 +57,7 @@ class SelectMediaActivity : AppCompatActivity() {
             mediaViewModel.getMedia(null)
         }
         mediaViewModel.lvMediaData.observe(this, Observer {
-            mediaItemAdapter = MediaItemAdapter(this,it)
+            mediaItemAdapter = MediaGridItemAdapter(this,it)
             val layoutManager = GridLayoutManager(this, 4)
             rcy_view.layoutManager = layoutManager
             rcy_view.itemAnimator = DefaultItemAnimator()

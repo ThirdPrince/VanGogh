@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/vangogh_wechat_style_top_bar"/>
+    <include layout="@layout/media_grid_top_bar"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcy_view"
