@@ -53,6 +53,7 @@ class MediaViewModel(application: Application) :FileBaseViewModel(application){
         MediaStore.Images.Media.HEIGHT,  //图片的高度，int型  1080
         MediaStore.Images.Media.MIME_TYPE,  //图片的类型     image/jpeg
         MediaStore.Images.Media.DATE_TAKEN //图片被添加的时间，long型  1450518608
+
     )
 
     private fun registerContentObserver(){
@@ -67,7 +68,7 @@ class MediaViewModel(application: Application) :FileBaseViewModel(application){
 
     fun getMedia(bucketId: String? = null, mediaType: Int = VanGoghConst.MEDIA_TYPE_IMAGE) {
         launchDataLoad {
-            val medias = queryImages(bucketId,VanGoghConst.FILE_TYPE_MEDIA)
+            val medias = queryImages(bucketId,mediaType)
             _lvMediaData.postValue(medias)
             registerContentObserver()
         }
@@ -113,7 +114,7 @@ class MediaViewModel(application: Application) :FileBaseViewModel(application){
                 val imageHeight: Int =
                     cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[4]))
                 val imageMimeType: Int =
-                    cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[5]))
+                    cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[6]))
                 val mediaItem = MediaItem()
                 mediaItem.path = imagePath
                 Log.e(TAG,"path=$imagePath")

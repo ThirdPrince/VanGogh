@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 
 import com.bumptech.glide.Glide
@@ -24,15 +25,14 @@ import java.io.File
  * Meidia Grid preview
  *
  */
-class MediaItemAdapter(private val fragment: Fragment,var items: List<MediaItem>) :RecyclerView.Adapter<MediaItemAdapter.MediaViewHolder> (){
+class MediaItemAdapter(private val activity: FragmentActivity,var items: List<MediaItem>) :RecyclerView.Adapter<MediaItemAdapter.MediaViewHolder> (){
 
 
-    private val mInflater: LayoutInflater = LayoutInflater.from(fragment.context)
+    private val mInflater: LayoutInflater = LayoutInflater.from(activity)
 
 
     private  var requestOptions = RequestOptions.centerCropTransform()
             .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
-
 
 
     inner class MediaViewHolder(view: View):RecyclerView.ViewHolder(view){
@@ -56,8 +56,6 @@ class MediaItemAdapter(private val fragment: Fragment,var items: List<MediaItem>
     override fun onBindViewHolder(holder: MediaItemAdapter.MediaViewHolder, position: Int) {
 
         val mediaItem = items[position]
-
-        mediaItem!!.path?.let { holder.squareImageView.loadUrl(it,requestOptions) }
-        //Glide.with(fragment).asBitmap().load(mediaItem.path).transition(withCrossFade()).apply(requestOptions).into(holder.squareImageView)
+        Glide.with(activity).asBitmap().load(mediaItem.path).transition(withCrossFade()).apply(requestOptions).into(holder.squareImageView)
     }
 }

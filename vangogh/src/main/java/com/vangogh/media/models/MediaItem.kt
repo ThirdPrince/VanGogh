@@ -11,6 +11,6 @@ import kotlinx.android.parcel.Parcelize
  *
  */
 @Parcelize
-class MediaItem (var id: Long = 0,var name:String ?= null, var pathUri: Uri ?= null, var path:String ?= null, var size:Long =0, var width:Int = 0, var height:Int = 0, var mineType:String ?= null, var dataToken:Long = 0) :
-    Parcelable {
+class MediaItem(var id: Long = 0, var name: String? = null, var pathUri: Uri? = null, var path: String? = null, var size: Long = 0, var width: Int = 0, var height: Int = 0, var mineType: String? = null, var dataToken: Long = 0) :
+        Parcelable {
 }

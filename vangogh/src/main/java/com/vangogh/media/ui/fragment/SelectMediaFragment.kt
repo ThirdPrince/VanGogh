@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaItemAdapter
+import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.viewmodel.MediaViewModel
 
@@ -79,8 +80,8 @@ class SelectMediaFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.rcy_view)
         mediaViewModel  = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(MediaViewModel::class.java)
-        mediaViewModel.getMedia(null)
-        mediaViewModel.lvMediaData.observe(this, Observer {
+        mediaViewModel.getMedia(null, VanGoghConst.MEDIA_TYPE_IMAGE)
+       /* mediaViewModel.lvMediaData.observe(this, Observer {
             mediaItemAdapter = MediaItemAdapter(this,it)
             val layoutManager = GridLayoutManager(activity, 4)
             recyclerView.layoutManager = layoutManager
@@ -89,7 +90,7 @@ class SelectMediaFragment : BaseFragment() {
             recyclerView.adapter = mediaItemAdapter
 
 
-        })
+        })*/
 
     }
 
