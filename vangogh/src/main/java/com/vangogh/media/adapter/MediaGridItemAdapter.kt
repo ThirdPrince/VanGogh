@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCrossFade
 import com.bumptech.glide.request.RequestOptions
 import com.media.vangogh.R
+import com.vangogh.media.itf.OnItemClickListener
 import com.vangogh.media.models.MediaItem
 
 
@@ -24,14 +25,26 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
 
     private val mInflater: LayoutInflater by lazy { LayoutInflater.from(activity) }
 
+    var onItemClickListener:OnItemClickListener ?=null
+
 
     private var requestOptions = RequestOptions.centerCropTransform()
             .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
 
 
-    inner class MediaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class MediaViewHolder(view: View) : RecyclerView.ViewHolder(view),View.OnClickListener{
 
-         val squareImageView: ImageView by lazy { view.findViewById<ImageView>(R.id.iv_content_image) }
+        var squareImageView: ImageView
+        init {
+            view.setOnClickListener(this)
+            squareImageView = view.findViewById(R.id.iv_content_image)
+        }
+
+        override fun onClick(v: View?) {
+            onItemClickListener!!.onItemClick(v,adapterPosition)
+
+        }
+
 
     }
 

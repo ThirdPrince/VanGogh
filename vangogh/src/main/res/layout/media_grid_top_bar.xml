@@ -10,7 +10,7 @@
         android:background="?colorPrimary" />
 
     <ImageView
-        android:id="@+id/pictureLeftBack"
+        android:id="@+id/mediaLeftBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/titleViewBg"
@@ -22,7 +22,7 @@
         android:id="@+id/rlAlbum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/pictureLeftBack"
+        android:layout_toRightOf="@id/mediaLeftBack"
         android:layout_marginTop="10dp"
         android:background="@drawable/picture_album_bg"
         android:orientation="horizontal">
@@ -76,7 +76,5 @@
         android:text="@string/media_send"
         android:textColor="?picture.right.textColor"
         android:textSize="16sp" />
-
-
 </merge>
 
