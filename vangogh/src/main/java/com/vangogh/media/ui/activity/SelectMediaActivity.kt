@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.media_grid_top_bar.*
  * @author dhl
  * MediaPicker UI
  * contains  image video show media in grid
- *
  */
 class SelectMediaActivity : AppCompatActivity(),View.OnClickListener,OnItemClickListener {
 

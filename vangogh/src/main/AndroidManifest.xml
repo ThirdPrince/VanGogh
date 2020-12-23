@@ -4,10 +4,13 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application>
-        <activity android:name="com.vangogh.media.ui.activity.SelectMediaActivity"
-            android:theme="@style/picture.WeChat.style"
-            ></activity>
+        <activity android:name="com.vangogh.media.ui.activity.GalleryActivity"></activity>
+        <activity android:name="com.vangogh.media.ui.activity.MainActivity" />
+        <activity
+            android:name="com.vangogh.media.ui.activity.SelectMediaActivity"
+            android:theme="@style/picture.WeChat.style" />
     </application>
 
 </manifest>
