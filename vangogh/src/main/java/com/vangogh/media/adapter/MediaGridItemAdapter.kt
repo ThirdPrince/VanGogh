@@ -29,7 +29,7 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
 
 
     private var requestOptions = RequestOptions.centerCropTransform()
-            .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
+            .placeholder(R.drawable.image_grid_placeholder).error(R.drawable.image_grid_placeholder)
 
 
     inner class MediaViewHolder(view: View) : RecyclerView.ViewHolder(view),View.OnClickListener{
