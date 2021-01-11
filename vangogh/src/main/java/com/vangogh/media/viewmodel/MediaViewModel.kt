@@ -107,17 +107,24 @@ class MediaViewModel(application: Application) :FileBaseViewModel(application){
                     cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[0]))
                 val imagePath: String =
                     cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[1]))
+                var bucketName:String =
+                   cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[2]))
                 val imageSize: Long =
-                    cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[2]))
+                    cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[3]))
                 val imageWidth: Int =
-                    cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[3]))
-                val imageHeight: Int =
                     cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[4]))
+                val imageHeight: Int =
+                    cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[5]))
                 val imageMimeType: Int =
                     cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[6]))
                 val mediaItem = MediaItem()
                 mediaItem.path = imagePath
-                Log.e(TAG,"path=$imagePath")
+                mediaItem.width = imageWidth
+                mediaItem.height = imageHeight
+                mediaItem.size = imageSize
+               // Log.e(TAG,"path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight")
+                if(imageSize == 0L && imageWidth == 0 && imageHeight == 0)
+                    continue
                 data.add(mediaItem)
             }
         }

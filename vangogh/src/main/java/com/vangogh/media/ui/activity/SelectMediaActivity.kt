@@ -17,6 +17,7 @@ import com.vangogh.media.adapter.MediaGridItemAdapter
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.itf.OnItemClickListener
 import com.vangogh.media.ui.fragment.SelectMediaFragment
+import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
 import kotlinx.android.synthetic.main.media_grid_top_bar.*
@@ -68,6 +69,7 @@ class SelectMediaActivity : AppCompatActivity(),View.OnClickListener,OnItemClick
             rcy_view.addItemDecoration(GridSpacingItemDecoration(4,5,false))
             rcy_view.adapter = mediaItemAdapter
             mediaItemAdapter!!.onItemClickListener = this
+            MediaPreviewUtil.mediaItemList = it
 
         })
 
@@ -94,7 +96,7 @@ class SelectMediaActivity : AppCompatActivity(),View.OnClickListener,OnItemClick
     }
 
     override fun onItemClick(view: View?, position: Int) {
-       Toast.makeText(this,"pos = ${position}",Toast.LENGTH_LONG).show()
+        GalleryActivity.actionStart(this,position)
     }
 
 }

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.vangogh.media.ui.activity.GalleryActivity">
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager2"
+    android:background="#0C2962"
+    android:padding="6dp"
+   >
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/photo_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </FrameLayout>
