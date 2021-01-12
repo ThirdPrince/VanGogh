@@ -46,7 +46,7 @@ class GalleryActivity : AppCompatActivity() {
         activity = this
         getData()
         view_pager2.apply {
-            //offscreenPageLimit = 1
+            offscreenPageLimit = 1
             val recyclerView = getChildAt(0) as RecyclerView
             adapter = MediaPreviewAdapter(activity,MediaPreviewUtil.mediaItemList!!)
             setCurrentItem(mediaPos,false)

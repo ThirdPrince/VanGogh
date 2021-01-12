@@ -5,7 +5,7 @@
     <color name="gray_600">#FF757575</color>
     <color name="checkbox_color">#0ec608</color>
     <color name="checkbox_unchecked_color">#DFDFDF</color>
-
+    <color name="ip_color_accent">#1AAD19</color>
     <color name="picture_color_grey">#393a3e</color>
     <color name="picture_color_black">#000000</color>
     <color name="picture_color_white">#FFFFFF</color>

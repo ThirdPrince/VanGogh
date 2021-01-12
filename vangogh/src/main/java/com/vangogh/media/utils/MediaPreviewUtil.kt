@@ -12,5 +12,4 @@ import com.vangogh.media.models.MediaItem
 object MediaPreviewUtil {
      var mediaItemList: List<MediaItem> ?= null
 
-
 }

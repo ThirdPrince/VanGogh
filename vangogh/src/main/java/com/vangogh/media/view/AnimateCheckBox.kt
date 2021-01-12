@@ -22,7 +22,7 @@ import com.media.vangogh.R
  * select checkBox
  * @author dhl
  */
-class AnimateCheckBox : View, Checkable {
+ class AnimateCheckBox : View, Checkable {
 
     private var mPaint: Paint? = null
     private var mTickPaint: Paint? = null

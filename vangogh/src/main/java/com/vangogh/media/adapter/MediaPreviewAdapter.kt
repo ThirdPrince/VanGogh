@@ -35,8 +35,6 @@ class MediaPreviewAdapter(private val activity: Activity, var items: List<MediaI
     var onItemClickListener:OnItemClickListener ?=null
 
 
-    private var requestOptions = RequestOptions.centerCropTransform()
-            .placeholder(R.drawable.image_grid_placeholder).error(R.drawable.image_grid_placeholder)
 
 
     inner class MediaViewHolder(view: View) : RecyclerView.ViewHolder(view){
@@ -64,23 +62,8 @@ class MediaPreviewAdapter(private val activity: Activity, var items: List<MediaI
     override fun onBindViewHolder(holder: MediaPreviewAdapter.MediaViewHolder, position: Int) {
 
         val mediaItem = items[position]
-        Log.e(TAG,"mediaItem = ${mediaItem.toString()}")
+        //Log.e(TAG,"mediaItem = ${mediaItem.toString()}")
         Glide.with(activity).asBitmap().load(mediaItem.path).transition(withCrossFade()).into(holder.photoView)
     }
 
-    /*override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val photoView = PhotoView(activity)
-        val mediaItem = items[position]
-        Glide.with(activity).asBitmap().load(mediaItem.path).transition(withCrossFade()).apply(requestOptions).into(photoView)
-        container.addView(photoView)
-        return photoView
-    }
-
-    override fun isViewFromObject(view: View, any: Any): Boolean {
-        return view === any
-    }
-
-    override fun getCount(): Int {
-        return items.size
-    }*/
 }

@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.vangogh.media.itf;
+package com.vangogh.media.itf
 
-import android.view.View;
+import android.view.View
 
 /**
  * @author dhl
- * Listens on the item's click.
+ * Listens on the item's  checkclick.
  */
-public interface OnItemClickListener {
-
+interface OnItemCheckListener {
     /**
      * When Item is clicked.
      *
      * @param view     item view.
      * @param position item position.
      */
-    void onItemClick(View view, int position);
+    fun onItemCheckClick(
+        view: View?,
+        position: Int,
+        isChecked: Boolean
+    )
 }
