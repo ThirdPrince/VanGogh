@@ -20,9 +20,11 @@ import com.vangogh.media.view.AnimateCheckBox
 
 
 /**
- * @author dhl
- * MediaItem Grid preview
- *
+ * @ClassName MediaGridItemAdapter
+ * @Description  media grid show
+ * @Author dhl
+ * @Date 2020/12/22 9:36
+ * @Version 1.0
  */
 class MediaGridItemAdapter(private val activity: FragmentActivity, var items: List<MediaItem>) :
     RecyclerView.Adapter<MediaGridItemAdapter.MediaViewHolder>() {
@@ -85,7 +87,6 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
         holder.checkBox.setOnCheckedChangeListener(object :
             AnimateCheckBox.OnCheckedChangeListener {
             override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {
-                Log.e(TAG, "onCheckedChanged")
                 onItemCheckListener?.onItemCheckClick(checkBox, position, isChecked)
             }
 

@@ -11,6 +11,7 @@
         <activity android:name="com.vangogh.media.ui.activity.MainActivity" />
         <activity
             android:name="com.vangogh.media.ui.activity.SelectMediaActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/picture.WeChat.style" />
     </application>
 
