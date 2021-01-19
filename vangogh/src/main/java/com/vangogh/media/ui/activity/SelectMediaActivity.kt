@@ -7,18 +7,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaGridItemAdapter
+import com.vangogh.media.config.VanGogh
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnItemClickListener
+import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.viewmodel.MediaViewModel
+import com.vangogh.media.viewmodel.SelectMediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
 import kotlinx.android.synthetic.main.media_grid_top_bar.*
 
@@ -28,12 +32,12 @@ import kotlinx.android.synthetic.main.media_grid_top_bar.*
  * contains  image video show media in grid
  */
 class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemClickListener,
-    OnItemCheckListener {
+    OnItemCheckListener, OnMediaResult {
 
     //  const val TAG = "SelectMediaActivity"
 
     companion object {
-        fun actionStart(activity: AppCompatActivity) {
+        fun actionStart(activity: FragmentActivity) {
             val intent = Intent(
                 activity,
                 SelectMediaActivity::class.java
@@ -47,16 +51,22 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
 
 
     private lateinit var mediaViewModel: MediaViewModel
+    lateinit var selectMediaViewModel: SelectMediaViewModel
     private lateinit var mediaItemAdapter: MediaGridItemAdapter
 
     private var selectMediaList = mutableListOf<MediaItem>()
+
+    /**
+     * for media result
+     */
+    var onMediaResult: OnMediaResult? = null
 
     /**
      * permissions
      */
     private val permissions = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +75,10 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
         mediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 MediaViewModel::class.java
+            )
+        selectMediaViewModel =
+            ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
+                SelectMediaViewModel::class.java
             )
         val checkPermission = this?.let { ActivityCompat.checkSelfPermission(it, permissions[0]) }
         if (checkPermission != PackageManager.PERMISSION_GRANTED) {
@@ -86,11 +100,16 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
             MediaPreviewUtil.mediaItemList = it
 
         })
+        selectMediaViewModel.lvMediaData.observe(this, Observer {
+            VanGogh._lvMediaData.postValue(it)
+            finish()
+        })
 
     }
 
     private fun initListener() {
         mediaLeftBack.setOnClickListener(this)
+        media_send.setOnClickListener(this)
     }
 
     override fun onRequestPermissionsResult(
@@ -105,8 +124,13 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
     }
 
     override fun onClick(v: View?) {
+        //val onResult = onMediaResult?.onResult(selectMediaList)
         when (v?.id) {
             R.id.mediaLeftBack -> finish()
+            R.id.media_send -> {
+                //  this.selectMediaViewModel.lvMediaData.value = selectMediaList
+                selectMediaViewModel.selectMedia(selectMediaList)
+            }
         }
     }
 
@@ -123,14 +147,16 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
 
         }
         mediaItemAdapter.selectMediaList = selectMediaList
-        if(selectMediaList.size>0) {
+        if (selectMediaList.size > 0) {
             media_send.isEnabled = true
             media_send.text = getString(R.string.media_send_num, selectMediaList.size, 9)
-        }else{
+        } else {
             media_send.isEnabled = false
             media_send.text = resources.getString(R.string.media_send_not_enable)
         }
-        //mediaItemAdapter.notifyDataSetChanged()
+    }
+
+    override fun onResult(mediaList: List<MediaItem>) {
 
     }
 

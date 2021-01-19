@@ -6,8 +6,6 @@ import android.database.ContentObserver
 import android.database.Cursor
 import android.provider.BaseColumns
 import android.provider.MediaStore
-import android.util.Log
-import android.webkit.MimeTypeMap
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,7 +20,7 @@ import kotlinx.coroutines.withContext
  * @author dhl
  * query Media Model
  */
-class MediaViewModel(application: Application) :FileBaseViewModel(application){
+class MediaViewModel(application: Application) :MediaBaseViewModel(application){
 
     companion object {
         const val TAG = "MediaViewModel"

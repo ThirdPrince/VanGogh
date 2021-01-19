@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 
-open class FileBaseViewModel(application: Application):AndroidViewModel(application) {
+open class MediaBaseViewModel(application: Application):AndroidViewModel(application) {
 
     private val viewModelJob = SupervisorJob()
 

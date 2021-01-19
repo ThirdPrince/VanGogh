@@ -1,6 +1,7 @@
 package com.example.vangogh.adapter
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.vangogh.R
+import com.example.vangogh.itf.OnAddMediaListener
 import com.vangogh.media.models.MediaItem
 
 /**
@@ -23,23 +25,36 @@ class GridMediaAdapter(private val activity: Activity, var items: List<MediaItem
 
 
     companion object{
+        const val TAG = "GridMediaAdapter"
         const val TYPE_ADD_MEDIA = 1
         const val TYPE_MEDIA = 2
         const val MAX_MEDIA_SIZE = 9
     }
-    private val mInflater: LayoutInflater by lazy { LayoutInflater.from(activity) }
+     private val mInflater: LayoutInflater by lazy { LayoutInflater.from(activity) }
+
+      var onAddMediaListener:OnAddMediaListener?= null
+
 
     private var requestOptions = RequestOptions.centerCropTransform()
         .placeholder(R.drawable.image_grid_placeholder).error(R.drawable.image_grid_placeholder)
 
-    inner class GridImageViewHolder( view: View) : RecyclerView.ViewHolder(view) {
+    inner class GridImageViewHolder( view: View) : RecyclerView.ViewHolder(view) ,View.OnClickListener{
         var squareImageView: ImageView = view.findViewById(R.id.iv_content_image)
+        init {
+            squareImageView.setOnClickListener(this)
+        }
+        override fun onClick(v: View?) {
+            if(isAddMedia(adapterPosition)) {
+                onAddMediaListener?.onAddMediaClick()
+            }
+
+        }
 
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridImageViewHolder {
-        return GridImageViewHolder(mInflater.inflate(R.layout.item_content_image_view, parent, false))
+        return GridImageViewHolder(mInflater.inflate(R.layout.image_grid_item_layout, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -53,7 +68,7 @@ class GridMediaAdapter(private val activity: Activity, var items: List<MediaItem
     override fun onBindViewHolder(holder: GridImageViewHolder, position: Int) {
 
         if(isAddMedia(position)){
-            Glide.with(activity).asBitmap().load(R.drawable.add_media)
+            Glide.with(activity).asBitmap().load(R.drawable.ic_add_image)
                 .into(holder.squareImageView)
         }else {
             val mediaItem = items[position]
