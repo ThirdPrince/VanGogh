@@ -1,13 +1,18 @@
 package com.vangogh.media.viewmodel
 
 import android.app.Application
+import android.os.Environment
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.models.MediaItem
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.default
+import id.zelory.compressor.constraint.destination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 
 /**
  * @ClassName MediaGridItemAdapter
@@ -16,7 +21,7 @@ import kotlinx.coroutines.withContext
  * @Date 2020/12/22 9:36
  * @Version 1.0
  */
-class SelectMediaViewModel(application: Application) :MediaBaseViewModel(application){
+class SelectMediaViewModel( application: Application) :MediaBaseViewModel(application){
 
     companion object {
         const val TAG = "SelectMediaViewModel"
@@ -26,10 +31,25 @@ class SelectMediaViewModel(application: Application) :MediaBaseViewModel(applica
     val lvMediaData: LiveData<List<MediaItem>>
         get() = _lvMediaData
 
+    private var actualImage: File? = null
+    private var compressedImage: File? = null
+
     fun selectMedia(mediaList:MutableList<MediaItem>) {
         launchDataLoad {
-            val medias = compressImage(mediaList)
-            _lvMediaData.postValue(medias)
+            mediaList.forEach {
+                actualImage = File(it.path)
+                actualImage?.let {imageFile->
+                    compressedImage = Compressor.compress(getApplication<Application>(), imageFile){
+                        default()
+                        getApplication<Application>().getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.also {
+                            val file = File("${it.absolutePath}${File.separator}${actualImage!!.name}.${imageFile.extension}")
+                            destination(file)
+                        }
+                    }
+                    it.compressPath = compressedImage!!.absolutePath
+                }
+            }
+            _lvMediaData.postValue(mediaList)
 
         }
     }

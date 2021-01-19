@@ -16,6 +16,7 @@ class MediaItem(
     var name: String? = null,
     var pathUri: Uri? = null,
     var path: String? = null,
+    var compressPath:String?=null,
     var size: Long = 0,
     var width: Int = 0,
     var height: Int = 0,
@@ -26,6 +27,7 @@ class MediaItem(
 
     override fun toString(): String {
         return "path = $path \n" +
+                "compressPath = $compressPath \n"+
                 "size = $size \n"+
                 "width = $width \n" +
                 "height = $height"

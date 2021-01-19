@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(),OnAddMediaListener{
     override fun onAddMediaClick() {
         VanGogh.startForResult(this).onMediaResult = object:OnMediaResult{
             override fun onResult(mediaList: List<MediaItem>) {
+                Log.e("TAG","mediaList :${mediaList.toString()}")
                 gridMediaAdapter = GridMediaAdapter(activity,mediaList)
                 rcy_view.adapter = gridMediaAdapter
                 gridMediaAdapter.onAddMediaListener = activity

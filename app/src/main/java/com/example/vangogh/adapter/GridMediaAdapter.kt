@@ -72,7 +72,7 @@ class GridMediaAdapter(private val activity: Activity, var items: List<MediaItem
                 .into(holder.squareImageView)
         }else {
             val mediaItem = items[position]
-            Glide.with(activity).asBitmap().load(mediaItem.path)
+            Glide.with(activity).asBitmap().load(mediaItem.compressPath)
                 .transition(BitmapTransitionOptions.withCrossFade())
                 .apply(requestOptions).into(holder.squareImageView)
         }
