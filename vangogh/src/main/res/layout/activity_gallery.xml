@@ -6,10 +6,13 @@
     android:layout_height="match_parent"
     tools:context="com.vangogh.media.ui.activity.GalleryActivity">
 
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <include layout="@layout/media_select_button"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

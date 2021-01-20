@@ -19,26 +19,25 @@ import kotlin.properties.Delegates
  */
 class GalleryActivity : AppCompatActivity() {
 
-    companion object{
-
+    companion object {
 
         /**
          * media index
          */
         const val MEDIA_POS = "mediaPos"
 
-        fun actionStart(activity: AppCompatActivity,mediaPos :Int){
-            var intent = Intent(activity,GalleryActivity::class.java).apply {
-                putExtra(MEDIA_POS,mediaPos)
+        fun actionStart(activity: AppCompatActivity, mediaPos: Int) {
+            var intent = Intent(activity, GalleryActivity::class.java).apply {
+                putExtra(MEDIA_POS, mediaPos)
             }
             activity.startActivity(intent)
 
         }
     }
 
-     lateinit var activity: GalleryActivity
+    lateinit var activity: GalleryActivity
 
-     var mediaPos :Int = 0
+    var mediaPos: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +47,12 @@ class GalleryActivity : AppCompatActivity() {
         view_pager2.apply {
             offscreenPageLimit = 1
             val recyclerView = getChildAt(0) as RecyclerView
-            adapter = MediaPreviewAdapter(activity,MediaPreviewUtil.mediaItemList!!)
-            setCurrentItem(mediaPos,false)
+            adapter = MediaPreviewAdapter(activity, MediaPreviewUtil.mediaItemList!!)
+            setCurrentItem(mediaPos, false)
         }
     }
 
-    private fun getData(){
-        mediaPos = intent!!.getIntExtra(MEDIA_POS,0)
+    private fun getData() {
+        mediaPos = intent!!.getIntExtra(MEDIA_POS, 0)
     }
 }

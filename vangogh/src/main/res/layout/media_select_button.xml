@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/media_send"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_marginTop="10dp"
+    android:gravity="center"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:background="@drawable/media_send_bg"
+    android:textColor="@drawable/media_send_font_style"
+    android:text="@string/media_send_not_enable"
+    android:minHeight="30dp"
+    android:minWidth="48dp"
+    android:paddingRight="16.0dp"
+    android:paddingLeft="16.0dp"
+    android:enabled="false"
+    android:textSize="14sp">
+</Button>
+

@@ -28,6 +28,7 @@ import com.vangogh.media.viewmodel.SelectMediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
 import kotlinx.android.synthetic.main.activity_select_media.view.*
 import kotlinx.android.synthetic.main.media_grid_top_bar.*
+import kotlinx.android.synthetic.main.media_select_button.*
 import kotlinx.coroutines.launch
 
 /**
@@ -39,7 +40,6 @@ import kotlinx.coroutines.launch
  */
 class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemClickListener,
     OnItemCheckListener {
-
 
     companion object {
         fun actionStart(activity: FragmentActivity) {
