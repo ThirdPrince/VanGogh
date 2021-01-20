@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(),OnAddMediaListener{
         gridMediaAdapter.onAddMediaListener = activity
         rcy_view.adapter = gridMediaAdapter
 
+
     }
 
     override fun onAddMediaClick() {

@@ -131,6 +131,7 @@ object VanGogh {
     }
 
 
+
     private fun start(context: FragmentActivity) {
 
         SelectMediaActivity.actionStart(context)
@@ -140,6 +141,10 @@ object VanGogh {
         })
     }
 
+    /**
+     * startForMedia result
+     * onResult mediaList
+     */
      fun startForResult(context: FragmentActivity):VanGogh {
 
         SelectMediaActivity.actionStart(context)

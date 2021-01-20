@@ -6,10 +6,12 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewStub
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.media.vangogh.R
@@ -24,17 +26,20 @@ import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.viewmodel.MediaViewModel
 import com.vangogh.media.viewmodel.SelectMediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
+import kotlinx.android.synthetic.main.activity_select_media.view.*
 import kotlinx.android.synthetic.main.media_grid_top_bar.*
+import kotlinx.coroutines.launch
 
 /**
- * @author dhl
- * MediaPicker UI
- * contains  image video show media in grid
+ * @ClassName SelectMediaActivity
+ * @Description  MediaUI
+ * @Author dhl
+ * @Date 2020/12/22 9:36
+ * @Version 1.0
  */
 class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemClickListener,
-    OnItemCheckListener, OnMediaResult {
+    OnItemCheckListener {
 
-    //  const val TAG = "SelectMediaActivity"
 
     companion object {
         fun actionStart(activity: FragmentActivity) {
@@ -56,10 +61,8 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
 
     private var selectMediaList = mutableListOf<MediaItem>()
 
-    /**
-     * for media result
-     */
-    var onMediaResult: OnMediaResult? = null
+
+
 
     /**
      * permissions
@@ -107,6 +110,7 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
 
     }
 
+
     private fun initListener() {
         mediaLeftBack.setOnClickListener(this)
         media_send.setOnClickListener(this)
@@ -124,11 +128,10 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
     }
 
     override fun onClick(v: View?) {
-        //val onResult = onMediaResult?.onResult(selectMediaList)
         when (v?.id) {
             R.id.mediaLeftBack -> finish()
             R.id.media_send -> {
-                //  this.selectMediaViewModel.lvMediaData.value = selectMediaList
+                view_stub.visibility = View.VISIBLE
                 selectMediaViewModel.selectMedia(selectMediaList)
             }
         }
@@ -156,8 +159,5 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
         }
     }
 
-    override fun onResult(mediaList: List<MediaItem>) {
-
-    }
 
 }

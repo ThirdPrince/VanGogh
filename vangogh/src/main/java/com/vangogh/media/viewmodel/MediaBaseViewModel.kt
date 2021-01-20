@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 
 open class MediaBaseViewModel(application: Application):AndroidViewModel(application) {
@@ -22,7 +23,7 @@ open class MediaBaseViewModel(application: Application):AndroidViewModel(applica
         get() = _lvError
 
     fun launchDataLoad(block: suspend (scope: CoroutineScope) -> Unit): Job {
-        return uiScope.launch {
+        return viewModelScope.launch {
             try {
                 block(this)
             } catch (error: Exception) {

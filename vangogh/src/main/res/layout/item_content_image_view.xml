@@ -9,26 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-
-    <com.vangogh.media.view.CheckSelectFrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:clickable="true"
-        android:paddingTop="8dp"
-        android:paddingRight="8dp"
-        android:paddingLeft="15dp"
-        android:paddingBottom="15dp"
-        >
-        <com.vangogh.media.view.AnimateCheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="20dp"
-            android:layout_gravity="center"
-            android:layout_height="20dp"
-            style="@style/AnimateCheckBoxStyle"
-            />
-    </com.vangogh.media.view.CheckSelectFrameLayout>
-
+    <include
+        layout="@layout/media_select_checkbox"
+        />
 </com.vangogh.media.view.SquareRelativeLayout>
