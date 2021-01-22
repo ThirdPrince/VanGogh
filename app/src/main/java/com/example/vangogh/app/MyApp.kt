@@ -2,6 +2,7 @@ package com.example.vangogh.app
 
 import android.app.Application
 import com.blankj.utilcode.util.CrashUtils
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.Utils
 
 /**
@@ -17,5 +18,6 @@ class MyApp :Application() {
         super.onCreate()
         Utils.init(this)
         CrashUtils.init()
+        
     }
 }

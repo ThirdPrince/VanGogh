@@ -47,8 +47,11 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
     /**
      * compressImage root
      */
-    private lateinit var imageCompressFile: File
+    private  var imageCompressFile: File?= null
 
+    /**
+     * async compressImage
+     */
     var deferredList = mutableListOf<Deferred<File>>()
 
     init {
@@ -57,6 +60,9 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
     }
 
 
+    /**
+     * async compress
+     */
     fun selectMedia(mediaList: MutableList<MediaItem>) {
 
 
@@ -89,14 +95,19 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
         }
     }
 
+    /**
+     * async compress
+     */
     fun compressImage(mediaList: MutableList<MediaItem>) {
         viewModelScope.launch {
             var startTime = System.currentTimeMillis()
             mediaList.forEach { it ->
                 actualImage = File(it.path)
                 actualImage?.let { imageFile ->
-                    val file = getCompressImageFile(actualImage!!)
-                    if (!file.exists()) {
+                    val file = getCompressImageFile(imageFile)
+                    if (file.exists()){
+                        it.compressPath = file.absolutePath
+                    }else {
                         val compressedImage = async {
                             Compressor.compress(getApplication<Application>(), imageFile) {
                                 default()
@@ -105,21 +116,20 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
                             }
                         }
                         deferredList.add(compressedImage)
-
-                    } else {
-                        it.compressPath = file.absolutePath
                     }
-
                 }
 
             }
-            deferredList.forEach {
-                compressedImage = it.await()
-                //Log.e(TAG, "  compressedImage.path ${compressedImage!!.absolutePath}")
-            }
+
             deferredList.forEachIndexed { index, deferred ->
                 compressedImage = deferred.await()
-                mediaList[index].compressPath = compressedImage!!.absolutePath
+                Log.e(TAG, "deferred result = ${compressedImage!!.absolutePath}")
+                mediaList.forEach {
+                    if(it.path!!.endsWith(compressedImage!!.name)){
+                        it.compressPath = compressedImage!!.absolutePath
+                    }
+                }
+
             }
             var endTime = System.currentTimeMillis()
             Log.e(TAG, "compress Time = ${endTime - startTime}")
@@ -129,7 +139,7 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
     }
 
     private fun getCompressImageFile(actualImage: File): File {
-        return File("${imageCompressFile.absolutePath}${File.separator}${actualImage!!.name}")
+        return File("${imageCompressFile?.absolutePath}${File.separator}${actualImage!!.name}")
     }
 
 
