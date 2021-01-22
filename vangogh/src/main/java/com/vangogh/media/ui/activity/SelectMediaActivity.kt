@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
  * @Date 2020/12/22 9:36
  * @Version 1.0
  */
-class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemClickListener,
+class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnItemClickListener,
     OnItemCheckListener {
 
     companion object {
@@ -56,12 +56,8 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
 
 
     private lateinit var mediaViewModel: MediaViewModel
-    lateinit var selectMediaViewModel: SelectMediaViewModel
+
     private lateinit var mediaItemAdapter: MediaGridItemAdapter
-
-    private var selectMediaList = mutableListOf<MediaItem>()
-
-
 
 
     /**
@@ -75,14 +71,12 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_media)
+        initSendMediaListener()
         mediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 MediaViewModel::class.java
             )
-        selectMediaViewModel =
-            ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
-                SelectMediaViewModel::class.java
-            )
+
         val checkPermission = this?.let { ActivityCompat.checkSelfPermission(it, permissions[0]) }
         if (checkPermission != PackageManager.PERMISSION_GRANTED) {
             //这是系统的方法
@@ -90,7 +84,6 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
         } else {
             mediaViewModel.getMedia(null)
         }
-        initListener()
         mediaViewModel.lvMediaData.observe(this, Observer {
             mediaItemAdapter = MediaGridItemAdapter(this, it)
             val layoutManager = GridLayoutManager(this, 4)
@@ -103,18 +96,10 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
             MediaPreviewUtil.mediaItemList = it
 
         })
-        selectMediaViewModel.lvMediaData.observe(this, Observer {
-            VanGogh._lvMediaData.postValue(it)
-            finish()
-        })
+
 
     }
 
-
-    private fun initListener() {
-        mediaLeftBack.setOnClickListener(this)
-        media_send.setOnClickListener(this)
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -127,15 +112,6 @@ class SelectMediaActivity : AppCompatActivity(), View.OnClickListener, OnItemCli
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.mediaLeftBack -> finish()
-            R.id.media_send -> {
-                view_stub.visibility = View.VISIBLE
-                selectMediaViewModel.selectMedia(selectMediaList)
-            }
-        }
-    }
 
     override fun onItemClick(view: View?, position: Int) {
         GalleryActivity.actionStart(this, position)

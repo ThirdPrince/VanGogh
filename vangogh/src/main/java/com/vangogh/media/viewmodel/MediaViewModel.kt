@@ -121,7 +121,7 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
                 mediaItem.height = imageHeight
                 mediaItem.size = imageSize
                // Log.e(TAG,"path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight")
-                if(imageSize == 0L && imageWidth == 0 && imageHeight == 0)
+                if(imageSize == 0L || imageWidth == 0 )//&& imageHeight == 0
                     continue
                 data.add(mediaItem)
             }

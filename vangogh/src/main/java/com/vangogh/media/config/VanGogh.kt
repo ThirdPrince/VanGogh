@@ -1,5 +1,6 @@
 package com.vangogh.media.config
 
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -36,9 +37,14 @@ object VanGogh {
     val lvMediaData: LiveData<List<MediaItem>>
         get() = _lvMediaData
 
-    private var fragmentActivity:FragmentActivity?= null
+    private var fragmentActivity: FragmentActivity? = null
 
 
+    /**
+     * that selectMedia UI
+     */
+
+    var selectMediaActivity = mutableListOf<Activity>()
 
 
     fun setMaxCount(maxCount: Int): VanGogh {
@@ -131,7 +137,6 @@ object VanGogh {
     }
 
 
-
     private fun start(context: FragmentActivity) {
 
         SelectMediaActivity.actionStart(context)
@@ -145,14 +150,14 @@ object VanGogh {
      * startForMedia result
      * onResult mediaList
      */
-     fun startForResult(context: FragmentActivity):VanGogh {
+    fun startForResult(context: FragmentActivity): VanGogh {
 
         SelectMediaActivity.actionStart(context)
         fragmentActivity = context
         lvMediaData.observe(fragmentActivity!!, Observer {
             onMediaResult?.onResult(it)
         })
-         return this
+        return this
     }
 
 }

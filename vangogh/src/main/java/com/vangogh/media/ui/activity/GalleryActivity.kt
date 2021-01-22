@@ -4,10 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaPreviewAdapter
 import com.vangogh.media.utils.MediaPreviewUtil
 import kotlinx.android.synthetic.main.activity_gallery.*
+import kotlinx.android.synthetic.main.media_select_button.*
 import kotlin.properties.Delegates
 
 /**
@@ -17,7 +20,7 @@ import kotlin.properties.Delegates
  * @Date 2020/12/22 9:36
  * @Version 1.0
  */
-class GalleryActivity : AppCompatActivity() {
+class GalleryActivity : BaseSelectActivity() {
 
     companion object {
 
@@ -35,24 +38,27 @@ class GalleryActivity : AppCompatActivity() {
         }
     }
 
-    lateinit var activity: GalleryActivity
 
-    var mediaPos: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery)
-        activity = this
+        initSendMediaListener()
         getData()
         view_pager2.apply {
             offscreenPageLimit = 1
-            val recyclerView = getChildAt(0) as RecyclerView
             adapter = MediaPreviewAdapter(activity, MediaPreviewUtil.mediaItemList!!)
             setCurrentItem(mediaPos, false)
+            registerOnPageChangeCallback(object : OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    mediaPos = position
+                }
+
+            })
         }
+        media_send.isEnabled = true
     }
 
-    private fun getData() {
-        mediaPos = intent!!.getIntExtra(MEDIA_POS, 0)
-    }
+
 }

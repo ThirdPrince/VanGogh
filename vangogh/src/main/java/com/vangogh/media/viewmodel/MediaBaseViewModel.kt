@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import id.zelory.compressor.Compressor
 import kotlinx.coroutines.*
 
 open class MediaBaseViewModel(application: Application):AndroidViewModel(application) {
