@@ -6,6 +6,7 @@ import android.database.ContentObserver
 import android.database.Cursor
 import android.provider.BaseColumns
 import android.provider.MediaStore
+import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -120,8 +121,8 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
                 mediaItem.width = imageWidth
                 mediaItem.height = imageHeight
                 mediaItem.size = imageSize
-               // Log.e(TAG,"path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight")
-                if(imageSize == 0L || imageWidth == 0 )//&& imageHeight == 0
+                Log.e(TAG,"path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight")
+                if(imageSize == 0L &&  imageWidth == 0 )//&& imageHeight == 0
                     continue
                 data.add(mediaItem)
             }
