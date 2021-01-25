@@ -32,4 +32,17 @@ class MediaItem(
                 "width = $width \n" +
                 "height = $height"
     }
+
+    fun isGif():Boolean{
+        return mineType!!.endsWith("gif")
+    }
+
+    /**
+     * not gif video
+     */
+    fun isImage():Boolean{
+        if(mineType!!.startsWith("video"))
+            return false
+        return !mineType!!.endsWith("gif")
+    }
 }

@@ -47,6 +47,9 @@ object VanGogh {
     var selectMediaActivity = mutableListOf<Activity>()
 
 
+    var selectMediaList = mutableListOf<MediaItem>()
+
+
     fun setMaxCount(maxCount: Int): VanGogh {
         //  PickerManager.setMaxCount(maxCount)
         return this
@@ -154,6 +157,7 @@ object VanGogh {
 
         SelectMediaActivity.actionStart(context)
         fragmentActivity = context
+        selectMediaList.clear()
         lvMediaData.observe(fragmentActivity!!, Observer {
             onMediaResult?.onResult(it)
         })

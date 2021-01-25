@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    >
+    <TextView
+        android:id="@+id/media_index_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:textSize="@dimen/sp_18"
+        android:textColor="@color/picture_color_white"/>
+    <include
+        layout="@layout/media_select_button"
+        />
+
+</RelativeLayout>
+

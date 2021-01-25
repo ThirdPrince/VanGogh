@@ -37,7 +37,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     }
     lateinit var activity: BaseSelectActivity
 
-    var selectMediaList = mutableListOf<MediaItem>()
+
 
     lateinit var selectMediaViewModel: SelectMediaViewModel
 
@@ -73,14 +73,24 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             R.id.mediaLeftBack -> finish()
             R.id.media_send -> {
                 view_stub?.visibility = View.VISIBLE
-                if(selectMediaList.isEmpty()){
-                    selectMediaList.add(MediaPreviewUtil.mediaItemList!![mediaPos])
+                if(VanGogh.selectMediaList.isEmpty()){
+                    VanGogh.selectMediaList.add(MediaPreviewUtil.mediaItemList!![mediaPos])
                 }
-                selectMediaViewModel.compressImage(selectMediaList)
+                selectMediaViewModel.compressImage(VanGogh.selectMediaList)
             }
         }
     }
 
+
+    protected fun updateTitle(){
+        if (VanGogh.selectMediaList.size > 0) {
+            media_send.isEnabled = true
+            media_send.text = getString(R.string.media_send_num, VanGogh.selectMediaList.size, 9)
+        } else {
+            media_send.isEnabled = false
+            media_send.text = resources.getString(R.string.media_send_not_enable)
+        }
+    }
     /**
      * finish mediaUI
      */

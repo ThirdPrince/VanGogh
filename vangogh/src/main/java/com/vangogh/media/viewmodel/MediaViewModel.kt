@@ -46,7 +46,6 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
         BaseColumns._ID,
         MediaStore.Images.Media.DATA,
         MediaStore.Images.Media.BUCKET_DISPLAY_NAME,  //图片的显示名称  aaa.jpg
-        //图片的真实路径  /storage/emulated/0/pp/downloader/wallpaper/aaa.jpg
         MediaStore.Images.Media.SIZE,  //图片的大小，long型  132492
         MediaStore.Images.Media.WIDTH,  //图片的宽度，int型  1920
         MediaStore.Images.Media.HEIGHT,  //图片的高度，int型  1080
@@ -114,14 +113,16 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
                     cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[4]))
                 val imageHeight: Int =
                     cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[5]))
-                val imageMimeType: Int =
-                    cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[6]))
+                val mediaMineType: String =
+                    cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[6]))
                 val mediaItem = MediaItem()
                 mediaItem.path = imagePath
                 mediaItem.width = imageWidth
                 mediaItem.height = imageHeight
                 mediaItem.size = imageSize
-                Log.e(TAG,"path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight")
+                mediaItem.mineType = mediaMineType
+               // Log.e(TAG,"path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight")
+                Log.e(TAG,"imageMimeType = $mediaMineType")
                 if(imageSize == 0L &&  imageWidth == 0 )//&& imageHeight == 0
                     continue
                 data.add(mediaItem)

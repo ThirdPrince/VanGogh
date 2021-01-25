@@ -8,6 +8,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.models.MediaItem
 import id.zelory.compressor.Compressor
@@ -97,6 +98,7 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
 
     /**
      * async compress
+     * only compress image (exclude gif video)
      */
     fun compressImage(mediaList: MutableList<MediaItem>) {
         viewModelScope.launch {
@@ -104,18 +106,22 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
             mediaList.forEach { it ->
                 actualImage = File(it.path)
                 actualImage?.let { imageFile ->
-                    val file = getCompressImageFile(imageFile)
-                    if (file.exists()){
-                        it.compressPath = file.absolutePath
-                    }else {
-                        val compressedImage = async {
-                            Compressor.compress(getApplication<Application>(), imageFile) {
-                                default()
-                                val file = getCompressImageFile(imageFile!!)
-                                destination(file)
+                    if (it.isImage()) {
+                        val file = getCompressImageFile(imageFile)
+                        if (file.exists()) {
+                            it.compressPath = file.absolutePath
+                        } else {
+                            val compressedImage = async {
+                                Compressor.compress(getApplication<Application>(), imageFile) {
+                                    default()
+                                    val file = getCompressImageFile(imageFile!!)
+                                    destination(file)
+                                }
                             }
+                            deferredList.add(compressedImage)
                         }
-                        deferredList.add(compressedImage)
+                    }else{
+                        it.compressPath = it.path
                     }
                 }
 
@@ -134,6 +140,7 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
             var endTime = System.currentTimeMillis()
             Log.e(TAG, "compress Time = ${endTime - startTime}")
             _lvMediaData.postValue(mediaList)
+            //VanGogh.selectMediaList.clear()
         }
 
     }

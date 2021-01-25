@@ -18,52 +18,49 @@
         android:layout_centerVertical="true"
         android:padding="15dp"
         android:src="?attr/picture.leftBack.icon" />
+
     <RelativeLayout
         android:id="@+id/rlAlbum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/mediaLeftBack"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:background="@drawable/picture_album_bg"
-        android:orientation="horizontal">
+        android:layout_toRightOf="@id/mediaLeftBack">
 
-        <TextView
-            android:id="@+id/picture_title"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxEms="8"
-            android:maxLines="1"
-            android:text="@string/picture_camera_roll"
-            android:textColor="?picture.title.textColor"
-            android:textSize="16sp" />
+            android:background="@drawable/picture_album_bg"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/ivArrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/picture_title"
-            android:scaleType="centerInside"
-            android:src="?attr/picture.arrow_down.icon" />
+            <TextView
+                android:id="@+id/picture_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxEms="8"
+                android:maxLines="1"
+                android:text="@string/picture_camera_roll"
+                android:textColor="?picture.title.textColor"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/ivArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/picture_title"
+                android:scaleType="centerInside"
+                android:src="?attr/picture.arrow_down.icon" />
+
+        </LinearLayout>
+
+        <include layout="@layout/media_select_button" />
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/picture_right"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/picture_cancel"
-        android:textColor="?picture.right.textColor"
-        android:textSize="14sp"
-        android:visibility="gone" />
-    <include layout="@layout/media_select_button"/>
 
 </merge>
 

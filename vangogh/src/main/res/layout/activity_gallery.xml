@@ -12,14 +12,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <include layout="@layout/media_select_button"/>
+    <include layout="@layout/media_select_gallery_top"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_45"
         android:layout_alignParentBottom="true">
-        <include
-            layout="@layout/media_select_checkbox"
-            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/dimen_10dp"
+            android:gravity="right"
+            android:orientation="horizontal">
+            <include
+                layout="@layout/media_select_checkbox"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/picture_color_white"
+                android:text="选择"/>
+        </LinearLayout>
+
     </RelativeLayout>
 </RelativeLayout>

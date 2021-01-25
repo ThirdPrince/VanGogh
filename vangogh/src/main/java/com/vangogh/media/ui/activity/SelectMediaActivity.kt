@@ -1,6 +1,7 @@
 package com.vangogh.media.ui.activity
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -100,6 +101,12 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnItemCl
 
     }
 
+    private fun refreshMedia(){
+        mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
+        updateTitle()
+        mediaItemAdapter.notifyDataSetChanged()
+    }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -120,18 +127,25 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnItemCl
     override fun onItemCheckClick(view: View?, position: Int, isChecked: Boolean) {
         var mediaItem = mediaItemAdapter.items[position]
         if (isChecked) {
-            selectMediaList.add(mediaItem)
+            VanGogh.selectMediaList.add(mediaItem)
         } else {
-            selectMediaList.remove(mediaItem)
+            VanGogh.selectMediaList.remove(mediaItem)
 
         }
-        mediaItemAdapter.selectMediaList = selectMediaList
-        if (selectMediaList.size > 0) {
-            media_send.isEnabled = true
-            media_send.text = getString(R.string.media_send_num, selectMediaList.size, 9)
-        } else {
-            media_send.isEnabled = false
-            media_send.text = resources.getString(R.string.media_send_not_enable)
+        mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
+        updateTitle()
+    }
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            GalleryActivity.REQUEST_CODE->{
+                if(resultCode == Activity.RESULT_CANCELED){
+                    refreshMedia()
+                }
+            }
         }
     }
 

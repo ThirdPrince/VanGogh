@@ -1,18 +1,15 @@
 package com.vangogh.media.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCrossFade
 import com.bumptech.glide.request.RequestOptions
 import com.media.vangogh.R
-import com.vangogh.media.adapter.MediaPreviewAdapter.Companion.TAG
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnItemClickListener
 import com.vangogh.media.models.MediaItem
@@ -45,15 +42,18 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
      */
     var selectMediaList = mutableListOf<MediaItem>()
 
+
     inner class MediaViewHolder(var view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
 
         var squareImageView: ImageView
         var checkBox: AnimateCheckBox
+        var img_gif :ImageView
 
         init {
             view.setOnClickListener(this)
             squareImageView = view.findViewById(R.id.iv_content_image)
+            img_gif = view.findViewById(R.id.img_gif)
             checkBox = view.findViewById(R.id.checkbox) as AnimateCheckBox
         }
 
@@ -91,8 +91,14 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
             }
 
         })
-        // Log.e(TAG, "isChecked = ${selectMediaList.contains(mediaItem)}")
-        //
+        setGifTag(holder,mediaItem)
+    }
 
+    /**
+     * gif show or hide
+     */
+    private fun setGifTag(holder: MediaViewHolder,mediaItem:MediaItem) {
+        holder.img_gif.visibility = if(mediaItem.isGif()) View.VISIBLE
+          else View.GONE
     }
 }
