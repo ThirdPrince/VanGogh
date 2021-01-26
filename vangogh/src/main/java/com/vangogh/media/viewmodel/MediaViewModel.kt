@@ -21,15 +21,15 @@ import kotlinx.coroutines.withContext
  * @author dhl
  * query Media Model
  */
-class MediaViewModel(application: Application) :MediaBaseViewModel(application){
+class MediaViewModel(application: Application) : MediaBaseViewModel(application) {
 
     companion object {
         const val TAG = "MediaViewModel"
     }
+
     private val _lvMediaData = MutableLiveData<List<MediaItem>>()
     val lvMediaData: LiveData<List<MediaItem>>
         get() = _lvMediaData
-
 
 
     private val _lvDataChanged = MutableLiveData<Boolean>()
@@ -63,11 +63,11 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
         MediaStore.Images.Media.WIDTH,  //图片的宽度，int型  1920
         MediaStore.Images.Media.HEIGHT,  //图片的高度，int型  1080
         MediaStore.Images.Media.MIME_TYPE,  //图片的类型     image/jpeg
-        MediaStore.Images.Media.DATE_ADDED //图片被添加的时间，long型  1450518608
-
+        MediaStore.Images.Media.DATE_ADDED,
+        MediaStore.Images.Media.DURATION
     )
 
-    private fun registerContentObserver(){
+    private fun registerContentObserver() {
         if (contentObserver == null) {
             contentObserver = getApplication<Application>().contentResolver.registerObserver(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -79,12 +79,11 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
 
     fun getMedia(bucketId: String? = null, mediaType: Int = VanGoghConst.MEDIA_TYPE_IMAGE) {
         launchDataLoad {
-            val medias = queryImages(bucketId,mediaType)
+            val medias = queryImages(bucketId, mediaType)
             _lvMediaData.postValue(medias)
             registerContentObserver()
         }
     }
-
 
 
     @WorkerThread
@@ -102,15 +101,21 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
                         + MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
             }
 
-           /* if (!PickerManager.isShowGif) {
-                selection += " AND " + MediaStore.Images.Media.MIME_TYPE + "!='" + MimeTypeMap.getSingleton().getMimeTypeFromExtension("gif") + "'"
-            }*/
+            /* if (!PickerManager.isShowGif) {
+                 selection += " AND " + MediaStore.Images.Media.MIME_TYPE + "!='" + MimeTypeMap.getSingleton().getMimeTypeFromExtension("gif") + "'"
+             }*/
 
             if (bucketId != null)
                 selection += " AND " + MediaStore.Images.Media.BUCKET_ID + "='" + bucketId + "'"
 
 
-            val cursor = getApplication<Application>().contentResolver.query(uri, mediaProjection,mediaSelection , mediaSelectionArgs, sortOrder)
+            val cursor = getApplication<Application>().contentResolver.query(
+                uri,
+                mediaProjection,
+                mediaSelection,
+                mediaSelectionArgs,
+                sortOrder
+            )
 
             while (cursor!!.moveToNext()) {
                 //查询数据
@@ -118,8 +123,8 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
                     cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[0]))
                 val imagePath: String =
                     cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[1]))
-                var bucketName:String =
-                   cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[2]))
+                var bucketName: String =
+                    cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[2]))
                 val imageSize: Long =
                     cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[3]))
                 val imageWidth: Int =
@@ -128,15 +133,21 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
                     cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[5]))
                 val mediaMineType: String =
                     cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[6]))
+                val mediaDuration: Int =
+                    cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[8]))
                 val mediaItem = MediaItem()
                 mediaItem.path = imagePath
                 mediaItem.width = imageWidth
                 mediaItem.height = imageHeight
                 mediaItem.size = imageSize
                 mediaItem.mineType = mediaMineType
-                Log.e(TAG,"path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight")
-                Log.e(TAG,"imageMimeType = $mediaMineType")
-                if(imageSize == 0L &&  imageWidth == 0 )//&& imageHeight == 0
+                mediaItem.duration = mediaDuration
+                Log.e(
+                    TAG,
+                    "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight"
+                )
+                Log.e(TAG, "imageMimeType = $mediaMineType")
+                if (imageSize == 0L && imageWidth == 0)//&& imageHeight == 0
                     continue
                 data.add(mediaItem)
             }
@@ -150,11 +161,15 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
         while (data.moveToNext()) {
 
             val imageId = data.getLong(data.getColumnIndexOrThrow(BaseColumns._ID))
-            val bucketId = data.getString(data.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_ID))
-            val name = data.getString(data.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME))
+            val bucketId =
+                data.getString(data.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_ID))
+            val name =
+                data.getString(data.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME))
             val fileName = data.getString(data.getColumnIndexOrThrow(MediaStore.MediaColumns.TITLE))
-            val mediaType = data.getInt(data.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE))
-            val mediaPath = data.getString(data.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_TAKEN))
+            val mediaType =
+                data.getInt(data.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE))
+            val mediaPath =
+                data.getString(data.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_TAKEN))
 
             var contentUri = ContentUris.withAppendedId(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,

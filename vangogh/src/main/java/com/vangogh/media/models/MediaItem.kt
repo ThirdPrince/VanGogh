@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Parcelable
 import androidx.versionedparcelable.ParcelField
 import kotlinx.android.parcel.Parcelize
+import java.time.Duration
 
 /**
  * @author dhl
@@ -21,6 +22,7 @@ data class MediaItem(
     var width: Int = 0,
     var height: Int = 0,
     var mineType: String? = null,
+    var duration: Int = 0,
     var dataToken: Long = 0
 ) :
     Parcelable {

@@ -1,10 +1,15 @@
 package com.vangogh.media.viewholder
 
+import android.app.Activity
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.media.vangogh.R
+import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
+import com.vangogh.media.models.MediaItem
 import com.vangogh.media.view.AnimateCheckBox
 
 /**
@@ -14,7 +19,19 @@ import com.vangogh.media.view.AnimateCheckBox
  * @Date 2021/1/26 10:25
  * @Version 1.0
  */
-class VideoTypeViewHolder(var view: View,onMediaItemClickListener: OnMediaItemClickListener): ImageViewHolder(view,onMediaItemClickListener), View.OnClickListener{
+class VideoTypeViewHolder( activity: Activity, view: View,  onMediaItemClickListener: OnMediaItemClickListener,  onItemCheckListener: OnItemCheckListener): ImageViewHolder(  activity,view, onMediaItemClickListener, onItemCheckListener){
+
+    var durationTv: TextView
+    init {
+        durationTv = view.findViewById(R.id.durationTv) as TextView
+    }
+
+    override fun bindData(mediaItem: MediaItem) {
+        super.bindData(mediaItem)
+        durationTv.text = DateUtils.formatElapsedTime((mediaItem.duration / 1000).toLong())
+    }
+
 
 
 }
+

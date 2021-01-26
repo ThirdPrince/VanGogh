@@ -39,13 +39,9 @@ class MediaPreviewAdapter(private val activity: Activity, var items: List<MediaI
 
     inner class MediaViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
-       // var rootView = view.findViewById<FrameLayout>(R.id.root)
         var photoView: PhotoView = view.findViewById(R.id.photo_view)
 
-        /*override fun onClick(v: View?) {
-            onItemClickListener!!.onItemClick(v,adapterPosition)
 
-        }*/
 
 
     }
