@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCross
 import com.bumptech.glide.request.RequestOptions
 import com.github.chrisbanes.photoview.PhotoView
 import com.media.vangogh.R
-import com.vangogh.media.itf.OnItemClickListener
+import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaItem
 
 
@@ -32,7 +32,7 @@ class MediaPreviewAdapter(private val activity: Activity, var items: List<MediaI
     }
     private val mInflater: LayoutInflater by lazy { LayoutInflater.from(activity) }
 
-    var onItemClickListener:OnItemClickListener ?=null
+    var onMediaItemClickListener:OnMediaItemClickListener ?=null
 
 
 

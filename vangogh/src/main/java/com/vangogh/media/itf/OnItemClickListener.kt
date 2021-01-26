@@ -21,7 +21,7 @@ import android.view.View
  * @author dhl
  * Listens on the item's click.
  */
-interface OnItemClickListener {
+interface OnMediaItemClickListener {
     /**
      * When Item is clicked.
      *

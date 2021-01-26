@@ -20,7 +20,7 @@ import com.vangogh.media.adapter.MediaGridItemAdapter
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.itf.OnItemCheckListener
-import com.vangogh.media.itf.OnItemClickListener
+import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.MediaPreviewUtil
@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
  * @Date 2020/12/22 9:36
  * @Version 1.0
  */
-class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnItemClickListener,
+class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaItemClickListener,
     OnItemCheckListener {
 
     companion object {
@@ -92,7 +92,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnItemCl
             rcy_view.itemAnimator = DefaultItemAnimator()
             rcy_view.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
             rcy_view.adapter = mediaItemAdapter
-            mediaItemAdapter!!.onItemClickListener = this
+            mediaItemAdapter!!.onMediaItemClickListener = this
             mediaItemAdapter!!.onItemCheckListener = this
             MediaPreviewUtil.mediaItemList = it
 

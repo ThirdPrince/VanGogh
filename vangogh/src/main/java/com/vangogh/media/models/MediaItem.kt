@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
  *
  */
 @Parcelize
-class MediaItem(
+data class MediaItem(
     var id: Long = 0,
     var name: String? = null,
     var pathUri: Uri? = null,
@@ -35,6 +35,10 @@ class MediaItem(
 
     fun isGif():Boolean{
         return mineType!!.endsWith("gif")
+    }
+
+    fun isVideo():Boolean{
+        return mineType!!.startsWith("video")
     }
 
     /**

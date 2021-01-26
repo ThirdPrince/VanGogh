@@ -33,11 +33,24 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
 
 
     private val _lvDataChanged = MutableLiveData<Boolean>()
+
     val lvDataChanged: LiveData<Boolean>
         get() = _lvDataChanged
 
     private var contentObserver: ContentObserver? = null
 
+    private val mediaSelection = ("(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            + " OR "
+            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+            + " AND " + MediaStore.MediaColumns.SIZE + ">0")
+
+    /**
+     * image + video
+     */
+    private val mediaSelectionArgs = arrayOf(
+        MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
+        MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
+    )
 
     /**
      * 至少需要高宽，时间
@@ -97,7 +110,7 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
                 selection += " AND " + MediaStore.Images.Media.BUCKET_ID + "='" + bucketId + "'"
 
 
-            val cursor = getApplication<Application>().contentResolver.query(uri, mediaProjection, selection, null, sortOrder)
+            val cursor = getApplication<Application>().contentResolver.query(uri, mediaProjection,mediaSelection , mediaSelectionArgs, sortOrder)
 
             while (cursor!!.moveToNext()) {
                 //查询数据
@@ -121,7 +134,7 @@ class MediaViewModel(application: Application) :MediaBaseViewModel(application){
                 mediaItem.height = imageHeight
                 mediaItem.size = imageSize
                 mediaItem.mineType = mediaMineType
-               // Log.e(TAG,"path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight")
+                Log.e(TAG,"path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight")
                 Log.e(TAG,"imageMimeType = $mediaMineType")
                 if(imageSize == 0L &&  imageWidth == 0 )//&& imageHeight == 0
                     continue
