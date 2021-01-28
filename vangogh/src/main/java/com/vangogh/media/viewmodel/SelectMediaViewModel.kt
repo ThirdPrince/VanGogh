@@ -24,6 +24,9 @@ import java.io.File
  * @Date 2020/12/22 9:36
  * @Version 1.0
  */
+
+private const val  compressCachePath = "vanGoghCache"
+
 class SelectMediaViewModel(application: Application) : MediaBaseViewModel(application) {
 
     companion object {
@@ -57,7 +60,7 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
 
     init {
         imageCompressFile =
-            getApplication<Application>().getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+            getApplication<Application>().getExternalFilesDir(compressCachePath)!!
     }
 
 

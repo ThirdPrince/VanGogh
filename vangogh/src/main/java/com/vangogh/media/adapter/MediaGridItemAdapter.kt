@@ -47,17 +47,9 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
         viewType: Int
     ): ImageViewHolder {
         return when (viewType) {
-
             VIDEO -> VideoTypeViewHolder(activity,
                 mInflater.inflate(
                     R.layout.item_content_video_view,
-                    parent,
-                    false
-                ),onMediaItemClickListener!!,onItemCheckListener!!
-            )
-            GIF -> ImageViewHolder(activity,
-                mInflater.inflate(
-                    R.layout.item_content_gif_view,
                     parent,
                     false
                 ),onMediaItemClickListener!!,onItemCheckListener!!
@@ -85,9 +77,6 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
             mediaItem.isVideo() -> {
                 VIDEO
             }
-            mediaItem.isGif() -> {
-                GIF
-            }
             else -> {
                 IMAGE
             }
@@ -105,7 +94,6 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
 
     companion object {
         const val IMAGE = 1
-        const val GIF = 2
-        const val VIDEO = 3
+        const val VIDEO = 2
     }
 }

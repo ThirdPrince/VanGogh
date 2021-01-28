@@ -21,14 +21,11 @@ import com.vangogh.media.view.AnimateCheckBox
  */
 class VideoTypeViewHolder( activity: Activity, view: View,  onMediaItemClickListener: OnMediaItemClickListener,  onItemCheckListener: OnItemCheckListener): ImageViewHolder(  activity,view, onMediaItemClickListener, onItemCheckListener){
 
-    var durationTv: TextView
-    init {
-        durationTv = view.findViewById(R.id.durationTv) as TextView
-    }
+    var durationTv: TextView = view.findViewById(R.id.durationTv) as TextView
 
     override fun bindData(mediaItem: MediaItem) {
         super.bindData(mediaItem)
-        durationTv.text = DateUtils.formatElapsedTime((mediaItem.duration / 1000).toLong())
+        durationTv.text = DateUtils.formatElapsedTime((mediaItem.duration / 1000))
     }
 
 

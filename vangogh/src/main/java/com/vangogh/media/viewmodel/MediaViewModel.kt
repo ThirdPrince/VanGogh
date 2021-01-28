@@ -133,8 +133,8 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                     cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[5]))
                 val mediaMineType: String =
                     cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[6]))
-                val mediaDuration: Int =
-                    cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[8]))
+                val mediaDuration: Long =
+                    cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[8]))
                 val mediaItem = MediaItem()
                 mediaItem.path = imagePath
                 mediaItem.width = imageWidth

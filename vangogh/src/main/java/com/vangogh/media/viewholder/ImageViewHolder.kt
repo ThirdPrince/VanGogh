@@ -28,14 +28,16 @@ open class ImageViewHolder( var activity: Activity,view: View,var onMediaItemCli
     private var requestOptions = RequestOptions.centerCropTransform()
         .placeholder(R.drawable.image_grid_placeholder).error(R.drawable.image_grid_placeholder)
 
-    var squareImageView: ImageView
-    var checkBox: AnimateCheckBox
+    private var squareImageView: ImageView
+    private var checkBox: AnimateCheckBox
+    private var gifImage :ImageView ?= null
 
 
     init {
         view.setOnClickListener(this)
         squareImageView = view.findViewById(R.id.iv_content_image)
         checkBox = view.findViewById(R.id.checkbox) as AnimateCheckBox
+        gifImage = view.findViewById(R.id.gif_img)
 
     }
 
@@ -56,6 +58,18 @@ open class ImageViewHolder( var activity: Activity,view: View,var onMediaItemCli
             }
 
         })
+         setGif(mediaItem)
 
+    }
+
+    /**
+     * set gif
+     */
+    private fun setGif(mediaItem:MediaItem){
+        if(mediaItem.isGif()){
+            gifImage?.visibility = View.VISIBLE
+        }else{
+            gifImage?.visibility = View.GONE
+        }
     }
 }

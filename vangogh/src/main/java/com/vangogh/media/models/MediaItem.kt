@@ -22,7 +22,7 @@ data class MediaItem(
     var width: Int = 0,
     var height: Int = 0,
     var mineType: String? = null,
-    var duration: Int = 0,
+    var duration: Long = 0,
     var dataToken: Long = 0
 ) :
     Parcelable {
