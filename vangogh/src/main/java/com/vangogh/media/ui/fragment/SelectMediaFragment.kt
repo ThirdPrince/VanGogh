@@ -75,7 +75,7 @@ class SelectMediaFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.rcy_view)
         mediaViewModel  = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(MediaViewModel::class.java)
-        mediaViewModel.getMedia(null, VanGoghConst.MEDIA_TYPE_IMAGE)
+        mediaViewModel.getMedia(null)
        /* mediaViewModel.lvMediaData.observe(this, Observer {
             mediaItemAdapter = MediaItemAdapter(this,it)
             val layoutManager = GridLayoutManager(activity, 4)

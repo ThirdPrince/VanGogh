@@ -1,25 +1,17 @@
 package com.vangogh.media.ui.activity
 
-import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.media.vangogh.R
-import com.vangogh.media.adapter.MediaPreviewAdapter
 import com.vangogh.media.config.VanGogh
-import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.MediaPreviewUtil
-import com.vangogh.media.viewmodel.SelectMediaViewModel
-import kotlinx.android.synthetic.main.activity_gallery.*
+import com.vangogh.media.viewmodel.CompressMediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
 import kotlinx.android.synthetic.main.media_grid_top_bar.*
 import kotlinx.android.synthetic.main.media_select_button.*
-import kotlin.properties.Delegates
 
 /**
  * @ClassName BaseSelectActivity
@@ -39,7 +31,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
-    lateinit var selectMediaViewModel: SelectMediaViewModel
+    lateinit var selectMediaViewModel: CompressMediaViewModel
 
     var mediaPos: Int = 0
 
@@ -51,7 +43,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         VanGogh.selectMediaActivity.add(this)
         selectMediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
-                SelectMediaViewModel::class.java
+                CompressMediaViewModel::class.java
             )
         selectMediaViewModel.lvMediaData.observe(this, Observer {
             VanGogh._lvMediaData.postValue(it)

@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.extend.registerObserver
 import com.vangogh.media.models.MediaDirectory
@@ -39,18 +40,10 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
 
     private var contentObserver: ContentObserver? = null
 
-    private val mediaSelection = ("(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-            + " OR "
-            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
-            + " AND " + MediaStore.MediaColumns.SIZE + ">0")
 
-    /**
-     * image + video
-     */
-    private val mediaSelectionArgs = arrayOf(
-        MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
-        MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
-    )
+
+
+
 
     /**
      * 至少需要高宽，时间
@@ -77,9 +70,9 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         }
     }
 
-    fun getMedia(bucketId: String? = null, mediaType: Int = VanGoghConst.MEDIA_TYPE_IMAGE) {
+    fun getMedia(bucketId: String? = null) {
         launchDataLoad {
-            val medias = queryImages(bucketId, mediaType)
+            val medias = queryImages(bucketId)
             _lvMediaData.postValue(medias)
             registerContentObserver()
         }
@@ -87,36 +80,27 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
 
 
     @WorkerThread
-    suspend fun queryImages(bucketId: String?, mediaType: Int): MutableList<MediaItem> {
+    suspend fun queryImages(bucketId: String?): MutableList<MediaItem> {
         var data = mutableListOf<MediaItem>()
         withContext(Dispatchers.IO) {
             val uri = MediaStore.Files.getContentUri("external")
             val sortOrder = mediaProjection[7] + " DESC"
 
-            var selection = (MediaStore.Files.FileColumns.MEDIA_TYPE + "="
-                    + MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE)
 
-            if (mediaType == VanGoghConst.MEDIA_TYPE_VIDEO) {
-                selection = (MediaStore.Files.FileColumns.MEDIA_TYPE + "="
-                        + MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
-            }
 
             /* if (!PickerManager.isShowGif) {
                  selection += " AND " + MediaStore.Images.Media.MIME_TYPE + "!='" + MimeTypeMap.getSingleton().getMimeTypeFromExtension("gif") + "'"
              }*/
 
-            if (bucketId != null)
-                selection += " AND " + MediaStore.Images.Media.BUCKET_ID + "='" + bucketId + "'"
 
 
             val cursor = getApplication<Application>().contentResolver.query(
                 uri,
                 mediaProjection,
-                mediaSelection,
-                mediaSelectionArgs,
+                VanGogh.selection,
+                VanGogh.selectArgs,
                 sortOrder
             )
-
             while (cursor!!.moveToNext()) {
                 //查询数据
                 val imageId: String =
@@ -175,12 +159,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 imageId
             )
-            if (fileType == VanGoghConst.MEDIA_TYPE_VIDEO) {
-                contentUri = ContentUris.withAppendedId(
-                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                    imageId
-                )
-            }
+
 
         }
 

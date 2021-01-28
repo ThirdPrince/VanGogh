@@ -30,9 +30,6 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
 
     var onItemCheckListener: OnItemCheckListener? = null
 
-    private var requestOptions = RequestOptions.centerCropTransform()
-        .placeholder(R.drawable.image_grid_placeholder).error(R.drawable.image_grid_placeholder)
-
 
     /**
      * checkedList

@@ -11,6 +11,7 @@ import java.time.Duration
  * image+video
  *
  */
+private const val compressSize = 100* 1024  // 100Kb
 @Parcelize
 data class MediaItem(
     var id: Long = 0,
@@ -50,5 +51,13 @@ data class MediaItem(
         if(mineType!!.startsWith("video"))
             return false
         return !mineType!!.endsWith("gif")
+    }
+
+    /**
+     * isCompress just isImage and compress  size > 100K
+     *
+     */
+    fun isCompress():Boolean{
+        return isImage() && size > compressSize
     }
 }

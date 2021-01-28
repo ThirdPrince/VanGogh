@@ -2,8 +2,6 @@ package com.vangogh.media.config
 
 import android.app.Activity
 import android.net.Uri
-import android.os.Bundle
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.annotation.IntegerRes
@@ -11,11 +9,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.SelectMediaActivity
-import com.vangogh.media.viewmodel.SelectMediaViewModel
+import com.vangogh.media.utils.MediaQueryConditions
+import com.vangogh.media.viewmodel.CompressMediaViewModel
 import java.util.ArrayList
 
 /**
@@ -49,16 +47,53 @@ object VanGogh {
 
     var selectMediaList = mutableListOf<MediaItem>()
 
+    /**
+     * default select conditions
+     */
 
-    fun setMaxCount(maxCount: Int): VanGogh {
-        //  PickerManager.setMaxCount(maxCount)
+    var selection  = MediaQueryConditions.MEDIA_SELECTION
+
+    var selectArgs  = MediaQueryConditions.MEDIA_SELECTION_ARGS
+
+
+    fun setMaxMedia(maxCount: Int): VanGogh {
+        VanGoghConst.MAX_MEDIA = maxCount
         return this
     }
 
-    fun setActivityTheme(theme: Int): VanGogh {
-        // PickerManager.theme = theme
+
+    fun getMedia(containsGif: Boolean = true): VanGogh {
+        if(!containsGif){
+            selection =  MediaQueryConditions.MEDIA_SELECTION_NOT_GIF
+            selectArgs = MediaQueryConditions.MEDIA_SELECTION_ARGS_NOT_GIF
+        }
         return this
     }
+    /**
+     * contains gif
+     */
+    fun onlyImage(containsGif: Boolean = true): VanGogh {
+        if(containsGif){
+            selection =  MediaQueryConditions.MEDIA_SELECTION
+            selectArgs = MediaQueryConditions.IMAGE_SELECTION_ARGS
+        }else{
+            selection =  MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
+            selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS
+        }
+        return this
+    }
+
+
+
+    /**
+     * just gif
+     */
+    fun onlyGif(): VanGogh {
+        selection = MediaQueryConditions.IMAGE_SELECTION
+        selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS
+        return this
+    }
+
 
     fun setActivityTitle(title: String): VanGogh {
         //PickerManager.title = title
@@ -90,10 +125,7 @@ object VanGogh {
         return this
     }
 
-    fun showGifs(status: Boolean): VanGogh {
-        //PickerManager.isShowGif = status
-        return this
-    }
+
 
     fun showFolderView(status: Boolean): VanGogh {
         // PickerManager.isShowFolderView = status
@@ -123,7 +155,7 @@ object VanGogh {
      }*/
 
 
-    fun pickMedia(context: FragmentActivity, selectMediaViewModel: SelectMediaViewModel) {
+    fun pickMedia(context: FragmentActivity, selectMediaViewModel: CompressMediaViewModel) {
         // mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.MEDIA_PICKER)
         start(context)
     }
@@ -141,7 +173,6 @@ object VanGogh {
 
 
     private fun start(context: FragmentActivity) {
-
         SelectMediaActivity.actionStart(context)
         fragmentActivity = context
         lvMediaData.observe(fragmentActivity!!, Observer {

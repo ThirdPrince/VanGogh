@@ -1,36 +1,29 @@
 package com.vangogh.media.ui.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.ViewStub
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaGridItemAdapter
 import com.vangogh.media.config.VanGogh
+import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.divider.GridSpacingItemDecoration
+import com.vangogh.media.extend.toast
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
-import com.vangogh.media.itf.OnMediaResult
-import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.viewmodel.MediaViewModel
-import com.vangogh.media.viewmodel.SelectMediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
-import kotlinx.android.synthetic.main.activity_select_media.view.*
-import kotlinx.android.synthetic.main.media_grid_top_bar.*
-import kotlinx.android.synthetic.main.media_select_button.*
-import kotlinx.coroutines.launch
 
 /**
  * @ClassName SelectMediaActivity
@@ -124,9 +117,15 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         GalleryActivity.actionStart(this, position)
     }
 
+    @SuppressLint("StringFormatMatches")
     override fun onItemCheckClick(view: View?, position: Int, isChecked: Boolean) {
         var mediaItem = mediaItemAdapter.items[position]
         if (isChecked) {
+            if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
+               toast(getString(R.string.picture_message_max_num,VanGoghConst.MAX_MEDIA))
+                mediaItemAdapter.notifyItemChanged(position)
+                return
+            }
             VanGogh.selectMediaList.add(mediaItem)
         } else {
             VanGogh.selectMediaList.remove(mediaItem)

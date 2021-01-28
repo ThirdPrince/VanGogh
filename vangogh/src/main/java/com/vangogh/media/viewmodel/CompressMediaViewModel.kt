@@ -19,7 +19,7 @@ import java.io.File
 
 /**
  * @ClassName MediaGridItemAdapter
- * @Description  SelectMediaViewModel viewModel
+ * @Description  CompressMediaViewModel viewModel just compress image
  * @Author dhl
  * @Date 2020/12/22 9:36
  * @Version 1.0
@@ -27,7 +27,7 @@ import java.io.File
 
 private const val  compressCachePath = "vanGoghCache"
 
-class SelectMediaViewModel(application: Application) : MediaBaseViewModel(application) {
+class CompressMediaViewModel(application: Application) : MediaBaseViewModel(application) {
 
     companion object {
         const val TAG = "SelectMediaViewModel"
@@ -109,7 +109,7 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
             mediaList.forEach { it ->
                 actualImage = File(it.path)
                 actualImage?.let { imageFile ->
-                    if (it.isImage()) {
+                    if (it.isCompress()) {
                         val file = getCompressImageFile(imageFile)
                         if (file.exists()) {
                             it.compressPath = file.absolutePath
@@ -143,7 +143,6 @@ class SelectMediaViewModel(application: Application) : MediaBaseViewModel(applic
             var endTime = System.currentTimeMillis()
             Log.e(TAG, "compress Time = ${endTime - startTime}")
             _lvMediaData.postValue(mediaList)
-            //VanGogh.selectMediaList.clear()
         }
 
     }
