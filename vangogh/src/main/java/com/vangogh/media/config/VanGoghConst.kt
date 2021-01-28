@@ -1,6 +1,5 @@
 package com.vangogh.media.config
 
-import android.Manifest
 
 /**
  * @ClassName VanGoghConst
@@ -11,6 +10,6 @@ import android.Manifest
  */
 object VanGoghConst {
 
-     var MAX_MEDIA = 9
+    var MAX_MEDIA = 9
 
 }

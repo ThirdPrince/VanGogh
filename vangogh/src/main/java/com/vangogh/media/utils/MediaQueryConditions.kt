@@ -3,9 +3,9 @@ package com.vangogh.media.utils
 import android.provider.MediaStore
 
 /**
- * @ClassName MediaSelectArgs
- * @Description MediaSelectArgs
- * @Author dhl query condition
+ * @ClassName MediaQueryConditions
+ * @Description MediaSelectArgs  query condition
+ * @Author dhl
  * @Date 2021/1/28 10:30
  * @Version 1.0
  */
@@ -38,6 +38,9 @@ object MediaQueryConditions {
             + " AND " + MediaStore.MediaColumns.SIZE + ">0"
             + " AND " + MediaStore.MediaColumns.MIME_TYPE + "!=?")
 
+    /**
+     * media without gif
+     */
     val MEDIA_SELECTION_ARGS_NOT_GIF = arrayOf(
         MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
         MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString(),
@@ -45,7 +48,7 @@ object MediaQueryConditions {
     )
 
     /**
-     * imageSelection for gif
+     * imageSelection (image contains gif)
      */
     const val IMAGE_SELECTION =
         (MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
@@ -59,7 +62,9 @@ object MediaQueryConditions {
         MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString()
     )
 
-
+    /**
+     * image without gif
+     */
     const val IMAGE_SELECTION_NOT_GIF =
         (MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
                 + " AND " + MediaStore.MediaColumns.SIZE + ">0"
@@ -71,6 +76,5 @@ object MediaQueryConditions {
      */
     val GIF_SELECTION_ARGS =
         arrayOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(), "image/gif")
-
 
 }

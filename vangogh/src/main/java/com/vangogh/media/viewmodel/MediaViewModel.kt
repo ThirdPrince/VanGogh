@@ -19,8 +19,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * @author dhl
- * query Media Model
+ * @ClassName MediaViewModel
+ * @Description MediaViewModel query condition
+ * @Author dhl
+ * @Date 2021/1/28 10:30
+ * @Version 1.0
  */
 class MediaViewModel(application: Application) : MediaBaseViewModel(application) {
 
@@ -39,10 +42,6 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         get() = _lvDataChanged
 
     private var contentObserver: ContentObserver? = null
-
-
-
-
 
 
     /**
@@ -86,14 +85,6 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
             val uri = MediaStore.Files.getContentUri("external")
             val sortOrder = mediaProjection[7] + " DESC"
 
-
-
-            /* if (!PickerManager.isShowGif) {
-                 selection += " AND " + MediaStore.Images.Media.MIME_TYPE + "!='" + MimeTypeMap.getSingleton().getMimeTypeFromExtension("gif") + "'"
-             }*/
-
-
-
             val cursor = getApplication<Application>().contentResolver.query(
                 uri,
                 mediaProjection,
@@ -130,7 +121,6 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                     TAG,
                     "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight"
                 )
-                Log.e(TAG, "imageMimeType = $mediaMineType")
                 if (imageSize == 0L && imageWidth == 0)//&& imageHeight == 0
                     continue
                 data.add(mediaItem)
