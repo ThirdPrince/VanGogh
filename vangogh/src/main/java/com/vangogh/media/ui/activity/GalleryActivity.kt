@@ -1,5 +1,6 @@
 package com.vangogh.media.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -10,10 +11,13 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaPreviewAdapter
 import com.vangogh.media.config.VanGogh
+import com.vangogh.media.config.VanGoghConst
+import com.vangogh.media.extend.toast
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.view.AnimateCheckBox
 import kotlinx.android.synthetic.main.media_select_button.*
+import kotlinx.android.synthetic.main.media_select_checkbox.view.*
 
 /**
  * @ClassName GalleryActivity
@@ -43,7 +47,7 @@ class GalleryActivity : BaseSelectActivity() {
     }
 
 
-    private val media_index_tv by lazy { findViewById<TextView>(R.id.media_index_tv) }
+    private val mediaIndexTv by lazy { findViewById<TextView>(R.id.media_index_tv) }
 
     private val viewPager2 by lazy { findViewById<ViewPager2>(R.id.view_pager2) }
 
@@ -78,8 +82,14 @@ class GalleryActivity : BaseSelectActivity() {
 
     private fun initListener() {
         checkbox.setOnCheckedChangeListener(object : AnimateCheckBox.OnCheckedChangeListener {
+            @SuppressLint("StringFormatMatches")
             override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {
                 if (isChecked) {
+                    if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
+                        toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
+                        checkbox.isChecked = false
+                        return
+                    }
                     if (!VanGogh.selectMediaList.contains(currentMedia)) {
                         VanGogh.selectMediaList.add(currentMedia!!)
                     }
@@ -88,8 +98,6 @@ class GalleryActivity : BaseSelectActivity() {
                     VanGogh.selectMediaList.remove(currentMedia!!)
                 }
                 updateTitle()
-
-
             }
 
         })
@@ -97,7 +105,7 @@ class GalleryActivity : BaseSelectActivity() {
 
     private fun setMediaIndex() {
         currentMedia = MediaPreviewUtil.mediaItemList!![mediaPos]
-        media_index_tv.text = "${mediaPos + 1}/${MediaPreviewUtil.mediaItemList!!.size}"
+        mediaIndexTv.text = "${mediaPos + 1} / ${MediaPreviewUtil.mediaItemList!!.size}"
     }
 
     private fun setSelectMediaState() {

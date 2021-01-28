@@ -11,5 +11,8 @@ package com.vangogh.media.config
 object VanGoghConst {
 
     var MAX_MEDIA = 9
+    var GRID_SPAN_CONT = 4
+    var MEDIA_MAX_SIZE = Int.MAX_VALUE
+
 
 }

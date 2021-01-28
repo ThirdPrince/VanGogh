@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dimen_10dp"
     >
+
+    <ImageView
+        android:id="@+id/ic_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back_white"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_centerVertical="true"
+        />
     <TextView
         android:id="@+id/media_index_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ic_back"
         android:gravity="center"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/dimen_10dp"
-        android:textSize="@dimen/sp_18"
+        android:textSize="@dimen/sp_22"
         android:textColor="@color/picture_color_white"/>
     <include
         layout="@layout/media_select_button"

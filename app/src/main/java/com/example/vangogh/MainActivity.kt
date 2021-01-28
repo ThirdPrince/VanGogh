@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(),OnAddMediaListener{
     }
 
     override fun onAddMediaClick() {
-        VanGogh.getMedia().startForResult(this).onMediaResult = object:OnMediaResult{
+        VanGogh.onlyGif().startForResult(this).onMediaResult = object:OnMediaResult{
             override fun onResult(mediaList: List<MediaItem>) {
                 gridMediaAdapter = GridMediaAdapter(activity,mediaList)
                 rcy_view.adapter = gridMediaAdapter

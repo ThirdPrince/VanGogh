@@ -17,6 +17,7 @@ import com.vangogh.media.models.MediaDirectory
 import com.vangogh.media.models.MediaItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 /**
  * @ClassName MediaViewModel
@@ -92,6 +93,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 VanGogh.selectArgs,
                 sortOrder
             )
+            Log.e(TAG, VanGogh.selectArgs.contentToString())
             while (cursor!!.moveToNext()) {
                 //查询数据
                 val imageId: String =

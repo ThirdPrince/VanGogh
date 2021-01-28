@@ -80,7 +80,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
         mediaViewModel.lvMediaData.observe(this, Observer {
             mediaItemAdapter = MediaGridItemAdapter(this, it)
-            val layoutManager = GridLayoutManager(this, 4)
+            val layoutManager = GridLayoutManager(this, VanGoghConst.GRID_SPAN_CONT)
             rcy_view.layoutManager = layoutManager
             rcy_view.itemAnimator = DefaultItemAnimator()
             rcy_view.addItemDecoration(GridSpacingItemDecoration(4, 5, false))

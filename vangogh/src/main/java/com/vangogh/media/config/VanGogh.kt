@@ -2,6 +2,7 @@ package com.vangogh.media.config
 
 import android.app.Activity
 import android.net.Uri
+import android.provider.MediaStore
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.annotation.IntegerRes
@@ -56,12 +57,32 @@ object VanGogh {
     var selectArgs  = MediaQueryConditions.MEDIA_SELECTION_ARGS
 
 
-    fun setMaxMedia(maxCount: Int): VanGogh {
+    fun setMaxMediaCount(maxCount: Int): VanGogh {
         VanGoghConst.MAX_MEDIA = maxCount
+        return this
+    }
+    fun setRowCount(spanCount: Int): VanGogh {
+        VanGoghConst.GRID_SPAN_CONT = spanCount
+        return this
+    }
+
+    /**
+     * max media size
+     */
+    fun setMediaMaxSize(maxSize: Int): VanGogh {
+        VanGoghConst.MEDIA_MAX_SIZE = maxSize
+        selectArgs = arrayOf(
+            MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
+            MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString(),
+            VanGoghConst.MEDIA_MAX_SIZE.toString()
+        )
         return this
     }
 
 
+    /**
+     * all media image + gif +video
+     */
     fun getMedia(containsGif: Boolean = true): VanGogh {
         if(!containsGif){
             selection =  MediaQueryConditions.MEDIA_SELECTION_NOT_GIF
@@ -69,12 +90,14 @@ object VanGogh {
         }
         return this
     }
+
+
     /**
-     * contains gif
+     * contains gif without video
      */
     fun onlyImage(containsGif: Boolean = true): VanGogh {
         if(containsGif){
-            selection =  MediaQueryConditions.MEDIA_SELECTION
+            selection =  MediaQueryConditions.IMAGE_SELECTION
             selectArgs = MediaQueryConditions.IMAGE_SELECTION_ARGS
         }else{
             selection =  MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
@@ -89,8 +112,17 @@ object VanGogh {
      * just gif
      */
     fun onlyGif(): VanGogh {
-        selection = MediaQueryConditions.IMAGE_SELECTION
+        selection = MediaQueryConditions.GIF_SELECTION
         selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS
+        return this
+    }
+
+    /**
+     * just gif
+     */
+    fun onlyVideo(): VanGogh {
+        selection = MediaQueryConditions.VIDEO_SELECTION
+        selectArgs = MediaQueryConditions.VIDEO_SELECTION_ARGS
         return this
     }
 
