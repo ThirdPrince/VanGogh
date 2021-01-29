@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -46,6 +48,7 @@ class GalleryActivity : BaseSelectActivity() {
         }
     }
 
+    private val topBarRoot by lazy { findViewById<RelativeLayout>(R.id.top_bar_root) }
 
     private val mediaIndexTv by lazy { findViewById<TextView>(R.id.media_index_tv) }
 
@@ -65,6 +68,7 @@ class GalleryActivity : BaseSelectActivity() {
             offscreenPageLimit = 1
             adapter = MediaPreviewAdapter(activity, MediaPreviewUtil.mediaItemList!!)
             setCurrentItem(mediaPos, false)
+            Log.e(TAG,"media="+MediaPreviewUtil.mediaItemList!![mediaPos])
             setMediaIndex()
             setSelectMediaState()
             registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -81,6 +85,9 @@ class GalleryActivity : BaseSelectActivity() {
     }
 
     private fun initListener() {
+        topBarRoot.setOnClickListener {
+            finish()
+        }
         checkbox.setOnCheckedChangeListener(object : AnimateCheckBox.OnCheckedChangeListener {
             @SuppressLint("StringFormatMatches")
             override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {

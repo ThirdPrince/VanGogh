@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dimen_10dp"
+    tools:context=".MainActivity">
+
+    <RadioGroup
+        android:id="@+id/radio_gp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/media_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Media" />
+
+        <RadioButton
+            android:id="@+id/media_no_gif_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MediaNoGif"/>
+
+        <RadioButton
+            android:id="@+id/image_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Image"/>
+
+        <RadioButton
+            android:id="@+id/image_no_gif_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ImageNoGif"
+            android:textColor="#000000"/>
+        <RadioButton
+            android:id="@+id/gif_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gif"
+            android:textColor="#000000"/>
+        <RadioButton
+            android:id="@+id/video_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Video"
+            android:textColor="#000000"/>
+
+
+    </RadioGroup>
+
+</FrameLayout>

@@ -87,6 +87,9 @@ object VanGogh {
         if(!containsGif){
             selection =  MediaQueryConditions.MEDIA_SELECTION_NOT_GIF
             selectArgs = MediaQueryConditions.MEDIA_SELECTION_ARGS_NOT_GIF
+        }else{
+             selection  = MediaQueryConditions.MEDIA_SELECTION
+             selectArgs  = MediaQueryConditions.MEDIA_SELECTION_ARGS
         }
         return this
     }

@@ -20,8 +20,8 @@ object MediaQueryConditions {
             + " OR "
             + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
             + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-            + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
             + " AND " + MediaStore.MediaColumns.SIZE + "<?")
+    // + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
 
     /**
      * image + video(like wechat)   use with MEDIA_SELECTION
@@ -40,9 +40,9 @@ object MediaQueryConditions {
             + " OR "
             + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
             + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-            + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
             + " AND " + MediaStore.MediaColumns.MIME_TYPE + "!=?")
 
+      //  + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
     /**
      * media without gif
      */
@@ -58,8 +58,9 @@ object MediaQueryConditions {
     const val IMAGE_SELECTION =
         (MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
                 + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-                + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
+
                 )
+    //  + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
 
     /**
      * just image(image contains gif)
@@ -74,8 +75,8 @@ object MediaQueryConditions {
     const val IMAGE_SELECTION_NOT_GIF =
         (MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
                 + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-                + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
                 + " AND " + MediaStore.MediaColumns.MIME_TYPE + "!=?")
+    // + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
 
     /**
      * just gif  use with IMAGE_SELECTION

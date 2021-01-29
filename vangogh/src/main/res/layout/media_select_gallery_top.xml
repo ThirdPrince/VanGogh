@@ -3,6 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dimen_10dp"
+    android:id="@+id/top_bar_root"
     >
 
     <ImageView
