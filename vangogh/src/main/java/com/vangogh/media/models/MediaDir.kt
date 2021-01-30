@@ -5,13 +5,16 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 /**
- * @author dhl
- * MediaDirectory
+ * @ClassName MediaDir
+ * @Description  media Dir
+ * @Author dhl
+ * @Date 2020/12/22 9:36
+ * @Version 1.0
  */
 @Parcelize
-class MediaDirectory(
+data class MediaDir(
                 var id: Long = 0,
-                var bucketId: String? = null,
+                var bucketId: Long = 0,
                 private var coverPath: Uri? = null,
                 var name: String? = null,
                 var dateAdded: Long = 0,
@@ -30,19 +33,9 @@ class MediaDirectory(
         this.coverPath = coverPath
     }
 
-
-
-    override fun equals(other: Any?): Boolean {
-        return this.bucketId == (other as? MediaDirectory)?.bucketId
+    override fun toString(): String {
+        return name.toString()
     }
 
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + (bucketId?.hashCode() ?: 0)
-        result = 31 * result + (coverPath?.hashCode() ?: 0)
-        result = 31 * result + (name?.hashCode() ?: 0)
-        result = 31 * result + dateAdded.hashCode()
-        result = 31 * result + medias.hashCode()
-        return result
-    }
+
 }

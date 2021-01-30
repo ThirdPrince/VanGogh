@@ -1,5 +1,6 @@
 package com.vangogh.media.models
 
+import android.icu.text.AlphabeticIndex
 import android.net.Uri
 import android.os.Parcelable
 import androidx.versionedparcelable.ParcelField
@@ -7,14 +8,18 @@ import kotlinx.android.parcel.Parcelize
 import java.time.Duration
 
 /**
- * @author dhl
- * image+video
- *
+ * @ClassName MediaItem
+ * @Description  media contains image +video
+ * @Author dhl
+ * @Date 2020/12/22 9:36
+ * @Version 1.0
  */
 private const val compressSize = 100* 1024  // 100Kb
 @Parcelize
 data class MediaItem(
     var id: Long = 0,
+    var bucketId:Long = 0,
+    var bucketName:String ?= null,
     var name: String? = null,
     var pathUri: Uri? = null,
     var path: String? = null,

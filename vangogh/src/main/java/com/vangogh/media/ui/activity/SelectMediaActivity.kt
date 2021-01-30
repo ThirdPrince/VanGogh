@@ -90,6 +90,9 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             MediaPreviewUtil.mediaItemList = it
 
         })
+        mediaViewModel.lvMediaDirData.observe(this, Observer {
+
+        })
 
 
     }

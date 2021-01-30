@@ -1,9 +1,7 @@
 package com.vangogh.media.viewmodel
 
 import android.app.Application
-import android.content.ContentUris
 import android.database.ContentObserver
-import android.database.Cursor
 import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.util.Log
@@ -11,13 +9,11 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vangogh.media.config.VanGogh
-import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.extend.registerObserver
-import com.vangogh.media.models.MediaDirectory
+import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.*
 
 /**
  * @ClassName MediaViewModel
@@ -36,6 +32,10 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
     val lvMediaData: LiveData<List<MediaItem>>
         get() = _lvMediaData
 
+    private val _lvMediaDirData = MutableLiveData<List<MediaDir>>()
+    val lvMediaDirData: LiveData<List<MediaDir>>
+        get() = _lvMediaDirData
+
 
     private val _lvDataChanged = MutableLiveData<Boolean>()
 
@@ -50,14 +50,15 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
      */
     private val mediaProjection = arrayOf( //查询图片需要的数据列
         BaseColumns._ID,
+        MediaStore.Images.ImageColumns.BUCKET_ID,
         MediaStore.Images.Media.DATA,
         MediaStore.Images.Media.BUCKET_DISPLAY_NAME,  //图片的显示名称  aaa.jpg
         MediaStore.Images.Media.SIZE,  //图片的大小，long型  132492
         MediaStore.Images.Media.WIDTH,  //图片的宽度，int型  1920
         MediaStore.Images.Media.HEIGHT,  //图片的高度，int型  1080
         MediaStore.Images.Media.MIME_TYPE,  //图片的类型     image/jpeg
-        MediaStore.Images.Media.DATE_ADDED,
-        MediaStore.Images.Media.DURATION
+        MediaStore.Images.Media.DURATION,
+        MediaStore.Images.Media.DATE_ADDED
     )
 
     private fun registerContentObserver() {
@@ -74,6 +75,8 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         launchDataLoad {
             val medias = queryImages(bucketId)
             _lvMediaData.postValue(medias)
+            val mediaDirList = getMediaDir(medias)
+            _lvMediaDirData.postValue(mediaDirList)
             registerContentObserver()
         }
     }
@@ -81,10 +84,10 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
 
     @WorkerThread
     suspend fun queryImages(bucketId: String?): MutableList<MediaItem> {
-        var data = mutableListOf<MediaItem>()
+        var mediaItemList = mutableListOf<MediaItem>()
         withContext(Dispatchers.IO) {
             val uri = MediaStore.Files.getContentUri("external")
-            val sortOrder = mediaProjection[7] + " DESC"
+            val sortOrder = mediaProjection[mediaProjection.size - 1] + " DESC"
 
             val cursor = getApplication<Application>().contentResolver.query(
                 uri,
@@ -96,66 +99,62 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
             Log.e(TAG, VanGogh.selectArgs.contentToString())
             while (cursor!!.moveToNext()) {
                 //查询数据
-                val imageId: String =
-                    cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[0]))
+                val imageId: Long =
+                    cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[0]))
+                val bucketId: Long =
+                    cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[1]))
                 val imagePath: String =
-                    cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[1]))
-                var bucketName: String =
                     cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[2]))
+                var bucketName: String =
+                    cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[3]))
                 val imageSize: Long =
-                    cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[3]))
+                    cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[4]))
                 val imageWidth: Int =
-                    cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[4]))
-                val imageHeight: Int =
                     cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[5]))
+                val imageHeight: Int =
+                    cursor.getInt(cursor.getColumnIndexOrThrow(mediaProjection[6]))
                 val mediaMineType: String =
-                    cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[6]))
+                    cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[7]))
                 val mediaDuration: Long =
                     cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[8]))
                 val mediaItem = MediaItem()
+                mediaItem.id = imageId
+                mediaItem.bucketId = bucketId
+                mediaItem.bucketName = bucketName
                 mediaItem.path = imagePath
                 mediaItem.width = imageWidth
                 mediaItem.height = imageHeight
                 mediaItem.size = imageSize
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
-                Log.e(
-                    TAG,
-                    "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: height = $imageHeight"
-                )
-                if (imageSize == 0L && imageWidth == 0)//&& imageHeight == 0
-                    continue
-                data.add(mediaItem)
+                Log.e(TAG, "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: bucketName::=$bucketName")
+                mediaItemList.add(mediaItem)
             }
         }
-        return data
+        return mediaItemList
     }
 
+    /**
+     *  MediaFolder
+     */
     @WorkerThread
-    private fun getPhotoDirectories(fileType: Int, data: Cursor): MutableList<MediaDirectory> {
-        var directories = mutableListOf<MediaDirectory>()
-        while (data.moveToNext()) {
-
-            val imageId = data.getLong(data.getColumnIndexOrThrow(BaseColumns._ID))
-            val bucketId =
-                data.getString(data.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_ID))
-            val name =
-                data.getString(data.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME))
-            val fileName = data.getString(data.getColumnIndexOrThrow(MediaStore.MediaColumns.TITLE))
-            val mediaType =
-                data.getInt(data.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE))
-            val mediaPath =
-                data.getString(data.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_TAKEN))
-
-            var contentUri = ContentUris.withAppendedId(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                imageId
-            )
-
-
+    private fun getMediaDir(mediaList: List<MediaItem>): MutableList<MediaDir> {
+        var mediaDirList = mutableListOf<MediaDir>()
+        mediaList.forEach {
+            val mediaDir = MediaDir()
+            mediaDir.id = it.id
+            mediaDir.bucketId = it.bucketId
+            mediaDir.name = it.bucketName
+            if (!mediaDirList.contains(mediaDir)) {
+                mediaDir.medias.add(it)
+                mediaDirList.add(mediaDir)
+            } else {
+                mediaDirList[mediaDirList.indexOf(mediaDir)]
+                    .medias.add(it)
+            }
         }
-
-        return directories
+        Log.e(TAG, mediaDirList.toString())
+        return mediaDirList
     }
 
     override fun onCleared() {
