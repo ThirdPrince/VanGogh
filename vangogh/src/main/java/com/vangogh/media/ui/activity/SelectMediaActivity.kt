@@ -95,6 +95,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             mediaViewModel.getMedia(null)
         }
         mediaViewModel.lvMediaData.observe(this, Observer {
+            MediaPreviewUtil.currentMediaList.clear()
             MediaPreviewUtil.currentMediaList.addAll(it)
             mediaItemAdapter = MediaGridItemAdapter(this,  MediaPreviewUtil.currentMediaList!!)
             val layoutManager = GridLayoutManager(this, VanGoghConst.GRID_SPAN_CONT)
