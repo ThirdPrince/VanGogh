@@ -24,7 +24,7 @@ import com.vangogh.media.models.MediaItem
  * @ClassName MediaDirAdapter
  * @Description media mediaDir adapter
  * @Author dhl
- * @Date 2020/1/7 9:36
+ * @Date 2021/2/1 9:36
  * @Version 1.0
  */
 class MediaDirAdapter(private val context: Context, var items: List<MediaDir>) :RecyclerView.Adapter<MediaDirAdapter.MediaViewHolder>() {

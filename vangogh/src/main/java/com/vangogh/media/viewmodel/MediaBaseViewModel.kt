@@ -8,41 +8,21 @@ import androidx.lifecycle.viewModelScope
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.*
 
-open class MediaBaseViewModel(application: Application):AndroidViewModel(application) {
+/**
+ * @ClassName MediaBaseViewModel
+ * @Description MediaBaseViewModel
+ * @Author dhl
+ * @Date 2021/1/28 10:30
+ * @Version 1.0
+ */
+open class MediaBaseViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val viewModelJob = SupervisorJob()
-
-    private val exceptionHandler = CoroutineExceptionHandler { _, t ->
-        t.printStackTrace()
-    }
-
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob + exceptionHandler)
-
-    private val _lvError = MutableLiveData<Exception>()
-
-    open val lvError: LiveData<Exception>
-        get() = _lvError
 
     fun launchDataLoad(block: suspend (scope: CoroutineScope) -> Unit): Job {
         return viewModelScope.launch {
-            try {
-                block(this)
-            } catch (error: Exception) {
-                handleException(error)
-            } finally {
-            }
+            block(this)
         }
     }
 
-    private fun handleException(error: Exception) {
-        error.printStackTrace()
-        if (error !is CancellationException) {
-            _lvError.value = error
-        }
-    }
 
-    public override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
 }

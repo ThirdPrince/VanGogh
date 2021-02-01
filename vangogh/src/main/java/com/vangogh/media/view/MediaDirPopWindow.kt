@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaDirAdapter
 import com.vangogh.media.extend.getScreenHeight
+import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaDir
 
 /**
@@ -34,7 +35,7 @@ class MediaDirPopWindow(val context: Context,var items: List<MediaDir> ) : Popup
         window.findViewById<RecyclerView>(R.id.rcy_view)
     }
 
-     lateinit var mediaDirAdapter :MediaDirAdapter
+    lateinit var mediaDirAdapter :MediaDirAdapter
 
     private val isDismiss = false
     private val ivArrowView: ImageView? = null
@@ -65,6 +66,10 @@ class MediaDirPopWindow(val context: Context,var items: List<MediaDir> ) : Popup
         recyclerView.adapter = mediaDirAdapter
     }
 
+
+    fun setOnMediaItemClickListener(listener: OnMediaItemClickListener?) {
+        mediaDirAdapter.onMediaItemClickListener = listener
+    }
     override fun onClick(v: View?) {
         dismiss()
     }

@@ -89,7 +89,6 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         withContext(Dispatchers.IO) {
             val uri = MediaStore.Files.getContentUri("external")
             val sortOrder = mediaProjection[mediaProjection.size - 1] + " DESC"
-
             val cursor = getApplication<Application>().contentResolver.query(
                 uri,
                 mediaProjection,

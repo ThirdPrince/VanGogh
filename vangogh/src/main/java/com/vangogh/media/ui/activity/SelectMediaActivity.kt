@@ -53,13 +53,24 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     }
 
 
+    /**
+     * query media ViewModel
+     */
     private lateinit var mediaViewModel: MediaViewModel
+
+    /**
+     * media show
+     */
 
     private lateinit var mediaItemAdapter: MediaGridItemAdapter
 
     private  lateinit var mediaTitleLay:LinearLayout
 
     private  lateinit var titleViewBg:View
+
+    /**
+     * media dir list
+     */
 
     private lateinit var  mediaDirList :List<MediaDir>
 
@@ -120,26 +131,23 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         titleViewBg = findViewById(R.id.titleViewBg)
     }
 
-    private fun initMediaDirPop(){
+    private fun initMediaDirPop() {
         mediaTitleLay.setOnClickListener {
-            if(popWindow == null){
-                popWindow =  MediaDirPopWindow(this,mediaDirList)
+            if (popWindow == null) {
+                popWindow = MediaDirPopWindow(this, mediaDirList)
             }
             popWindow?.showAsDropDown(titleViewBg)
-
-            popWindow?.mediaDirAdapter?.onMediaItemClickListener = object :OnMediaItemClickListener{
+            popWindow?.setOnMediaItemClickListener(object : OnMediaItemClickListener {
                 override fun onItemClick(view: View?, position: Int) {
                     var mediaItemList = mediaDirList[position].medias
-                    MediaPreviewUtil.currentMediaList?.clear()
-                    MediaPreviewUtil.currentMediaList?.addAll(mediaItemList)
+                    MediaPreviewUtil.currentMediaList.clear()
+                    MediaPreviewUtil.currentMediaList.addAll(mediaItemList)
                     mediaItemAdapter.notifyDataSetChanged()
                     popWindow?.dismiss()
-
                 }
+            })
 
-            }
         }
-
     }
 
     private fun refreshMedia(){
