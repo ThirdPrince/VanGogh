@@ -38,15 +38,6 @@
             android:text="图片"
             android:textColor="#212121"
             android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_image_count"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="共0张"
-            android:textColor="#999999"
-            android:textSize="12sp" />
     </LinearLayout>
 
     <ImageView
@@ -55,6 +46,7 @@
         android:layout_height="24dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="20dp"
+        android:visibility="invisible"
         app:srcCompat="@drawable/ic_vector_check" />
 
 </LinearLayout>

@@ -10,5 +10,8 @@ import com.vangogh.media.models.MediaItem
  * @Version 1.0
  */
 object MediaPreviewUtil {
-     var mediaItemList: List<MediaItem> ?= null
+     /**
+      * current show mediaList
+      */
+     var currentMediaList: ArrayList<MediaItem>  = ArrayList()
 }

@@ -5,6 +5,7 @@
 
     <View
         android:id="@+id/titleViewBg"
+
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="?colorPrimary" />
@@ -27,13 +28,14 @@
         android:layout_toRightOf="@id/mediaLeftBack">
 
         <LinearLayout
+            android:id="@+id/media_title_lay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/picture_album_bg"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/picture_title"
+                android:id="@+id/media_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -41,7 +43,7 @@
                 android:gravity="center"
                 android:maxEms="8"
                 android:maxLines="1"
-                android:text="@string/picture_camera_roll"
+                android:text="@string/media_title_str"
                 android:textColor="?picture.title.textColor"
                 android:textSize="16sp" />
 
@@ -51,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/picture_title"
+                android:layout_toRightOf="@id/media_title"
                 android:scaleType="centerInside"
                 android:src="?attr/picture.arrow_down.icon" />
 

@@ -1,6 +1,7 @@
 package com.vangogh.media.viewmodel
 
 import android.app.Application
+import android.content.ContentUris
 import android.database.ContentObserver
 import android.provider.BaseColumns
 import android.provider.MediaStore
@@ -99,7 +100,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
             Log.e(TAG, VanGogh.selectArgs.contentToString())
             while (cursor!!.moveToNext()) {
                 //查询数据
-                val imageId: Long =
+                val mediaId: Long =
                     cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[0]))
                 val bucketId: Long =
                     cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[1]))
@@ -117,8 +118,10 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                     cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[7]))
                 val mediaDuration: Long =
                     cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[8]))
+                val uri = ContentUris.withAppendedId(uri, mediaId)
                 val mediaItem = MediaItem()
-                mediaItem.id = imageId
+                mediaItem.id = mediaId
+                mediaItem.pathUri = uri
                 mediaItem.bucketId = bucketId
                 mediaItem.bucketName = bucketName
                 mediaItem.path = imagePath
@@ -145,15 +148,16 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
             mediaDir.id = it.id
             mediaDir.bucketId = it.bucketId
             mediaDir.name = it.bucketName
+            mediaDir.dateAdded = it.dataToken
             if (!mediaDirList.contains(mediaDir)) {
                 mediaDir.medias.add(it)
+                mediaDir.setCoverPath(it.pathUri)
                 mediaDirList.add(mediaDir)
             } else {
                 mediaDirList[mediaDirList.indexOf(mediaDir)]
                     .medias.add(it)
             }
         }
-        Log.e(TAG, mediaDirList.toString())
         return mediaDirList
     }
 

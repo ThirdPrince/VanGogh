@@ -19,7 +19,6 @@ import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.view.AnimateCheckBox
 import kotlinx.android.synthetic.main.media_select_button.*
-import kotlinx.android.synthetic.main.media_select_checkbox.view.*
 
 /**
  * @ClassName GalleryActivity
@@ -66,9 +65,9 @@ class GalleryActivity : BaseSelectActivity() {
         initListener()
         viewPager2.apply {
             offscreenPageLimit = 1
-            adapter = MediaPreviewAdapter(activity, MediaPreviewUtil.mediaItemList!!)
+            adapter = MediaPreviewAdapter(activity, MediaPreviewUtil.currentMediaList!!)
             setCurrentItem(mediaPos, false)
-            Log.e(TAG,"media="+MediaPreviewUtil.mediaItemList!![mediaPos])
+            Log.e(TAG,"media="+MediaPreviewUtil.currentMediaList!![mediaPos])
             setMediaIndex()
             setSelectMediaState()
             registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -111,14 +110,14 @@ class GalleryActivity : BaseSelectActivity() {
     }
 
     private fun setMediaIndex() {
-        currentMedia = MediaPreviewUtil.mediaItemList!![mediaPos]
-        mediaIndexTv.text = "${mediaPos + 1} / ${MediaPreviewUtil.mediaItemList!!.size}"
+        currentMedia = MediaPreviewUtil.currentMediaList!![mediaPos]
+        mediaIndexTv.text = "${mediaPos + 1} / ${MediaPreviewUtil.currentMediaList!!.size}"
     }
 
     private fun setSelectMediaState() {
         checkbox.setChecked(
             VanGogh.selectMediaList.contains(
-                MediaPreviewUtil.mediaItemList?.get(
+                MediaPreviewUtil.currentMediaList?.get(
                     mediaPos
                 )
             ), false

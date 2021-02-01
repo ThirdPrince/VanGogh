@@ -38,7 +38,6 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
 
 
 
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

@@ -37,5 +37,15 @@ data class MediaDir(
         return name.toString()
     }
 
+    override fun equals(other: Any?): Boolean {
+        return this.bucketId == (other as? MediaDir)?.bucketId
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + (bucketId?.hashCode() ?: 0)
+        return result
+    }
+
 
 }

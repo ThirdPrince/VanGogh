@@ -51,7 +51,7 @@ open class ImageViewHolder(
     }
 
     open fun bindData(mediaItem: MediaItem) {
-        Glide.with(activity).asBitmap().load(mediaItem.path)
+        Glide.with(activity).asBitmap().load(mediaItem.pathUri  )
             .transition(BitmapTransitionOptions.withCrossFade())
             .apply(requestOptions).into(squareImageView)
 

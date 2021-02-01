@@ -130,10 +130,7 @@ object VanGogh {
     }
 
 
-    fun setActivityTitle(title: String): VanGogh {
-        //PickerManager.title = title
-        return this
-    }
+
 
     fun setSelectedFiles(selectedPhotos: ArrayList<Uri>): VanGogh {
         //  mPickerOptionsBundle.putParcelableArrayList(FilePickerConst.KEY_SELECTED_MEDIA, selectedPhotos)
@@ -150,10 +147,7 @@ object VanGogh {
         return this
     }
 
-    fun enableSelectAll(status: Boolean): VanGogh {
-        // PickerManager.enableSelectAll(status)
-        return this
-    }
+
 
     fun setCameraPlaceholder(@DrawableRes drawable: Int): VanGogh {
         // PickerManager.cameraDrawable = drawable
@@ -178,22 +172,8 @@ object VanGogh {
     }
 
 
-    fun withOrientation(@IntegerRes orientation: Int): VanGogh {
-        //PickerManager.orientation = orientation
-        return this
-    }
 
 
-    /* fun pickMedia(context: Fragment) {
-        // mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.MEDIA_PICKER)
-         start(context, 0)
-     }*/
-
-
-    fun pickMedia(context: FragmentActivity, selectMediaViewModel: CompressMediaViewModel) {
-        // mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.MEDIA_PICKER)
-        start(context)
-    }
 
     fun pickMedia(context: Fragment) {
         //  mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.MEDIA_PICKER)

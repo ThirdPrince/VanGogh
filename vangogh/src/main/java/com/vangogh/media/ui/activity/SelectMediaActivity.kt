@@ -6,7 +6,9 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -21,7 +23,9 @@ import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.extend.toast
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
+import com.vangogh.media.models.MediaDir
 import com.vangogh.media.utils.MediaPreviewUtil
+import com.vangogh.media.view.MediaDirPopWindow
 import com.vangogh.media.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
 
@@ -53,6 +57,16 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     private lateinit var mediaItemAdapter: MediaGridItemAdapter
 
+    private  lateinit var mediaTitleLay:LinearLayout
+
+    private  lateinit var titleViewBg:View
+
+    private lateinit var  mediaDirList :List<MediaDir>
+
+    /**
+     * MediaDir List
+     */
+    private  var  popWindow: MediaDirPopWindow?= null
 
     /**
      * permissions
@@ -65,7 +79,9 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_media)
+        initView()
         initSendMediaListener()
+        initMediaDirPop()
         mediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 MediaViewModel::class.java
@@ -79,7 +95,8 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             mediaViewModel.getMedia(null)
         }
         mediaViewModel.lvMediaData.observe(this, Observer {
-            mediaItemAdapter = MediaGridItemAdapter(this, it)
+            MediaPreviewUtil.currentMediaList.addAll(it)
+            mediaItemAdapter = MediaGridItemAdapter(this,  MediaPreviewUtil.currentMediaList!!)
             val layoutManager = GridLayoutManager(this, VanGoghConst.GRID_SPAN_CONT)
             rcy_view.layoutManager = layoutManager
             rcy_view.itemAnimator = DefaultItemAnimator()
@@ -87,13 +104,40 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             rcy_view.adapter = mediaItemAdapter
             mediaItemAdapter!!.onMediaItemClickListener = this
             mediaItemAdapter!!.onItemCheckListener = this
-            MediaPreviewUtil.mediaItemList = it
+
 
         })
         mediaViewModel.lvMediaDirData.observe(this, Observer {
-
+            mediaDirList = it
         })
 
+
+    }
+
+    private fun initView(){
+        mediaTitleLay = findViewById(R.id.media_title_lay)
+        titleViewBg = findViewById(R.id.titleViewBg)
+    }
+
+    private fun initMediaDirPop(){
+        mediaTitleLay.setOnClickListener {
+            if(popWindow == null){
+                popWindow =  MediaDirPopWindow(this,mediaDirList)
+            }
+            popWindow?.showAsDropDown(titleViewBg)
+
+            popWindow?.mediaDirAdapter?.onMediaItemClickListener = object :OnMediaItemClickListener{
+                override fun onItemClick(view: View?, position: Int) {
+                    var mediaItemList = mediaDirList[position].medias
+                    MediaPreviewUtil.currentMediaList?.clear()
+                    MediaPreviewUtil.currentMediaList?.addAll(mediaItemList)
+                    mediaItemAdapter.notifyDataSetChanged()
+                    popWindow?.dismiss()
+
+                }
+
+            }
+        }
 
     }
 

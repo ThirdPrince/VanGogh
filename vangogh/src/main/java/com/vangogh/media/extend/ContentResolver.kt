@@ -7,7 +7,7 @@ import android.os.Handler
 
 /**
  * @author dhl
- * register FileChange
+ * register MediaChange
  */
 fun ContentResolver.registerObserver(
     uri: Uri,

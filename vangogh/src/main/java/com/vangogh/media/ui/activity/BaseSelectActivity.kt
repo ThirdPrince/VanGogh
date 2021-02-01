@@ -60,13 +60,14 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         media_send?.setOnClickListener(this)
     }
 
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.mediaLeftBack -> finish()
             R.id.media_send -> {
                 view_stub?.visibility = View.VISIBLE
                 if(VanGogh.selectMediaList.isEmpty()){
-                    VanGogh.selectMediaList.add(MediaPreviewUtil.mediaItemList!![mediaPos])
+                    VanGogh.selectMediaList.add(MediaPreviewUtil.currentMediaList!![mediaPos])
                 }
                 selectMediaViewModel.compressImage(VanGogh.selectMediaList)
             }
