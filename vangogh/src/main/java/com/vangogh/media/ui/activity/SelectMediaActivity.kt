@@ -6,8 +6,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
@@ -67,6 +67,8 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     private  lateinit var mediaTitleLay:LinearLayout
 
     private  lateinit var titleViewBg:View
+
+    private lateinit var ivArrow :ImageView
 
     /**
      * media dir list
@@ -129,12 +131,14 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     private fun initView(){
         mediaTitleLay = findViewById(R.id.media_title_lay)
         titleViewBg = findViewById(R.id.titleViewBg)
+        ivArrow = findViewById(R.id.ivArrow)
+        ivArrow.animate().rotationBy(90f)
     }
 
     private fun initMediaDirPop() {
         mediaTitleLay.setOnClickListener {
             if (popWindow == null) {
-                popWindow = MediaDirPopWindow(this, mediaDirList)
+                popWindow = MediaDirPopWindow(this, mediaDirList,ivArrow)
             }
             popWindow?.showAsDropDown(titleViewBg)
             popWindow?.setOnMediaItemClickListener(object : OnMediaItemClickListener {

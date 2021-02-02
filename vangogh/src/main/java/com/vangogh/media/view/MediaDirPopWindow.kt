@@ -22,7 +22,7 @@ import com.vangogh.media.models.MediaDir
  * @Date 2021/1/30 14:44
  * @Version 1.0
  */
-class MediaDirPopWindow(val context: Context,var items: List<MediaDir> ) : PopupWindow(),View.OnClickListener {
+class MediaDirPopWindow(val context: Context,var items: List<MediaDir> ,var ivArrow:ImageView) : PopupWindow(),View.OnClickListener {
 
     private val window by lazy {
         LayoutInflater.from(context).inflate(R.layout.media_dir_pop, null)
@@ -70,8 +70,22 @@ class MediaDirPopWindow(val context: Context,var items: List<MediaDir> ) : Popup
     fun setOnMediaItemClickListener(listener: OnMediaItemClickListener?) {
         mediaDirAdapter.onMediaItemClickListener = listener
     }
+
+    override fun showAsDropDown(anchor: View?) {
+        super.showAsDropDown(anchor)
+        setArrowRotation()
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        setArrowRotation()
+    }
     override fun onClick(v: View?) {
         dismiss()
+    }
+
+    private fun setArrowRotation(){
+        ivArrow.animate().setDuration(400).rotationBy(180f)
     }
 
 }

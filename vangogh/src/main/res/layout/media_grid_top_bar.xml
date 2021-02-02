@@ -5,7 +5,6 @@
 
     <View
         android:id="@+id/titleViewBg"
-
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="?colorPrimary" />
@@ -31,7 +30,7 @@
             android:id="@+id/media_title_lay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/picture_album_bg"
+            android:background="@drawable/media_album_bg"
             android:orientation="horizontal">
 
             <TextView
@@ -54,8 +53,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/media_title"
-                android:scaleType="centerInside"
-                android:src="?attr/picture.arrow_down.icon" />
+                android:scaleType="fitXY"
+                android:background="@drawable/media_arrow_bg"
+                android:src="@drawable/ic_arrow" />
 
         </LinearLayout>
 
