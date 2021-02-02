@@ -47,5 +47,9 @@ data class MediaDir(
         return result
     }
 
+    fun isEmpty():Boolean{
+        return this.bucketId == 0L
+    }
+
 
 }

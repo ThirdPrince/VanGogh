@@ -129,7 +129,10 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.size = imageSize
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
-                Log.e(TAG, "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: bucketName::=$bucketName")
+                Log.e(
+                    TAG,
+                    "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: bucketName::=$bucketName"
+                )
                 mediaItemList.add(mediaItem)
             }
         }
@@ -142,6 +145,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
     @WorkerThread
     private fun getMediaDir(mediaList: List<MediaItem>): MutableList<MediaDir> {
         var mediaDirList = mutableListOf<MediaDir>()
+        val videoDir = MediaDir()
         mediaList.forEach {
             val mediaDir = MediaDir()
             mediaDir.id = it.id
@@ -156,6 +160,28 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaDirList[mediaDirList.indexOf(mediaDir)]
                     .medias.add(it)
             }
+
+            if (it.isVideo()) {
+                videoDir.id = it.id
+                videoDir.bucketId = it.bucketId
+                videoDir.medias.add(it)
+                videoDir.setCoverPath(it.pathUri)
+                videoDir.name = "视频"
+            }
+        }
+        if (!videoDir.isEmpty()) {
+            mediaDirList.add(0, videoDir)
+        }
+        if (mediaList.isNotEmpty()) {
+            val mediaDir = MediaDir()
+            val mediaItem = mediaList.first()
+            mediaDir.id = mediaItem.id
+            mediaDir.bucketId = mediaItem.bucketId
+            mediaDir.name = "全部"
+            mediaDir.dateAdded = mediaItem.dataToken
+            mediaDir.setCoverPath(mediaItem.pathUri)
+            mediaDir.medias.addAll(mediaList)
+            mediaDirList.add(0, mediaDir)
         }
         return mediaDirList
     }
