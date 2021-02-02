@@ -53,7 +53,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/media_title"
-                android:scaleType="fitXY"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/media_arrow_bg"
                 android:src="@drawable/ic_arrow" />
 
