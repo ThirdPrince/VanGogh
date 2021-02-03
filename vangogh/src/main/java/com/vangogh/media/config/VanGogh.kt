@@ -14,7 +14,9 @@ import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.SelectMediaActivity
 import com.vangogh.media.utils.MediaQueryConditions
+import com.vangogh.media.utils.MediaQueryConditions.MEDIA_SELECTION_ARGS
 import com.vangogh.media.viewmodel.CompressMediaViewModel
+import java.time.Duration
 import java.util.ArrayList
 
 /**
@@ -79,6 +81,15 @@ object VanGogh {
         return this
     }
 
+    /**
+     * maxDuration s
+     */
+    fun setVideoMaxDuration(maxDuration: Int): VanGogh {
+        VanGoghConst.VIDEO_MAX_DURATION = maxDuration * 1000
+        //selectArgs = MEDIA_SELECTION_ARGS
+        return this
+    }
+
 
     /**
      * all media image + gif +video
@@ -91,6 +102,7 @@ object VanGogh {
              selection  = MediaQueryConditions.MEDIA_SELECTION
              selectArgs  = MediaQueryConditions.MEDIA_SELECTION_ARGS
         }
+        VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaAll
         return this
     }
 
@@ -141,16 +153,6 @@ object VanGogh {
         return this
     }
 
-    fun enableVideoPicker(status: Boolean): VanGogh {
-        // PickerManager.setShowVideos(status)
-        return this
-    }
-
-    fun enableImagePicker(status: Boolean): VanGogh {
-        //   PickerManager.setShowImages(status)
-        return this
-    }
-
 
 
     fun setCameraPlaceholder(@DrawableRes drawable: Int): VanGogh {
@@ -159,16 +161,6 @@ object VanGogh {
     }
 
 
-
-    fun showFolderView(status: Boolean): VanGogh {
-        // PickerManager.isShowFolderView = status
-        return this
-    }
-
-    fun enableDocSupport(status: Boolean): VanGogh {
-        //PickerManager.isDocSupport = status
-        return this
-    }
 
     fun enableCameraSupport(status: Boolean): VanGogh {
         //  PickerManager.isEnableCamera = status

@@ -67,7 +67,7 @@ class GalleryActivity : BaseSelectActivity() {
             offscreenPageLimit = 1
             adapter = MediaPreviewAdapter(activity, MediaPreviewUtil.currentMediaList!!)
             setCurrentItem(mediaPos, false)
-            Log.e(TAG,"media="+MediaPreviewUtil.currentMediaList!![mediaPos])
+            //Log.e(TAG,"media="+MediaPreviewUtil.currentMediaList!![mediaPos])
             setMediaIndex()
             setSelectMediaState()
             registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -80,7 +80,7 @@ class GalleryActivity : BaseSelectActivity() {
 
             })
         }
-        media_send.isEnabled = true
+       // media_send.isEnabled = true
     }
 
     private fun initListener() {

@@ -37,9 +37,12 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener,
     private lateinit var imageRb: RadioButton
     private lateinit var imageNoGifRb: RadioButton
 
+
     private lateinit var gifRb: RadioButton
 
     private lateinit var videoRb: RadioButton
+
+    private lateinit var videoMaxDurationRb: RadioButton
 
 
     private lateinit var vanGogh: VanGogh
@@ -61,6 +64,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener,
         imageNoGifRb = findViewById(R.id.image_no_gif_rb)
         gifRb = findViewById(R.id.gif_rb)
         videoRb = findViewById(R.id.video_rb)
+        videoMaxDurationRb = findViewById(R.id.video_max_duration_rb)
         val layoutManager = GridLayoutManager(this, 4)
         rcyView.layoutManager = layoutManager
         rcyView.itemAnimator = DefaultItemAnimator()
@@ -97,6 +101,8 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener,
             gifRb.isChecked -> vanGogh = VanGogh.onlyGif()
 
             videoRb.isChecked -> VanGogh.onlyVideo()
+
+            videoMaxDurationRb.isChecked -> VanGogh.setVideoMaxDuration(10)
 
         }
     }

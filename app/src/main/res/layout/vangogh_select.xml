@@ -50,6 +50,13 @@
             android:text="Video"
             android:textColor="#000000"/>
 
+        <RadioButton
+            android:id="@+id/video_max_duration_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VideoMaxDuration(10 s)"
+            android:textColor="#000000"/>
+
 
     </RadioGroup>
 

@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaGridItemAdapter
 import com.vangogh.media.config.VanGogh
@@ -53,6 +54,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
     }
 
+
+    private lateinit var rcyView:RecyclerView
+
+
+    private lateinit var gridLayoutManager: GridLayoutManager
 
     /**
      * query media ViewModel
@@ -133,10 +139,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         titleViewBg = findViewById(R.id.titleViewBg)
         ivArrow = findViewById(R.id.ivArrow)
         ivArrow.animate().rotationBy(90f)
-        val layoutManager = GridLayoutManager(this, VanGoghConst.GRID_SPAN_CONT)
-        rcy_view.layoutManager = layoutManager
-        rcy_view.itemAnimator = DefaultItemAnimator()
-        rcy_view.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
+        rcyView = findViewById(R.id.rcy_view)
+        gridLayoutManager = GridLayoutManager(this, VanGoghConst.GRID_SPAN_CONT)
+        rcyView.layoutManager = gridLayoutManager
+        rcyView.itemAnimator = DefaultItemAnimator()
+        rcyView.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
 
         when(VanGoghConst.MEDIA_TYPE){
             VanGoghConst.MediaType.MediaAll -> mediaTitle.text = getString(R.string.media_title_str)
@@ -160,6 +167,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                         popWindow?.dirCheckPosition = position
                         MediaPreviewUtil.currentMediaList.clear()
                         MediaPreviewUtil.currentMediaList.addAll(mediaItemList)
+                        val lastVisible: Int = gridLayoutManager.findLastVisibleItemPosition()
+                        if(lastVisible > 25){
+                            rcyView.scrollToPosition(0)
+                        }
                         mediaItemAdapter.notifyDataSetChanged()
                     }
                     popWindow?.dismiss()

@@ -20,9 +20,20 @@ object MediaQueryConditions {
             + " OR "
             + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
             + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-            + " AND " + MediaStore.MediaColumns.SIZE + "<?")
-    // + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
+            + " AND " + MediaStore.MediaColumns.SIZE + "<?"
 
+           )
+    // + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
+   // + " AND " + MediaStore.MediaColumns.DURATION + "<?"
+
+
+    const val MEDIA_SELECTION_MAX_DURATION = ("(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            + " OR "
+            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+            + " AND " + MediaStore.MediaColumns.SIZE + ">0"
+            + " AND " + MediaStore.MediaColumns.SIZE + "<?"
+            +" AND "+ MediaStore.MediaColumns.DURATION + "<?"
+            )
     /**
      * image + video(like wechat)   use with MEDIA_SELECTION
      */
@@ -30,6 +41,14 @@ object MediaQueryConditions {
         MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
         MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString(),
         VanGoghConst.MEDIA_MAX_SIZE.toString()
+    )
+   // VanGoghConst.VIDEO_MAX_DURATION.toString()
+
+    val MEDIA_SELECTION_MAX_DURATION_ARGS = arrayOf(
+        MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
+        MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString(),
+        VanGoghConst.MEDIA_MAX_SIZE.toString(),
+        VanGoghConst.VIDEO_MAX_DURATION.toString()
     )
 
 
@@ -40,9 +59,19 @@ object MediaQueryConditions {
             + " OR "
             + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
             + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-            + " AND " + MediaStore.MediaColumns.MIME_TYPE + "!=?")
+            + " AND " + MediaStore.MediaColumns.MIME_TYPE + "!=?"
+           )
+
+    const val MEDIA_SELECTION_NOT_GIF_MAX_DURATION = ("(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            + " OR "
+            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+            + " AND " + MediaStore.MediaColumns.SIZE + ">0"
+            + " AND " + MediaStore.MediaColumns.MIME_TYPE + "!=?"
+            + " AND " + MediaStore.MediaColumns.DURATION + "<?"
+            )
 
       //  + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
+      //+ " AND " + MediaStore.MediaColumns.DURATION + "<?"
     /**
      * media without gif
      */
@@ -51,6 +80,15 @@ object MediaQueryConditions {
         MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString(),
         "image/gif"
     )
+
+    val MEDIA_SELECTION_MAX_DURATION_ARGS_NOT_GIF = arrayOf(
+        MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
+        MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString(),
+        "image/gif",
+        VanGoghConst.VIDEO_MAX_DURATION.toString()
+    )
+
+    //VanGoghConst.VIDEO_MAX_DURATION.toString()
 
     /**
      * imageSelection (image contains gif)
@@ -95,19 +133,22 @@ object MediaQueryConditions {
                 + " AND " + MediaStore.MediaColumns.MIME_TYPE + "=?")
 
     /**
-     * only gif
+     * only Video
      */
     const val VIDEO_SELECTION =
         (MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
                 + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-                + " AND " + MediaStore.MediaColumns.WIDTH + ">0"
-                + " AND " + MediaStore.MediaColumns.SIZE + "<?")
+                + " AND " + MediaStore.MediaColumns.DURATION + ">0"
+                + " AND " + MediaStore.MediaColumns.SIZE + "<?"
+               )
+    // + " AND " + MediaStore.MediaColumns.DURATION + "<?"
 
     /**
-     * just image(image contains gif)
+     * just video
      */
     val VIDEO_SELECTION_ARGS = arrayOf(
         MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString(),
         VanGoghConst.MEDIA_MAX_SIZE.toString()
     )
+    //VanGoghConst.VIDEO_MAX_DURATION.toString()
 }

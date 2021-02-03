@@ -29,6 +29,8 @@ object VanGoghConst {
     var GRID_SPAN_CONT = 4
     var MEDIA_MAX_SIZE = Int.MAX_VALUE
 
+    var VIDEO_MAX_DURATION = Int.MAX_VALUE
+
     var MEDIA_TYPE = MediaType.MediaAll
 
 

@@ -91,6 +91,8 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         withContext(Dispatchers.IO) {
             val uri = MediaStore.Files.getContentUri("external")
             val sortOrder = mediaProjection[mediaProjection.size - 1] + " DESC"
+            Log.d(TAG,"selection = ${VanGogh.selection}")
+            Log.d(TAG,"selectArgs = ${VanGogh.selectArgs.contentToString()}")
             val cursor = getApplication<Application>().contentResolver.query(
                 uri,
                 mediaProjection,
@@ -98,7 +100,6 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 VanGogh.selectArgs,
                 sortOrder
             )
-            Log.e(TAG, VanGogh.selectArgs.contentToString())
             while (cursor!!.moveToNext()) {
                 //查询数据
                 val mediaId: Long =
@@ -131,10 +132,14 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.size = imageSize
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
-                Log.e(
+              /*  Log.e(
                     TAG,
                     "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: bucketName::=$bucketName"
-                )
+                )*/
+                if(mediaItem.isVideo()){
+                    if(  mediaDuration > VanGoghConst.VIDEO_MAX_DURATION || mediaDuration === 0L)
+                    continue
+                }
                 mediaItemList.add(mediaItem)
             }
         }
