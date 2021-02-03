@@ -41,7 +41,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/iv_folder_check"
+        android:id="@+id/iv_dir_check"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginLeft="8dp"

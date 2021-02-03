@@ -6,7 +6,7 @@
     </style>
 
     <style name="AnimateCheckBoxStyle">
-        <item name="color_checked">@color/checkbox_color</item>
+        <item name="color_checked">@color/green_color_20c064</item>
         <item name="color_unchecked">@android:color/white</item>
         <item name="color_unchecked_stroke">@color/checkbox_unchecked_color</item>
         <item name="color_tick">@android:color/white</item>

@@ -22,7 +22,8 @@ import com.vangogh.media.models.MediaDir
  * @Date 2021/1/30 14:44
  * @Version 1.0
  */
-class MediaDirPopWindow(val context: Context,var items: List<MediaDir> ,var ivArrow:ImageView) : PopupWindow(),View.OnClickListener {
+class MediaDirPopWindow(val context: Context, var items: List<MediaDir>, var ivArrow: ImageView) :
+    PopupWindow(), View.OnClickListener {
 
     private val window by lazy {
         LayoutInflater.from(context).inflate(R.layout.media_dir_pop, null)
@@ -35,7 +36,15 @@ class MediaDirPopWindow(val context: Context,var items: List<MediaDir> ,var ivAr
         window.findViewById<RecyclerView>(R.id.rcy_view)
     }
 
-    lateinit var mediaDirAdapter :MediaDirAdapter
+    lateinit var mediaDirAdapter: MediaDirAdapter
+
+    var dirCheckPosition
+        set(value) {
+            mediaDirAdapter.dirCheckPosition = value
+            mediaDirAdapter.notifyDataSetChanged()
+        }
+
+    get() =  mediaDirAdapter.dirCheckPosition
 
     private val isDismiss = false
     private val ivArrowView: ImageView? = null
@@ -50,17 +59,17 @@ class MediaDirPopWindow(val context: Context,var items: List<MediaDir> ,var ivAr
         isFocusable = true
         isOutsideTouchable = true
         rootView.setOnClickListener(this)
-        maxHeight = (context.getScreenHeight()*0.65).toInt()
+        maxHeight = (context.getScreenHeight() * 0.65).toInt()
         val listParams: ViewGroup.LayoutParams = recyclerView.layoutParams
-            recyclerView.layoutParams
-        listParams.height = if (items.size>8) maxHeight else ViewGroup.LayoutParams.WRAP_CONTENT
+        recyclerView.layoutParams
+        listParams.height = if (items.size > 8) maxHeight else ViewGroup.LayoutParams.WRAP_CONTENT
         recyclerView.layoutParams = listParams
         this.update()
         initView()
     }
 
     private fun initView() {
-        mediaDirAdapter = MediaDirAdapter(context,items)
+        mediaDirAdapter = MediaDirAdapter(context, items)
         mediaDirAdapter.onMediaItemClickListener
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = mediaDirAdapter
@@ -80,12 +89,14 @@ class MediaDirPopWindow(val context: Context,var items: List<MediaDir> ,var ivAr
         super.dismiss()
         setArrowRotation()
     }
+
+
     override fun onClick(v: View?) {
         dismiss()
     }
 
-    private fun setArrowRotation(){
-        ivArrow.animate().setDuration(400).rotationBy(180f)
+    private fun setArrowRotation() {
+        ivArrow.animate().setDuration(200).rotationBy(180f)
     }
 
 }

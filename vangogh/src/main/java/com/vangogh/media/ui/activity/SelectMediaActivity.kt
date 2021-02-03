@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -66,6 +67,8 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     private  lateinit var mediaTitleLay:LinearLayout
 
+    private lateinit var  mediaTitle :TextView
+
     private  lateinit var titleViewBg:View
 
     private lateinit var ivArrow :ImageView
@@ -111,10 +114,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             MediaPreviewUtil.currentMediaList.clear()
             MediaPreviewUtil.currentMediaList.addAll(it)
             mediaItemAdapter = MediaGridItemAdapter(this,  MediaPreviewUtil.currentMediaList!!)
-            val layoutManager = GridLayoutManager(this, VanGoghConst.GRID_SPAN_CONT)
-            rcy_view.layoutManager = layoutManager
-            rcy_view.itemAnimator = DefaultItemAnimator()
-            rcy_view.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
             rcy_view.adapter = mediaItemAdapter
             mediaItemAdapter!!.onMediaItemClickListener = this
             mediaItemAdapter!!.onItemCheckListener = this
@@ -130,9 +129,21 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     private fun initView(){
         mediaTitleLay = findViewById(R.id.media_title_lay)
+        mediaTitle = findViewById(R.id.media_title)
         titleViewBg = findViewById(R.id.titleViewBg)
         ivArrow = findViewById(R.id.ivArrow)
         ivArrow.animate().rotationBy(90f)
+        val layoutManager = GridLayoutManager(this, VanGoghConst.GRID_SPAN_CONT)
+        rcy_view.layoutManager = layoutManager
+        rcy_view.itemAnimator = DefaultItemAnimator()
+        rcy_view.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
+
+        when(VanGoghConst.MEDIA_TYPE){
+            VanGoghConst.MediaType.MediaAll -> mediaTitle.text = getString(R.string.media_title_str)
+            VanGoghConst.MediaType.MediaOnlyImage -> mediaTitle.text = getString(R.string.image_title_str)
+            VanGoghConst.MediaType.MediaOnlyGif -> mediaTitle.text = getString(R.string.gif_title_str)
+            VanGoghConst.MediaType.MediaOnlyVideo -> mediaTitle.text = getString(R.string.video_title_str)
+        }
     }
 
     private fun initMediaDirPop() {
@@ -143,10 +154,14 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             popWindow?.showAsDropDown(titleViewBg)
             popWindow?.setOnMediaItemClickListener(object : OnMediaItemClickListener {
                 override fun onItemClick(view: View?, position: Int) {
-                    var mediaItemList = mediaDirList[position].medias
-                    MediaPreviewUtil.currentMediaList.clear()
-                    MediaPreviewUtil.currentMediaList.addAll(mediaItemList)
-                    mediaItemAdapter.notifyDataSetChanged()
+                    if( popWindow?.dirCheckPosition !== position){
+                        mediaTitle.text = popWindow?.mediaDirAdapter!!.items[position].name
+                        var mediaItemList = mediaDirList[position].medias
+                        popWindow?.dirCheckPosition = position
+                        MediaPreviewUtil.currentMediaList.clear()
+                        MediaPreviewUtil.currentMediaList.addAll(mediaItemList)
+                        mediaItemAdapter.notifyDataSetChanged()
+                    }
                     popWindow?.dismiss()
                 }
             })

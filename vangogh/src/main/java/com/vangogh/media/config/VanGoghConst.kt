@@ -1,5 +1,7 @@
 package com.vangogh.media.config
 
+import androidx.annotation.IntDef
+
 
 /**
  * @ClassName VanGoghConst
@@ -10,9 +12,26 @@ package com.vangogh.media.config
  */
 object VanGoghConst {
 
+    @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD, AnnotationTarget.FUNCTION)
+    @MustBeDocumented
+    @IntDef(MediaType.MediaAll, MediaType.MediaOnlyImage, MediaType.MediaOnlyVideo,MediaType.MediaOnlyGif)
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
+    annotation
+    class MediaType {
+        companion object {
+            const val MediaAll = 0
+            const val MediaOnlyImage = 1
+            const val MediaOnlyVideo = 2
+            const val MediaOnlyGif = 3
+        }
+    }
     var MAX_MEDIA = 9
     var GRID_SPAN_CONT = 4
     var MEDIA_MAX_SIZE = Int.MAX_VALUE
+
+    var MEDIA_TYPE = MediaType.MediaAll
+
+
 
 
 }

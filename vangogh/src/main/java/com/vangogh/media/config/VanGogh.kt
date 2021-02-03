@@ -99,6 +99,7 @@ object VanGogh {
      * contains gif without video
      */
     fun onlyImage(containsGif: Boolean = true): VanGogh {
+
         if(containsGif){
             selection =  MediaQueryConditions.IMAGE_SELECTION
             selectArgs = MediaQueryConditions.IMAGE_SELECTION_ARGS
@@ -106,6 +107,7 @@ object VanGogh {
             selection =  MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
             selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS
         }
+        VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaOnlyImage
         return this
     }
 
@@ -117,6 +119,7 @@ object VanGogh {
     fun onlyGif(): VanGogh {
         selection = MediaQueryConditions.GIF_SELECTION
         selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS
+        VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaOnlyGif
         return this
     }
 
@@ -126,6 +129,7 @@ object VanGogh {
     fun onlyVideo(): VanGogh {
         selection = MediaQueryConditions.VIDEO_SELECTION
         selectArgs = MediaQueryConditions.VIDEO_SELECTION_ARGS
+        VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaOnlyVideo
         return this
     }
 

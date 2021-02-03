@@ -38,6 +38,8 @@ class MediaDirAdapter(private val context: Context, var items: List<MediaDir>) :
 
     var onMediaItemClickListener:OnMediaItemClickListener ?=null
 
+    var dirCheckPosition  = 0
+
 
 
 
@@ -45,6 +47,7 @@ class MediaDirAdapter(private val context: Context, var items: List<MediaDir>) :
 
         var coverImage: ImageView = view.findViewById(R.id.iv_cover)
         var dirName :TextView = view.findViewById(R.id.tv_folder_name)
+        var dirCheck :ImageView = view.findViewById(R.id.iv_dir_check)
         init {
             view.setOnClickListener(this)
         }
@@ -67,6 +70,12 @@ class MediaDirAdapter(private val context: Context, var items: List<MediaDir>) :
 
         val mediaDir = items[position]
         holder.dirName.text = mediaDir.name + "( ${mediaDir.medias.size} )"
+        if(position === dirCheckPosition){
+            holder.dirCheck.visibility = View.VISIBLE
+        }else{
+            holder.dirCheck.visibility = View.INVISIBLE
+        }
+
         Glide.with(context).asBitmap().load(mediaDir.getCoverPath()).transition(withCrossFade()).into(holder.coverImage)
     }
 

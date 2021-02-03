@@ -9,7 +9,9 @@ import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
+import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.extend.registerObserver
 import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
@@ -166,10 +168,10 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 videoDir.bucketId = it.bucketId
                 videoDir.medias.add(it)
                 videoDir.setCoverPath(it.pathUri)
-                videoDir.name = "视频"
+                videoDir.name = getApplication<Application>().getString(R.string.media_all_video)
             }
         }
-        if (!videoDir.isEmpty()) {
+        if (!videoDir.isEmpty() && VanGoghConst.MEDIA_TYPE !== VanGoghConst.MediaType.MediaOnlyVideo) {
             mediaDirList.add(0, videoDir)
         }
         if (mediaList.isNotEmpty()) {
@@ -177,7 +179,13 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
             val mediaItem = mediaList.first()
             mediaDir.id = mediaItem.id
             mediaDir.bucketId = mediaItem.bucketId
-            mediaDir.name = "全部"
+            mediaDir.name = getApplication<Application>().getString(R.string.media_title_str)
+            when(VanGoghConst.MEDIA_TYPE){
+                VanGoghConst.MediaType.MediaAll ->  mediaDir.name = getApplication<Application>().getString(R.string.media_title_str)
+                VanGoghConst.MediaType.MediaOnlyImage ->  mediaDir.name =getApplication<Application>().getString(R.string.image_title_str)
+                VanGoghConst.MediaType.MediaOnlyGif ->  mediaDir.name = getApplication<Application>().getString(R.string.gif_title_str)
+                VanGoghConst.MediaType.MediaOnlyVideo ->  mediaDir.name = getApplication<Application>().getString(R.string.video_title_str)
+            }
             mediaDir.dateAdded = mediaItem.dataToken
             mediaDir.setCoverPath(mediaItem.pathUri)
             mediaDir.medias.addAll(mediaList)

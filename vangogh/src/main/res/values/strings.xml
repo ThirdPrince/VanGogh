@@ -1,5 +1,8 @@
 <resources>
     <string name="media_title_str">图片和视频</string>
+    <string name="image_title_str">图片</string>
+    <string name="gif_title_str">GIF</string>
+    <string name="video_title_str">视频</string>
     <string name="picture_camera_roll_num">%1$s (%2$d)</string>
     <string name="picture_cancel">取消</string>
     <string name="picture_take_picture">拍摄</string>
@@ -35,6 +38,7 @@
     <string name="picture_save_error">图片保存失败</string>
     <string name="picture_save_success">图片保存成功至</string>
     <string name="picture_all_audio">所有音频</string>
+    <string name="media_all_video">所有视频</string>
     <string name="picture_tape">录音</string>
     <string name="picture_play_audio">播放</string>
     <string name="picture_stop_audio">停止</string>
