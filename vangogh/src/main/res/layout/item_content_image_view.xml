@@ -20,6 +20,6 @@
         android:src="@drawable/ic_gif"
         />
     <include
-        layout="@layout/media_select_checkbox"
+        layout="@layout/media_select_num_check"
         />
 </com.vangogh.media.view.SquareRelativeLayout>

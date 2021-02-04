@@ -30,7 +30,7 @@ private const val  compressCachePath = "vanGoghCache"
 class CompressMediaViewModel(application: Application) : MediaBaseViewModel(application) {
 
     companion object {
-        const val TAG = "SelectMediaViewModel"
+        const val TAG = "CompressMediaViewModel"
     }
 
     private val _lvMediaData = MutableLiveData<List<MediaItem>>()

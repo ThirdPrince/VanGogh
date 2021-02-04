@@ -15,6 +15,7 @@ import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.extend.registerObserver
 import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.utils.ImageUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -78,7 +79,11 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         launchDataLoad {
             val medias = queryImages(bucketId)
             _lvMediaData.postValue(medias)
-            val mediaDirList = getMediaDir(medias)
+            val mediasFilter = filterDamage(medias)
+            if(mediasFilter.size != medias.size) {
+                _lvMediaData.postValue(mediasFilter)
+            }
+            val mediaDirList = getMediaDir(mediasFilter)
             _lvMediaDirData.postValue(mediaDirList)
             registerContentObserver()
         }
@@ -132,7 +137,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.size = imageSize
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
-              /*  Log.e(
+               /* Log.e(
                     TAG,
                     "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: bucketName::=$bucketName"
                 )*/
@@ -146,6 +151,23 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         return mediaItemList
     }
 
+
+    /**
+     *  filterDamage some image  size>0 but Damage
+     */
+    @WorkerThread
+    private fun filterDamage(mediaList: List<MediaItem>): MutableList<MediaItem> {
+        var mediaItemList = mutableListOf<MediaItem>()
+        mediaList.forEach {
+           if(it.width === 0 && !ImageUtils.isImage(it.path)){
+
+           }else{
+               mediaItemList.add(it)
+           }
+
+        }
+        return mediaItemList
+    }
     /**
      *  MediaFolder
      */

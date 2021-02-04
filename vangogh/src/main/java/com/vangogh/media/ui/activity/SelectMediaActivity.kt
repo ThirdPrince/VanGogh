@@ -205,8 +205,19 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     @SuppressLint("StringFormatMatches")
     override fun onItemCheckClick(view: View?, position: Int, isChecked: Boolean) {
+        if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
+            toast(getString(R.string.picture_message_max_num,VanGoghConst.MAX_MEDIA))
+            mediaItemAdapter.notifyItemChanged(position)
+            return
+        }
         var mediaItem = mediaItemAdapter.items[position]
-        if (isChecked) {
+        if(VanGogh.selectMediaList.contains(mediaItem)){
+            VanGogh.selectMediaList.remove(mediaItem)
+        }else{
+            VanGogh.selectMediaList.add(mediaItem)
+        }
+        mediaItemAdapter.notifyItemChanged(position)
+       /* if (isChecked) {
             if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
                toast(getString(R.string.picture_message_max_num,VanGoghConst.MAX_MEDIA))
                 mediaItemAdapter.notifyItemChanged(position)
@@ -216,7 +227,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         } else {
             VanGogh.selectMediaList.remove(mediaItem)
 
-        }
+        }*/
         mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
         updateTitle()
     }

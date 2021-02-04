@@ -6,15 +6,19 @@
     android:layout_alignParentEnd="true"
     android:layout_alignParentRight="true"
     android:clickable="true"
-    android:paddingLeft="15dp"
-    android:paddingTop="8dp"
-    android:paddingRight="8dp"
-    android:paddingBottom="15dp">
+    >
     <com.vangogh.media.view.AnimateCheckBox
         android:id="@+id/checkbox"
         style="@style/AnimateCheckBoxStyle"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:visibility="gone"
         android:layout_gravity="center" />
 
+    <com.vangogh.media.view.CheckView
+        android:id="@+id/num_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+      />
 </com.vangogh.media.view.CheckSelectFrameLayout>

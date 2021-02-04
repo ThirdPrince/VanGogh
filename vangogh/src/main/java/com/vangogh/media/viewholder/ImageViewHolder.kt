@@ -15,6 +15,7 @@ import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.view.AnimateCheckBox
+import com.vangogh.media.view.CheckView
 
 /**
  * @ClassName VideoViewHolder
@@ -25,7 +26,7 @@ import com.vangogh.media.view.AnimateCheckBox
  */
 open class ImageViewHolder(
     var activity: Activity,
-    view: View,
+     val view: View,
     var onMediaItemClickListener: OnMediaItemClickListener,
     var onItemCheckListener: OnItemCheckListener
 ) : RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -35,6 +36,7 @@ open class ImageViewHolder(
 
     private var squareImageView: ImageView
     private var checkBox: AnimateCheckBox
+    private var numCheckBox: CheckView
     private var gifImage: ImageView? = null
 
 
@@ -42,12 +44,19 @@ open class ImageViewHolder(
         view.setOnClickListener(this)
         squareImageView = view.findViewById(R.id.iv_content_image)
         checkBox = view.findViewById(R.id.checkbox) as AnimateCheckBox
+        numCheckBox = view.findViewById(R.id.num_checkbox)
+        numCheckBox.setCountable(true)
+        numCheckBox.setOnClickListener(this)
         gifImage = view.findViewById(R.id.gif_img)
 
     }
 
     override fun onClick(v: View?) {
-        onMediaItemClickListener?.onItemClick(v, adapterPosition)
+        when(v){
+            numCheckBox ->   onItemCheckListener.onItemCheckClick(checkBox, adapterPosition, true)
+            view -> onMediaItemClickListener?.onItemClick(v, adapterPosition)
+        }
+
     }
 
     open fun bindData(mediaItem: MediaItem) {
@@ -58,9 +67,14 @@ open class ImageViewHolder(
         checkBox.setOnCheckedChangeListener(null)
         if (selectMediaList.contains(mediaItem)) {
             checkBox.isChecked = true
+            numCheckBox.isEnabled = true
+            if(selectMediaList.size>0)
+            numCheckBox.setCheckedNum(selectMediaList.size)
+            //numCheckBox.setChecked(true)
             setMediaMask(true)
         } else {
             checkBox.isChecked = false
+            numCheckBox.setCheckedNum(CheckView.UNCHECKED)
             setMediaMask(false)
         }
         checkBox.setOnCheckedChangeListener(object :
