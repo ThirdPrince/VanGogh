@@ -9,7 +9,7 @@
     android:paddingLeft="15dp"
     android:paddingTop="8dp"
     android:paddingRight="8dp"
-    android:paddingBottom="15dp">
+    android:paddingBottom="8dp">
     <com.vangogh.media.view.AnimateCheckBox
         android:id="@+id/checkbox"
         style="@style/AnimateCheckBoxStyle"

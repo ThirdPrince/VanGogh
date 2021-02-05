@@ -35,7 +35,7 @@ open class ImageViewHolder(
         .placeholder(R.drawable.image_grid_placeholder).error(R.drawable.image_grid_placeholder)
 
     private var squareImageView: ImageView
-    private var checkBox: AnimateCheckBox
+   // private var checkBox: AnimateCheckBox
     private var numCheckBox: CheckView
     private var gifImage: ImageView? = null
 
@@ -43,7 +43,7 @@ open class ImageViewHolder(
     init {
         view.setOnClickListener(this)
         squareImageView = view.findViewById(R.id.iv_content_image)
-        checkBox = view.findViewById(R.id.checkbox) as AnimateCheckBox
+        //checkBox = view.findViewById(R.id.checkbox) as AnimateCheckBox
         numCheckBox = view.findViewById(R.id.num_checkbox)
         numCheckBox.setCountable(true)
         numCheckBox.setOnClickListener(this)
@@ -53,7 +53,7 @@ open class ImageViewHolder(
 
     override fun onClick(v: View?) {
         when(v){
-            numCheckBox ->   onItemCheckListener.onItemCheckClick(checkBox, adapterPosition, true)
+            numCheckBox ->   onItemCheckListener.onItemCheckClick(v, adapterPosition, true)
             view -> onMediaItemClickListener?.onItemClick(v, adapterPosition)
         }
 
@@ -64,27 +64,17 @@ open class ImageViewHolder(
             .transition(BitmapTransitionOptions.withCrossFade())
             .apply(requestOptions).into(squareImageView)
 
-        checkBox.setOnCheckedChangeListener(null)
         if (selectMediaList.contains(mediaItem)) {
-            checkBox.isChecked = true
             numCheckBox.isEnabled = true
-            if(selectMediaList.size>0)
-            numCheckBox.setCheckedNum(selectMediaList.size)
+            if(selectMediaList.size>0) {
+                numCheckBox.setCheckedNum(selectMediaList.indexOf(mediaItem)+1)
+            }
             //numCheckBox.setChecked(true)
             setMediaMask(true)
         } else {
-            checkBox.isChecked = false
             numCheckBox.setCheckedNum(CheckView.UNCHECKED)
             setMediaMask(false)
         }
-        checkBox.setOnCheckedChangeListener(object :
-            AnimateCheckBox.OnCheckedChangeListener {
-            override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {
-                onItemCheckListener.onItemCheckClick(checkBox, adapterPosition, isChecked)
-                setMediaMask(isChecked)
-            }
-
-        })
         setGif(mediaItem)
     }
 

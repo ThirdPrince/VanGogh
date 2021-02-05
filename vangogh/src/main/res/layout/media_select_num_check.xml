@@ -7,13 +7,6 @@
     android:layout_alignParentRight="true"
     android:clickable="true"
     >
-    <com.vangogh.media.view.AnimateCheckBox
-        android:id="@+id/checkbox"
-        style="@style/AnimateCheckBoxStyle"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:visibility="gone"
-        android:layout_gravity="center" />
 
     <com.vangogh.media.view.CheckView
         android:id="@+id/num_checkbox"

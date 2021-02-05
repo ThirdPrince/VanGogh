@@ -119,10 +119,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         mediaViewModel.lvMediaData.observe(this, Observer {
             MediaPreviewUtil.currentMediaList.clear()
             MediaPreviewUtil.currentMediaList.addAll(it)
-            mediaItemAdapter = MediaGridItemAdapter(this,  MediaPreviewUtil.currentMediaList!!)
-            rcy_view.adapter = mediaItemAdapter
-            mediaItemAdapter!!.onMediaItemClickListener = this
-            mediaItemAdapter!!.onItemCheckListener = this
+            mediaItemAdapter.notifyDataSetChanged()
 
 
         })
@@ -144,7 +141,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         rcyView.layoutManager = gridLayoutManager
         rcyView.itemAnimator = DefaultItemAnimator()
         rcyView.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
-
+        mediaItemAdapter = MediaGridItemAdapter(this,  MediaPreviewUtil.currentMediaList)
+        rcy_view.adapter = mediaItemAdapter
+        mediaItemAdapter!!.onMediaItemClickListener = this
+        mediaItemAdapter!!.onItemCheckListener = this
         when(VanGoghConst.MEDIA_TYPE){
             VanGoghConst.MediaType.MediaAll -> mediaTitle.text = getString(R.string.media_title_str)
             VanGoghConst.MediaType.MediaOnlyImage -> mediaTitle.text = getString(R.string.image_title_str)
@@ -205,29 +205,20 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     @SuppressLint("StringFormatMatches")
     override fun onItemCheckClick(view: View?, position: Int, isChecked: Boolean) {
-        if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
-            toast(getString(R.string.picture_message_max_num,VanGoghConst.MAX_MEDIA))
-            mediaItemAdapter.notifyItemChanged(position)
-            return
-        }
+
         var mediaItem = mediaItemAdapter.items[position]
         if(VanGogh.selectMediaList.contains(mediaItem)){
             VanGogh.selectMediaList.remove(mediaItem)
+            mediaItemAdapter.notifyDataSetChanged()
         }else{
-            VanGogh.selectMediaList.add(mediaItem)
-        }
-        mediaItemAdapter.notifyItemChanged(position)
-       /* if (isChecked) {
             if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
-               toast(getString(R.string.picture_message_max_num,VanGoghConst.MAX_MEDIA))
+                toast(getString(R.string.picture_message_max_num,VanGoghConst.MAX_MEDIA))
                 mediaItemAdapter.notifyItemChanged(position)
                 return
             }
             VanGogh.selectMediaList.add(mediaItem)
-        } else {
-            VanGogh.selectMediaList.remove(mediaItem)
-
-        }*/
+            mediaItemAdapter.notifyItemChanged(position)
+        }
         mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
         updateTitle()
     }
