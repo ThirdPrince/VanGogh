@@ -44,6 +44,6 @@
     <color name="picture_color_529BeA">#529BeA</color>
     <color name="ip_color_press">#ffe0e0e0</color>
     <color name="color_e5e5e5">#E5E5E5</color>
-    <color name="zhihu_item_checkCircle_backgroundColor">#1E8AE8</color>
+    <color name="media_item_checkCircle_backgroundColor">#1E8AE8</color>
     <color name="transparent_70_black">#4C000000</color>
 </resources>

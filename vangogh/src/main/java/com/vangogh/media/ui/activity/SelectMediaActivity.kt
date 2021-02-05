@@ -5,12 +5,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -100,6 +103,9 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.picture_color_grey)
+        }
         setContentView(R.layout.activity_select_media)
         initView()
         initSendMediaListener()
@@ -130,6 +136,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun initView(){
         mediaTitleLay = findViewById(R.id.media_title_lay)
         mediaTitle = findViewById(R.id.media_title)
@@ -151,6 +158,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             VanGoghConst.MediaType.MediaOnlyGif -> mediaTitle.text = getString(R.string.gif_title_str)
             VanGoghConst.MediaType.MediaOnlyVideo -> mediaTitle.text = getString(R.string.video_title_str)
         }
+
     }
 
     private fun initMediaDirPop() {

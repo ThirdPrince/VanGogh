@@ -25,5 +25,7 @@
         >
     </ViewStub>
 
+    <include layout="@layout/media_bottom_bar" />
+
 
 </RelativeLayout>

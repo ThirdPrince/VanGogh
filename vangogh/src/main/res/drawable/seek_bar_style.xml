@@ -4,6 +4,7 @@
     <item android:id="@android:id/background">
 
         <shape>
+            <corners android:radius="@dimen/dimen_10dp"></corners>
             <solid android:color="#707070"></solid>
             <size android:height="5dp"></size>
         </shape>
@@ -13,6 +14,7 @@
 
         <clip>
         <shape>
+            <corners android:radius="@dimen/dimen_10dp"></corners>
             <solid android:color="#B94310"></solid>
             <size android:height="5dp"></size>
         </shape>

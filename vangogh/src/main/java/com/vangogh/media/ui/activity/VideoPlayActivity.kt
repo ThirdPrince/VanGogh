@@ -83,7 +83,6 @@ class VideoPlayActivity : AppCompatActivity() {
         videoView.start()
         videoHandler.sendEmptyMessageDelayed(UPDATE_UI,500)
     }
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun initEvent(){
         videoPlay.setOnClickListener(View.OnClickListener {
             if (videoView.isPlaying) {
@@ -97,17 +96,11 @@ class VideoPlayActivity : AppCompatActivity() {
             }
         })
 
-       /* videoView.setOnCompletionListener {
-            MediaPlayer.OnCompletionListener {
-
-            }
-
-        }*/
         videoView.setOnCompletionListener {
             videoPlay.setImageResource(R.drawable.play_btn_style)
            // playSeek.progress =0
             videoHandler.removeMessages(UPDATE_UI)
-            playSeek.setProgress(0,false)
+            playSeek.progress = 0
             //playSeek.max = videoView.duration
 
         }
