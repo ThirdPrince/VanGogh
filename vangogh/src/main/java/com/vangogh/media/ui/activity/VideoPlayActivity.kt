@@ -3,6 +3,7 @@ package com.vangogh.media.ui.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -12,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.VideoView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.fragment.app.FragmentActivity
@@ -43,8 +45,8 @@ class VideoPlayActivity : AppCompatActivity() {
     lateinit var videoView :VideoView
     lateinit var videoPlay:ImageView
     lateinit var playSeek:AppCompatSeekBar
-    lateinit var time_current_tv :TextView
-    lateinit var time_total_tv :TextView
+    lateinit var timeCurrentTv :TextView
+    lateinit var timeTotalTv :TextView
 
     private  var currentPosition  = 0
 
@@ -55,8 +57,8 @@ class VideoPlayActivity : AppCompatActivity() {
             if (msg.what === UPDATE_UI) {
                 val currentPosition = videoView.currentPosition
                 val totalDuration = videoView.duration
-                updateTv(time_current_tv, currentPosition)
-                updateTv(time_total_tv, totalDuration)
+                updateTv(timeCurrentTv, currentPosition)
+                updateTv(timeTotalTv, totalDuration)
                 playSeek.max = totalDuration
                 playSeek.progress = currentPosition
                 sendEmptyMessageDelayed(UPDATE_UI, 500)
@@ -75,12 +77,13 @@ class VideoPlayActivity : AppCompatActivity() {
         videoPlay = findViewById(R.id.iv_play)
         videoView = findViewById(R.id.video_view)
         playSeek = findViewById(R.id.play_seek)
-        time_current_tv = findViewById(R.id.time_current_tv)
-        time_total_tv = findViewById(R.id.time_total_tv)
+        timeCurrentTv = findViewById(R.id.time_current_tv)
+        timeTotalTv = findViewById(R.id.time_total_tv)
         videoView.setVideoURI(mediaItem.pathUri)
         videoView.start()
         videoHandler.sendEmptyMessageDelayed(UPDATE_UI,500)
     }
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun initEvent(){
         videoPlay.setOnClickListener(View.OnClickListener {
             if (videoView.isPlaying) {
@@ -94,10 +97,18 @@ class VideoPlayActivity : AppCompatActivity() {
             }
         })
 
-        videoView.setOnCompletionListener {
+       /* videoView.setOnCompletionListener {
             MediaPlayer.OnCompletionListener {
-                videoPlay.setImageResource(R.drawable.play_btn_style)
+
             }
+
+        }*/
+        videoView.setOnCompletionListener {
+            videoPlay.setImageResource(R.drawable.play_btn_style)
+           // playSeek.progress =0
+            videoHandler.removeMessages(UPDATE_UI)
+            playSeek.setProgress(0,false)
+            //playSeek.max = videoView.duration
 
         }
 
@@ -143,16 +154,16 @@ class VideoPlayActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         currentPosition = videoView.currentPosition
-        videoView.pause()
+        videoView.suspend()
     }
 
     override fun onResume() {
-
+        super.onResume()
         if (currentPosition >= 0) {
-            videoView.start()
             videoView.seekTo(currentPosition)
+            videoView.start()
             currentPosition = -1
         }
-        super.onResume()
+
     }
 }
