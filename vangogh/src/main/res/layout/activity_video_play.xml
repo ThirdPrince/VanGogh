@@ -13,68 +13,76 @@
         android:layout_centerInParent="true" />
 
     <ImageView
-        android:id="@+id/iv_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dimen_50dp"
+        android:layout_height="@dimen/dimen_50dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/picture_icon_video_play"
+        android:src="@drawable/pause_btn_style"
         android:visibility="invisible" />
 
-    <ImageButton
-        android:id="@+id/pictureLeftBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@color/picture_color_transparent"
-        android:scaleType="centerInside"
-        android:src="@drawable/picture_icon_back" />
+    <ImageView
+        android:id="@+id/ic_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:src="@drawable/ic_back_white" />
 
     <LinearLayout
         android:id="@+id/left_lay"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dimen_50dp"
         android:gravity="center_vertical"
-        >
+        android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/pause_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/iv_play"
+            android:layout_width="@dimen/dimen_30dp"
+            android:layout_height="@dimen/dimen_30dp"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/picture_icon_video_play"
-            />
+            android:src="@drawable/pause_btn_style" />
 
-        <TextView
-            android:id="@+id/time_current_tv"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="00:00:00"
-            android:textColor="#ffffff"
-            android:textSize="14sp"
-            android:layout_marginLeft="32dp"
-            />
+            android:layout_marginLeft="@dimen/dimen_30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/"
-            android:textColor="#ffffff"
-            android:textSize="14sp"
-            android:layout_marginLeft="5dp"
-            />
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/play_seek"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="-20dp"
+                android:layout_marginRight="-20dp"
+                android:layout_height="5dp"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/seek_bar_style"
+                android:thumb="@null" />
 
-        <TextView
-            android:id="@+id/time_total_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:00:00"
-            android:textColor="#4c4c4c"
-            android:textSize="14sp"
-            android:layout_marginLeft="5dp"
-            />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                 >
+                <TextView
+                    android:id="@+id/time_current_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="00:00:00"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/time_total_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="00:00"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
-
-
 </RelativeLayout>
