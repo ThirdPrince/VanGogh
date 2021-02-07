@@ -2,6 +2,7 @@ package com.example.vangogh
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -13,6 +14,7 @@ import com.example.vangogh.itf.OnAddMediaListener
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.ui.activity.BaseSelectActivity
 import com.vangogh.media.itf.OnMediaResult as OnMediaResult
 
 /**
@@ -78,6 +80,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener,
         selectFilter()
         vanGogh.startForResult(this).onMediaResult = object : OnMediaResult {
             override fun onResult(mediaList: List<MediaItem>) {
+                Log.e("Main","mediaList = ${mediaList.toString()}")
                 gridMediaAdapter = GridMediaAdapter(activity, mediaList)
                 rcyView.adapter = gridMediaAdapter
                 gridMediaAdapter.onAddMediaListener = activity

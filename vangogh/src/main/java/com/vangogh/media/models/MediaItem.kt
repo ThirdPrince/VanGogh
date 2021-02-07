@@ -29,7 +29,8 @@ data class MediaItem(
     var height: Int = 0,
     var mineType: String? = null,
     var duration: Long = 0,
-    var dataToken: Long = 0
+    var dataToken: Long = 0,
+    var isOriginal: Boolean = false
 ) :
     Parcelable {
 
@@ -38,7 +39,8 @@ data class MediaItem(
                 "compressPath = $compressPath \n"+
                 "size = $size \n"+
                 "width = $width \n" +
-                "height = $height"
+                "height = $height \n" +
+               "isOriginal = $isOriginal"
     }
 
     fun isGif():Boolean{

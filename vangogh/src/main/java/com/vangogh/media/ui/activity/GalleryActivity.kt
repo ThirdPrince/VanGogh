@@ -36,16 +36,21 @@ class GalleryActivity : BaseSelectActivity() {
          */
         const val MEDIA_POS = "mediaPos"
 
+        const val IMAGE_ORIGINAL = "ImageOriginal"
+
         const val REQUEST_CODE = 1024
 
-        fun actionStart(activity: AppCompatActivity, mediaPos: Int) {
+        fun actionStart(activity: AppCompatActivity, mediaPos: Int,imageOriginal: Boolean) {
             var intent = Intent(activity, GalleryActivity::class.java).apply {
                 putExtra(MEDIA_POS, mediaPos)
+                putExtra(IMAGE_ORIGINAL, imageOriginal)
             }
             activity.startActivityForResult(intent, REQUEST_CODE)
 
         }
     }
+
+
 
     private val topBarRoot by lazy { findViewById<RelativeLayout>(R.id.top_bar_root) }
 
@@ -57,17 +62,15 @@ class GalleryActivity : BaseSelectActivity() {
 
     private var currentMedia: MediaItem? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_gallery)
-        initSendMediaListener()
         getData()
         initListener()
         viewPager2.apply {
             offscreenPageLimit = 1
             adapter = MediaPreviewAdapter(activity, MediaPreviewUtil.currentMediaList!!)
             setCurrentItem(mediaPos, false)
-            //Log.e(TAG,"media="+MediaPreviewUtil.currentMediaList!![mediaPos])
             setMediaIndex()
             setSelectMediaState()
             registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -80,7 +83,10 @@ class GalleryActivity : BaseSelectActivity() {
 
             })
         }
-       // media_send.isEnabled = true
+    }
+
+    override fun contentLayout(): Int {
+       return R.layout.activity_gallery
     }
 
     private fun initListener() {
@@ -91,16 +97,21 @@ class GalleryActivity : BaseSelectActivity() {
             @SuppressLint("StringFormatMatches")
             override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {
                 if (isChecked) {
+                    imageOriginal = true
                     if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
                         toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
                         checkbox.isChecked = false
                         return
                     }
                     if (!VanGogh.selectMediaList.contains(currentMedia)) {
+                        if(cbOriginal.isChecked){
+                            currentMedia!!.isOriginal = true
+                        }
                         VanGogh.selectMediaList.add(currentMedia!!)
                     }
 
                 } else {
+                    imageOriginal = false
                     VanGogh.selectMediaList.remove(currentMedia!!)
                 }
                 updateTitle()
@@ -122,12 +133,13 @@ class GalleryActivity : BaseSelectActivity() {
                 )
             ), false
         )
-        //updateTitle()
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent()
+        //super.onBackPressed()
+        val intent = Intent().apply {
+            putExtra(IMAGE_ORIGINAL, cbOriginal.isChecked)
+        }
         setResult(Activity.RESULT_CANCELED, intent)
         finish()
     }

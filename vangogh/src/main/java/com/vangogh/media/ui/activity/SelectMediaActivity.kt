@@ -8,10 +8,13 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -82,6 +85,8 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     private lateinit var ivArrow :ImageView
 
+
+
     /**
      * media dir list
      */
@@ -103,12 +108,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.picture_color_grey)
-        }
-        setContentView(R.layout.activity_select_media)
         initView()
-        initSendMediaListener()
         initMediaDirPop()
         mediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
@@ -134,6 +134,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         })
 
 
+    }
+
+    override fun contentLayout(): Int {
+        return  R.layout.activity_select_media
     }
 
     @SuppressLint("ResourceAsColor")
@@ -208,7 +212,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
 
     override fun onItemClick(view: View?, position: Int) {
-        GalleryActivity.actionStart(this, position)
+        GalleryActivity.actionStart(this, position,cbOriginal.isChecked)
     }
 
     @SuppressLint("StringFormatMatches")
@@ -224,6 +228,9 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 mediaItemAdapter.notifyItemChanged(position)
                 return
             }
+            if(cbOriginal.isChecked){
+                mediaItem.isOriginal = true
+            }
             VanGogh.selectMediaList.add(mediaItem)
             mediaItemAdapter.notifyItemChanged(position)
         }
@@ -238,6 +245,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         when(requestCode){
             GalleryActivity.REQUEST_CODE->{
                 if(resultCode == Activity.RESULT_CANCELED){
+                    cbOriginal.isChecked = data!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL,false)
                     refreshMedia()
                 }
             }
