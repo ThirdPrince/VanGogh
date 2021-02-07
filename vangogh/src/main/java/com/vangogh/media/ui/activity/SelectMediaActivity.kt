@@ -260,8 +260,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         when(requestCode){
             GalleryActivity.REQUEST_CODE->{
                 if(resultCode == Activity.RESULT_CANCELED){
-                    cbOriginal.isChecked = data!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL,false)
-                    refreshMedia()
+                    if(data != null) {
+                        cbOriginal.isChecked =
+                            data.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL, false)
+                        refreshMedia()
+                    }
                 }
             }
         }

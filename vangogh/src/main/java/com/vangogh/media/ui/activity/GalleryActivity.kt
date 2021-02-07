@@ -94,6 +94,9 @@ class GalleryActivity : BaseSelectActivity() {
             registerOnPageChangeCallback(object : OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    if (!mediaPreviewSelect){
+
+                    }
                     mediaPos = position
                     setMediaIndex()
                     setSelectMediaState()
@@ -160,7 +163,7 @@ class GalleryActivity : BaseSelectActivity() {
         private fun setSelectMediaState() {
             checkbox.setChecked(
                 VanGogh.selectMediaList.contains(
-                    MediaPreviewUtil.currentMediaList?.get(
+                    previewMediaList?.get(
                         mediaPos
                     )
                 ), false
