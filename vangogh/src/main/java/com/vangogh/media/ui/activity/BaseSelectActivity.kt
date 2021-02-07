@@ -1,5 +1,6 @@
 package com.vangogh.media.ui.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -46,6 +47,8 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     var mediaPos: Int = 0
 
     protected var imageOriginal: Boolean  = false
+
+    protected var mediaPreviewSelect: Boolean  = false
 
 
     /**
@@ -95,6 +98,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     protected fun getData() {
         mediaPos = intent!!.getIntExtra(GalleryActivity.MEDIA_POS, 0)
         imageOriginal = intent!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL,false)
+        mediaPreviewSelect = intent!!.getBooleanExtra(GalleryActivity.MEDIA_PREVIEW_SELECT,false)
         cbOriginal.isChecked = imageOriginal
     }
 
@@ -119,7 +123,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.mediaLeftBack -> finish()
+            R.id.mediaLeftBack -> backPress()
             R.id.media_send -> {
                 view_stub?.visibility = View.VISIBLE
                 if (VanGogh.selectMediaList.isEmpty()) {
@@ -157,10 +161,17 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     protected abstract fun contentLayout(): Int
 
 
+
+    protected abstract fun backPress()
+
+
     override fun onDestroy() {
         super.onDestroy()
         VanGogh.selectMediaActivity.remove(this)
     }
 
+    override fun onBackPressed() {
+        backPress()
+    }
 
 }

@@ -19,6 +19,7 @@ import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.view.AnimateCheckBox
 import kotlinx.android.synthetic.main.media_select_button.*
+import kotlin.collections.forEach as forEach
 
 /**
  * @ClassName GalleryActivity
@@ -36,20 +37,29 @@ class GalleryActivity : BaseSelectActivity() {
          */
         const val MEDIA_POS = "mediaPos"
 
-        const val IMAGE_ORIGINAL = "ImageOriginal"
+        const val IMAGE_ORIGINAL = "imageOriginal"
+
+        const val MEDIA_PREVIEW_SELECT = "mediaPreviewSelect"
 
         const val REQUEST_CODE = 1024
 
-        fun actionStart(activity: AppCompatActivity, mediaPos: Int,imageOriginal: Boolean) {
+        fun actionStart(
+            activity: AppCompatActivity,
+            mediaPos: Int,
+            imageOriginal: Boolean,
+            isPreviewSelectMedia: Boolean
+        ) {
             var intent = Intent(activity, GalleryActivity::class.java).apply {
                 putExtra(MEDIA_POS, mediaPos)
                 putExtra(IMAGE_ORIGINAL, imageOriginal)
+                putExtra(MEDIA_PREVIEW_SELECT, isPreviewSelectMedia)
             }
             activity.startActivityForResult(intent, REQUEST_CODE)
 
         }
-    }
 
+
+    }
 
 
     private val topBarRoot by lazy { findViewById<RelativeLayout>(R.id.top_bar_root) }
@@ -60,6 +70,9 @@ class GalleryActivity : BaseSelectActivity() {
 
     private val checkbox by lazy { findViewById<AnimateCheckBox>(R.id.checkbox) }
 
+    private var previewMediaList = mutableListOf<MediaItem>()
+
+
     private var currentMedia: MediaItem? = null
 
 
@@ -69,7 +82,12 @@ class GalleryActivity : BaseSelectActivity() {
         initListener()
         viewPager2.apply {
             offscreenPageLimit = 1
-            adapter = MediaPreviewAdapter(activity, MediaPreviewUtil.currentMediaList!!)
+            previewMediaList = if (mediaPreviewSelect) {
+                VanGogh.selectMediaList
+            } else {
+                MediaPreviewUtil.currentMediaList!!
+            }
+            adapter = MediaPreviewAdapter(activity, previewMediaList)
             setCurrentItem(mediaPos, false)
             setMediaIndex()
             setSelectMediaState()
@@ -86,63 +104,76 @@ class GalleryActivity : BaseSelectActivity() {
     }
 
     override fun contentLayout(): Int {
-       return R.layout.activity_gallery
+        return R.layout.activity_gallery
     }
 
-    private fun initListener() {
-        topBarRoot.setOnClickListener {
-            finish()
+    override fun backPress() {
+        val intentBack = Intent().apply {
+            putExtra(GalleryActivity.IMAGE_ORIGINAL, cbOriginal.isChecked)
         }
-        checkbox.setOnCheckedChangeListener(object : AnimateCheckBox.OnCheckedChangeListener {
-            @SuppressLint("StringFormatMatches")
-            override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {
-                if (isChecked) {
-                    imageOriginal = true
-                    if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
-                        toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
-                        checkbox.isChecked = false
-                        return
-                    }
-                    if (!VanGogh.selectMediaList.contains(currentMedia)) {
-                        if(cbOriginal.isChecked){
-                            currentMedia!!.isOriginal = true
-                        }
-                        VanGogh.selectMediaList.add(currentMedia!!)
-                    }
-
-                } else {
-                    imageOriginal = false
-                    VanGogh.selectMediaList.remove(currentMedia!!)
-                }
-                updateTitle()
-            }
-
-        })
-    }
-
-    private fun setMediaIndex() {
-        currentMedia = MediaPreviewUtil.currentMediaList!![mediaPos]
-        mediaIndexTv.text = "${mediaPos + 1} / ${MediaPreviewUtil.currentMediaList!!.size}"
-    }
-
-    private fun setSelectMediaState() {
-        checkbox.setChecked(
-            VanGogh.selectMediaList.contains(
-                MediaPreviewUtil.currentMediaList?.get(
-                    mediaPos
-                )
-            ), false
-        )
-    }
-
-    override fun onBackPressed() {
-        //super.onBackPressed()
-        val intent = Intent().apply {
-            putExtra(IMAGE_ORIGINAL, cbOriginal.isChecked)
-        }
-        setResult(Activity.RESULT_CANCELED, intent)
+        setResult(Activity.RESULT_CANCELED, intentBack)
         finish()
     }
 
 
-}
+        private fun initListener() {
+            topBarRoot.setOnClickListener {
+                finish()
+            }
+            checkbox.setOnCheckedChangeListener(object : AnimateCheckBox.OnCheckedChangeListener {
+                @SuppressLint("StringFormatMatches")
+                override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {
+                    if (isChecked) {
+                        imageOriginal = true
+                        if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
+                            toast(
+                                getString(
+                                    R.string.picture_message_max_num,
+                                    VanGoghConst.MAX_MEDIA
+                                )
+                            )
+                            checkbox.isChecked = false
+                            return
+                        }
+                        if (!VanGogh.selectMediaList.contains(currentMedia)) {
+                            if (cbOriginal.isChecked) {
+                                currentMedia!!.isOriginal = true
+                            }
+                            VanGogh.selectMediaList.add(currentMedia!!)
+                        }
+
+                    } else {
+                        imageOriginal = false
+                        VanGogh.selectMediaList.remove(currentMedia!!)
+                    }
+                    updateTitle()
+                }
+
+            })
+        }
+
+        private fun setMediaIndex() {
+            currentMedia = previewMediaList!![mediaPos]
+            mediaIndexTv.text = "${mediaPos + 1} / ${previewMediaList!!.size}"
+        }
+
+        private fun setSelectMediaState() {
+            checkbox.setChecked(
+                VanGogh.selectMediaList.contains(
+                    MediaPreviewUtil.currentMediaList?.get(
+                        mediaPos
+                    )
+                ), false
+            )
+        }
+
+        /* override fun onBackPressed() {
+             val intent = Intent().apply {
+                 putExtra(IMAGE_ORIGINAL, cbOriginal.isChecked)
+             }
+             setResult(Activity.RESULT_CANCELED, intent)
+             finish()
+         }*/
+
+
+    }

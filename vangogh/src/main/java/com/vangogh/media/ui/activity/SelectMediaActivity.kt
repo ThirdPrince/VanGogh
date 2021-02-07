@@ -85,6 +85,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     private lateinit var ivArrow :ImageView
 
+    private  val mediaPreview:TextView by lazy {
+        findViewById<TextView>(R.id.media_preview_tv)
+    }
+
 
 
     /**
@@ -140,6 +144,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         return  R.layout.activity_select_media
     }
 
+    override fun backPress() {
+        finish()
+    }
+
     @SuppressLint("ResourceAsColor")
     private fun initView(){
         mediaTitleLay = findViewById(R.id.media_title_lay)
@@ -190,6 +198,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             })
 
         }
+
+        mediaPreview.setOnClickListener {
+            GalleryActivity.actionStart(this, 0,cbOriginal.isChecked,true)
+        }
     }
 
     private fun refreshMedia(){
@@ -212,7 +224,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
 
     override fun onItemClick(view: View?, position: Int) {
-        GalleryActivity.actionStart(this, position,cbOriginal.isChecked)
+        GalleryActivity.actionStart(this, position,cbOriginal.isChecked,false)
     }
 
     @SuppressLint("StringFormatMatches")
@@ -236,6 +248,9 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
         mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
         updateTitle()
+        if(VanGogh.selectMediaList.size >0){
+            mediaPreview.isEnabled = true
+        }
     }
 
 

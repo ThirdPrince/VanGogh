@@ -15,6 +15,7 @@
         android:id="@+id/rcy_view"
         android:layout_below="@id/titleViewBg"
         android:layout_width="match_parent"
+        android:layout_above="@+id/select_bar_layout"
         android:layout_height="match_parent"/>
     <ViewStub
         android:id="@+id/view_stub"
