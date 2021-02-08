@@ -62,7 +62,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         MediaStore.Images.Media.HEIGHT,  //图片的高度，int型  1080
         MediaStore.Images.Media.MIME_TYPE,  //图片的类型     image/jpeg
         MediaStore.Images.Media.DURATION,
-        MediaStore.Images.Media.DATE_ADDED
+        MediaStore.Images.Media.DATE_TAKEN
     )
 
     private fun registerContentObserver() {
@@ -125,6 +125,8 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                     cursor.getString(cursor.getColumnIndexOrThrow(mediaProjection[7]))
                 val mediaDuration: Long =
                     cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[8]))
+                val mediaTime: Long =
+                    cursor.getLong(cursor.getColumnIndexOrThrow(mediaProjection[9]))
                 val uri = ContentUris.withAppendedId(uri, mediaId)
                 val mediaItem = MediaItem()
                 mediaItem.id = mediaId
@@ -137,6 +139,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.size = imageSize
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
+                mediaItem.dataToken = mediaTime
                /* Log.e(
                     TAG,
                     "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: bucketName::=$bucketName"

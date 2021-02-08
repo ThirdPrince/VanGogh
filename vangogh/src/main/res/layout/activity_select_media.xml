@@ -11,12 +11,31 @@
 
     <include layout="@layout/media_grid_top_bar"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcy_view"
-        android:layout_below="@id/titleViewBg"
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_below="@id/titleViewBg"
         android:layout_above="@+id/select_bar_layout"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcy_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tv_image_time"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:background="@color/picture_color_grey_3e"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:textColor="@color/picture_color_white"
+            android:visibility="gone"
+            />
+
+    </RelativeLayout>
+
+
     <ViewStub
         android:id="@+id/view_stub"
         android:layout_centerInParent="true"

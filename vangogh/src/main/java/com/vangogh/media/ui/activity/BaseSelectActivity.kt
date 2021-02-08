@@ -143,6 +143,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             media_send.isEnabled = false
             media_send.text = resources.getString(R.string.media_send_not_enable)
         }
+
     }
 
     /**

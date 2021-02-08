@@ -5,18 +5,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,7 +27,9 @@ import com.vangogh.media.extend.toast
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaDir
+import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.MediaPreviewUtil
+import com.vangogh.media.utils.MediaTimeUtils
 import com.vangogh.media.view.MediaDirPopWindow
 import com.vangogh.media.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
@@ -85,8 +82,15 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     private lateinit var ivArrow :ImageView
 
+    /**
+     * preview media
+     */
     private  val mediaPreview:TextView by lazy {
         findViewById<TextView>(R.id.media_preview_tv)
+    }
+
+    private val tvImageTime :TextView by lazy {
+        findViewById<TextView>(R.id.tv_image_time)
     }
 
 
@@ -114,6 +118,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         super.onCreate(savedInstanceState)
         initView()
         initMediaDirPop()
+        initScrollEvent()
         mediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 MediaViewModel::class.java
@@ -160,35 +165,62 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         rcyView.layoutManager = gridLayoutManager
         rcyView.itemAnimator = DefaultItemAnimator()
         rcyView.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
-        mediaItemAdapter = MediaGridItemAdapter(this,  MediaPreviewUtil.currentMediaList)
+        mediaItemAdapter = MediaGridItemAdapter(this, MediaPreviewUtil.currentMediaList)
         rcy_view.adapter = mediaItemAdapter
         mediaItemAdapter!!.onMediaItemClickListener = this
         mediaItemAdapter!!.onItemCheckListener = this
         when(VanGoghConst.MEDIA_TYPE){
             VanGoghConst.MediaType.MediaAll -> mediaTitle.text = getString(R.string.media_title_str)
-            VanGoghConst.MediaType.MediaOnlyImage -> mediaTitle.text = getString(R.string.image_title_str)
-            VanGoghConst.MediaType.MediaOnlyGif -> mediaTitle.text = getString(R.string.gif_title_str)
-            VanGoghConst.MediaType.MediaOnlyVideo -> mediaTitle.text = getString(R.string.video_title_str)
+            VanGoghConst.MediaType.MediaOnlyImage -> mediaTitle.text =
+                getString(R.string.image_title_str)
+            VanGoghConst.MediaType.MediaOnlyGif -> mediaTitle.text =
+                getString(R.string.gif_title_str)
+            VanGoghConst.MediaType.MediaOnlyVideo -> mediaTitle.text =
+                getString(R.string.video_title_str)
         }
 
+    }
+
+    private fun initScrollEvent(){
+        rcyView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                when(newState){
+                    RecyclerView.SCROLL_STATE_IDLE -> {
+                        tvImageTime.animate().alpha(0f).start()
+                       // tvImageTime.visibility = View.GONE
+                    }
+                    RecyclerView.SCROLL_STATE_DRAGGING -> updateImageTime()
+                }
+
+
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                //updateImageTime()
+            }
+        })
     }
 
     private fun initMediaDirPop() {
         mediaTitleLay.setOnClickListener {
             if (popWindow == null) {
-                popWindow = MediaDirPopWindow(this, mediaDirList,ivArrow)
+                popWindow = MediaDirPopWindow(this, mediaDirList, ivArrow)
             }
             popWindow?.showAsDropDown(titleViewBg)
             popWindow?.setOnMediaItemClickListener(object : OnMediaItemClickListener {
                 override fun onItemClick(view: View?, position: Int) {
-                    if( popWindow?.dirCheckPosition !== position){
+                    if (popWindow?.dirCheckPosition !== position) {
                         mediaTitle.text = popWindow?.mediaDirAdapter!!.items[position].name
                         var mediaItemList = mediaDirList[position].medias
                         popWindow?.dirCheckPosition = position
                         MediaPreviewUtil.currentMediaList.clear()
                         MediaPreviewUtil.currentMediaList.addAll(mediaItemList)
                         val lastVisible: Int = gridLayoutManager.findLastVisibleItemPosition()
-                        if(lastVisible > 25){
+                        if (lastVisible > 25) {
                             rcyView.scrollToPosition(0)
                         }
                         mediaItemAdapter.notifyDataSetChanged()
@@ -200,7 +232,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
 
         mediaPreview.setOnClickListener {
-            GalleryActivity.actionStart(this, 0,cbOriginal.isChecked,true)
+            GalleryActivity.actionStart(this, 0, cbOriginal.isChecked, true)
         }
     }
 
@@ -208,6 +240,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
         updateTitle()
         mediaItemAdapter.notifyDataSetChanged()
+        updateMediaPreview()
     }
 
 
@@ -224,7 +257,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
 
     override fun onItemClick(view: View?, position: Int) {
-        GalleryActivity.actionStart(this, position,cbOriginal.isChecked,false)
+        GalleryActivity.actionStart(this, position, cbOriginal.isChecked, false)
     }
 
     @SuppressLint("StringFormatMatches")
@@ -234,9 +267,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         if(VanGogh.selectMediaList.contains(mediaItem)){
             VanGogh.selectMediaList.remove(mediaItem)
             mediaItemAdapter.notifyDataSetChanged()
+
+           // mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size+1)
         }else{
             if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
-                toast(getString(R.string.picture_message_max_num,VanGoghConst.MAX_MEDIA))
+                toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
                 mediaItemAdapter.notifyItemChanged(position)
                 return
             }
@@ -248,19 +283,45 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
         mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
         updateTitle()
+        updateMediaPreview()
+    }
+
+    private fun updateMediaPreview(){
         if(VanGogh.selectMediaList.size >0){
             mediaPreview.isEnabled = true
+            mediaPreview.text = getString(R.string.media_preview_num, VanGogh.selectMediaList.size)
+        }else{
+            mediaPreview.isEnabled = false
+            mediaPreview.text = getString(R.string.media_preview)
         }
     }
 
+
+    /**
+     * 更新时间
+     */
+    private fun updateImageTime() {
+        val position: Int = gridLayoutManager.findFirstVisibleItemPosition()
+        if (position != RecyclerView.NO_POSITION) {
+            val mediaItem: MediaItem = mediaItemAdapter.items[position]
+            if (mediaItem != null) {
+                if (tvImageTime.visibility != View.VISIBLE) {
+                    tvImageTime.visibility = View.VISIBLE
+                }
+                val time: String = MediaTimeUtils.getMediaTime(mediaItem.dataToken)
+                tvImageTime.text = time
+                tvImageTime.animate().alpha(1f).start()
+            }
+        }
+    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode){
-            GalleryActivity.REQUEST_CODE->{
-                if(resultCode == Activity.RESULT_CANCELED){
-                    if(data != null) {
+            GalleryActivity.REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    if (data != null) {
                         cbOriginal.isChecked =
                             data.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL, false)
                         refreshMedia()
