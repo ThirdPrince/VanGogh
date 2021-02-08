@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/ip_color_press"  android:state_pressed="true" />
-    <item android:drawable="@android:color/white" />
+    <item android:drawable="@color/picture_color_grey_3e"  android:state_pressed="true" />
+    <item android:drawable="@color/media_color_grey" />
 </selector>

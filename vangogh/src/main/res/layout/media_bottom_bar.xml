@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="45dp"
     android:layout_alignParentBottom="true"
-    android:background="@color/picture_color_grey">
+    android:background="@color/media_color_grey">
 
     <TextView
         android:id="@+id/media_preview_tv"

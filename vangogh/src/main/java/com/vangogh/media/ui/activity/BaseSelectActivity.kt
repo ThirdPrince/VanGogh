@@ -1,13 +1,9 @@
 package com.vangogh.media.ui.activity
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -77,7 +73,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.picture_color_grey)
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.media_color_grey)
         }
         setContentView(contentLayout())
         initSendMediaListener()

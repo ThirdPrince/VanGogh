@@ -66,9 +66,9 @@
     <style name="picture.default.style" parent="Base.Theme.NoActionBar">
         <!-- Customize your theme here. -->
         <!--标题栏背景色-->
-        <item name="colorPrimary">@color/picture_color_grey</item>
+        <item name="colorPrimary">@color/media_color_grey</item>
         <!--状态栏背景色-->
-        <item name="colorPrimaryDark">@color/picture_color_grey</item>
+        <item name="colorPrimaryDark">@color/media_color_grey</item>
         <!--是否改变图片列表界面状态栏字体颜色为黑色-->
         <item name="picture.statusFontColor">false</item>
         <!--返回键图标-->
@@ -88,7 +88,7 @@
         <!--选择图片样式0/9-->
         <item name="picture.style.numComplete">false</item>
         <!--图片列表底部背景色-->
-        <item name="picture.bottom.bg">@color/picture_color_grey</item>
+        <item name="picture.bottom.bg">@color/media_color_grey</item>
         <!--图片列表预览文字颜色-->
         <item name="picture.preview.textColor">@color/picture_list_text_color</item>
         <!--图片列表已完成文字颜色-->
@@ -100,15 +100,15 @@
         <!--预览界面已完成文字颜色-->
         <item name="picture.ac_preview.complete.textColor">@color/picture_list_text_color</item>
         <!--预览界面标题栏背景色-->
-        <item name="picture.ac_preview.title.bg">@color/picture_color_grey</item>
+        <item name="picture.ac_preview.title.bg">@color/media_color_grey</item>
         <!--预览界面底部背景色-->
-        <item name="picture.ac_preview.bottom.bg">@color/picture_color_grey</item>
+        <item name="picture.ac_preview.bottom.bg">@color/media_color_grey</item>
         <!--预览界面返回箭头-->
         <item name="picture.preview.leftBack.icon">@drawable/picture_icon_back</item>
         <!--裁剪页面标题背景色-->
-        <item name="picture.crop.toolbar.bg">@color/picture_color_grey</item>
+        <item name="picture.crop.toolbar.bg">@color/media_color_grey</item>
         <!--裁剪页面状态栏颜色-->
-        <item name="picture.crop.status.color">@color/picture_color_grey</item>
+        <item name="picture.crop.status.color">@color/media_color_grey</item>
         <!--裁剪页面标题文字颜色-->
         <item name="picture.crop.title.color">@color/picture_color_white</item>
         <!--相册文件夹列表选中图标-->
@@ -120,9 +120,9 @@
     <style name="picture.WeChat.style" parent="Base.Theme.NoActionBar">
         <!-- Customize your theme here. -->
         <!--标题栏背景色-->
-        <item name="colorPrimary">@color/picture_color_grey</item>
+        <item name="colorPrimary">@color/media_color_grey</item>
         <!--状态栏背景色-->
-        <item name="colorPrimaryDark">@color/picture_color_grey</item>
+        <item name="colorPrimaryDark">@color/media_color_grey</item>
         <!--是否改变图片列表界面状态栏字体颜色为黑色-->
         <item name="picture.statusFontColor">false</item>
         <!--返回键图标-->
@@ -142,7 +142,7 @@
         <!--选择图片样式0/9-->
         <item name="picture.style.numComplete">false</item>
         <!--图片列表底部背景色-->
-        <item name="picture.bottom.bg">@color/picture_color_grey</item>
+        <item name="picture.bottom.bg">@color/media_color_grey</item>
         <!--图片列表预览文字颜色-->
         <item name="picture.preview.textColor">@color/picture_color_white</item>
         <!--图片列表已完成文字颜色-->
@@ -154,15 +154,15 @@
         <!--预览界面已完成文字颜色-->
         <item name="picture.ac_preview.complete.textColor">@color/picture_color_white</item>
         <!--预览界面标题栏背景色-->
-        <item name="picture.ac_preview.title.bg">@color/picture_color_grey</item>
+        <item name="picture.ac_preview.title.bg">@color/media_color_grey</item>
         <!--预览界面底部背景色-->
-        <item name="picture.ac_preview.bottom.bg">@color/picture_color_grey</item>
+        <item name="picture.ac_preview.bottom.bg">@color/media_color_grey</item>
         <!--预览界面返回箭头-->
         <item name="picture.preview.leftBack.icon">@drawable/picture_icon_back</item>
         <!--裁剪页面标题背景色-->
-        <item name="picture.crop.toolbar.bg">@color/picture_color_grey</item>
+        <item name="picture.crop.toolbar.bg">@color/media_color_grey</item>
         <!--裁剪页面状态栏颜色-->
-        <item name="picture.crop.status.color">@color/picture_color_grey</item>
+        <item name="picture.crop.status.color">@color/media_color_grey</item>
         <!--裁剪页面标题文字颜色-->
         <item name="picture.crop.title.color">@color/picture_color_white</item>
         <!--相册文件夹列表选中图标-->

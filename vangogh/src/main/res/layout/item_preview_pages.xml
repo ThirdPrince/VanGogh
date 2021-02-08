@@ -6,7 +6,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/picture_color_grey"
+    android:background="@color/media_color_grey"
    >
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/photo_view"
