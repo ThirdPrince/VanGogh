@@ -14,6 +14,7 @@ import com.vangogh.media.adapter.MediaDirAdapter
 import com.vangogh.media.extend.getScreenHeight
 import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaDir
+import java.util.*
 
 /**
  * @ClassName MediaDirPopWindow
@@ -59,7 +60,7 @@ class MediaDirPopWindow(val context: Context, var items: List<MediaDir>, var ivA
         isFocusable = true
         isOutsideTouchable = true
         rootView.setOnClickListener(this)
-        maxHeight = (context.getScreenHeight() * 0.65).toInt()
+        maxHeight = (context.getScreenHeight() * 0.75).toInt()
         val listParams: ViewGroup.LayoutParams = recyclerView.layoutParams
         recyclerView.layoutParams
         listParams.height = if (items.size > 8) maxHeight else ViewGroup.LayoutParams.WRAP_CONTENT
@@ -96,7 +97,10 @@ class MediaDirPopWindow(val context: Context, var items: List<MediaDir>, var ivA
     }
 
     private fun setArrowRotation() {
-        ivArrow.animate().setDuration(200).rotationBy(180f)
+        ivArrow.animate().setDuration(200).rotationBy(180f).withEndAction(Runnable {
+
+        })
+
     }
 
 }

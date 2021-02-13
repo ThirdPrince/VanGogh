@@ -96,8 +96,6 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         withContext(Dispatchers.IO) {
             val uri = MediaStore.Files.getContentUri("external")
             val sortOrder = mediaProjection[mediaProjection.size - 1] + " DESC"
-            //Log.d(TAG,"selection = ${VanGogh.selection}")
-           // Log.d(TAG,"selectArgs = ${VanGogh.selectArgs.contentToString()}")
             val cursor = getApplication<Application>().contentResolver.query(
                 uri,
                 mediaProjection,
@@ -140,7 +138,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
                 mediaItem.dataToken = mediaTime
-               /* Log.e(
+              /*  Log.e(
                     TAG,
                     "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: bucketName::=$bucketName"
                 )*/
@@ -148,6 +146,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                     if(  mediaDuration > VanGoghConst.VIDEO_MAX_DURATION || mediaDuration === 0L)
                     continue
                 }
+
                 mediaItemList.add(mediaItem)
             }
         }
@@ -162,7 +161,8 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
     private fun filterDamage(mediaList: List<MediaItem>): MutableList<MediaItem> {
         var mediaItemList = mutableListOf<MediaItem>()
         mediaList.forEach {
-           if(it.width === 0 && !ImageUtils.isImage(it.path)){
+
+           if(it.isImage() && it.width === 0 && !ImageUtils.isImage(it.path)){
 
            }else{
                mediaItemList.add(it)
