@@ -58,7 +58,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     }
 
 
-    private lateinit var rcyView:RecyclerView
+    private lateinit var rcyView: RecyclerView
 
 
     private lateinit var gridLayoutManager: GridLayoutManager
@@ -74,37 +74,36 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     private lateinit var mediaItemAdapter: MediaGridItemAdapter
 
-    private  lateinit var mediaTitleLay:LinearLayout
+    private lateinit var mediaTitleLay: LinearLayout
 
-    private lateinit var  mediaTitle :TextView
+    private lateinit var mediaTitle: TextView
 
-    private  lateinit var titleViewBg:View
+    private lateinit var titleViewBg: View
 
-    private lateinit var ivArrow :ImageView
+    private lateinit var ivArrow: ImageView
 
     /**
      * preview media
      */
-    private  val mediaPreview:TextView by lazy {
+    private val mediaPreview: TextView by lazy {
         findViewById<TextView>(R.id.media_preview_tv)
     }
 
-    private val tvImageTime :TextView by lazy {
+    private val tvImageTime: TextView by lazy {
         findViewById<TextView>(R.id.tv_image_time)
     }
-
 
 
     /**
      * media dir list
      */
 
-    private lateinit var  mediaDirList :List<MediaDir>
+    private lateinit var mediaDirList: List<MediaDir>
 
     /**
      * MediaDir List
      */
-    private  var  popWindow: MediaDirPopWindow?= null
+    private var popWindow: MediaDirPopWindow? = null
 
     /**
      * permissions
@@ -145,13 +144,21 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         })
         mediaViewModel.lvMediaDirData.observe(this, Observer {
             mediaDirList = it
+            if(popWindow != null && popWindow?.dirCheckPosition != 0){
+                var mediaItemList = mediaDirList[popWindow?.dirCheckPosition!!].medias
+                MediaPreviewUtil.currentMediaList.clear()
+                MediaPreviewUtil.currentMediaList.addAll(mediaItemList)
+                mediaItemAdapter.notifyDataSetChanged()
+            }
+
+
         })
 
 
     }
 
     override fun contentLayout(): Int {
-        return  R.layout.activity_select_media
+        return R.layout.activity_select_media
     }
 
     override fun backPress() {
@@ -159,7 +166,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     }
 
     @SuppressLint("ResourceAsColor")
-    private fun initView(){
+    private fun initView() {
         mediaTitleLay = findViewById(R.id.media_title_lay)
         mediaTitle = findViewById(R.id.media_title)
         titleViewBg = findViewById(R.id.titleViewBg)
@@ -175,7 +182,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         rcy_view.adapter = mediaItemAdapter
         mediaItemAdapter!!.onMediaItemClickListener = this
         mediaItemAdapter!!.onItemCheckListener = this
-        when(VanGoghConst.MEDIA_TYPE){
+        when (VanGoghConst.MEDIA_TYPE) {
             VanGoghConst.MediaType.MediaAll -> mediaTitle.text = getString(R.string.media_title_str)
             VanGoghConst.MediaType.MediaOnlyImage -> mediaTitle.text =
                 getString(R.string.image_title_str)
@@ -187,13 +194,13 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     }
 
-    private fun initScrollEvent(){
+    private fun initScrollEvent() {
         rcyView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                when(newState){
+                when (newState) {
                     RecyclerView.SCROLL_STATE_IDLE -> {
                         tvImageTime.animate().alpha(0f).start()
                     }
@@ -240,7 +247,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
     }
 
-    private fun refreshMedia(){
+    private fun refreshMedia() {
         mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
         updateTitle()
         mediaItemAdapter.notifyDataSetChanged()
@@ -268,38 +275,38 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     override fun onItemCheckClick(view: View?, position: Int, isChecked: Boolean) {
 
         var mediaItem = mediaItemAdapter.items[position]
-        if(VanGogh.selectMediaList.contains(mediaItem)){
+        if (VanGogh.selectMediaList.contains(mediaItem)) {
             VanGogh.selectMediaList.remove(mediaItem)
             mediaItemAdapter.notifyDataSetChanged()
-           // mediaItemAdapter.notifyItemChanged(position)
+            // mediaItemAdapter.notifyItemChanged(position)
             VanGogh.selectMediaList.forEach {
                 val pos = mediaItemAdapter.items.indexOf(it)
-               // mediaItemAdapter.notifyItemChanged(pos)
+                // mediaItemAdapter.notifyItemChanged(pos)
             }
 
-            mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size+1)
-        }else{
-            if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
+            mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size + 1)
+        } else {
+            if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
                 toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
                 mediaItemAdapter.notifyItemChanged(position)
                 return
             }
-            if(cbOriginal.isChecked){
+            if (cbOriginal.isChecked) {
                 mediaItem.isOriginal = true
             }
             VanGogh.selectMediaList.add(mediaItem)
             mediaItemAdapter.notifyItemChanged(position)
         }
-       mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
+        mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
         updateTitle()
         updateMediaPreview()
     }
 
-    private fun updateMediaPreview(){
-        if(VanGogh.selectMediaList.size >0){
+    private fun updateMediaPreview() {
+        if (VanGogh.selectMediaList.size > 0) {
             mediaPreview.isEnabled = true
             mediaPreview.text = getString(R.string.media_preview_num, VanGogh.selectMediaList.size)
-        }else{
+        } else {
             mediaPreview.isEnabled = false
             mediaPreview.text = getString(R.string.media_preview)
         }
@@ -327,7 +334,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode){
+        when (requestCode) {
             GalleryActivity.REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_CANCELED) {
                     if (data != null) {
