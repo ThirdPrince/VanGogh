@@ -85,7 +85,7 @@ object VanGogh {
      * maxDuration s
      */
     fun setVideoMaxDuration(maxDuration: Int): VanGogh {
-        VanGoghConst.VIDEO_MAX_DURATION = maxDuration * 1000
+        VanGoghConst.VIDEO_MAX_DURATION = maxDuration * 1000+500
         //selectArgs = MEDIA_SELECTION_ARGS
         return this
     }

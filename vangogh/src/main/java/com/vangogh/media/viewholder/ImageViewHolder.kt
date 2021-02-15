@@ -70,7 +70,6 @@ open class ImageViewHolder(
             if(selectMediaList.size>0) {
                 numCheckBox.setCheckedNum(selectMediaList.indexOf(mediaItem)+1)
             }
-            //numCheckBox.setChecked(true)
             setMediaMask(true)
         } else {
             numCheckBox.setCheckedNum(CheckView.UNCHECKED)

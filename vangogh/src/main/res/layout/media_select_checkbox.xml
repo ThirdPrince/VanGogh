@@ -7,14 +7,14 @@
     android:layout_alignParentRight="true"
     android:clickable="true"
     android:paddingLeft="15dp"
-    android:paddingTop="8dp"
+    android:layout_gravity="center"
     android:paddingRight="8dp"
-    android:paddingBottom="8dp">
+    >
     <com.vangogh.media.view.AnimateCheckBox
         android:id="@+id/checkbox"
         style="@style/AnimateCheckBoxStyle"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center" />
+        android:layout_width="@dimen/dimen_15dp"
+        android:layout_height="@dimen/dimen_15dp"
+         />
 
 </com.vangogh.media.view.CheckSelectFrameLayout>

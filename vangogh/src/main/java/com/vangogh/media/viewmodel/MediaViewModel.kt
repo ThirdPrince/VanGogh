@@ -143,6 +143,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                     "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: bucketName::=$bucketName"
                 )*/
                 if(mediaItem.isVideo()){
+                    //Log.e(TAG,"mediaDuration =$mediaDuration")
                     if(  mediaDuration > VanGoghConst.VIDEO_MAX_DURATION || mediaDuration === 0L)
                     continue
                 }

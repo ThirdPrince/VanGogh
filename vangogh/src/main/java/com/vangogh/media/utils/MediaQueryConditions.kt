@@ -67,7 +67,7 @@ object MediaQueryConditions {
             + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
             + " AND " + MediaStore.MediaColumns.SIZE + ">0"
             + " AND " + MediaStore.MediaColumns.MIME_TYPE + "!=?"
-            + " AND " + MediaStore.MediaColumns.DURATION + "<?"
+            + " AND " + MediaStore.MediaColumns.DURATION + "<=?"
             )
 
       //  + " AND " + MediaStore.MediaColumns.WIDTH + ">0"

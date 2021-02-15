@@ -24,8 +24,7 @@ import com.vangogh.media.itf.OnMediaResult as OnMediaResult
  * @Date 2021/1/26 10:25
  * @Version 1.0
  */
-class MainActivity : AppCompatActivity(), OnAddMediaListener,
-    CompoundButton.OnCheckedChangeListener {
+class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
     private lateinit var gridMediaAdapter: GridMediaAdapter
     private var mediaList = mutableListOf<MediaItem>()
@@ -79,11 +78,11 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener,
     override fun onAddMediaClick() {
         selectFilter()
         vanGogh.startForResult(this).onMediaResult = object : OnMediaResult {
-            override fun onResult(mediaList: List<MediaItem>) {
+            override fun onResult(mediaItemList: List<MediaItem>) {
+                mediaList.clear()
+                mediaList.addAll(mediaItemList)
                 Log.e("Main","mediaList = ${mediaList.toString()}")
-                gridMediaAdapter = GridMediaAdapter(activity, mediaList)
-                rcyView.adapter = gridMediaAdapter
-                gridMediaAdapter.onAddMediaListener = activity
+                gridMediaAdapter.notifyDataSetChanged()
             }
 
         }
@@ -110,7 +109,5 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener,
         }
     }
 
-    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
 
-    }
 }
