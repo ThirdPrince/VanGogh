@@ -1,17 +1,11 @@
-<com.vangogh.media.view.CheckSelectFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.vangogh.media.view.CheckView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/num_checkbox"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_alignParentEnd="true"
     android:layout_alignParentRight="true"
-    android:clickable="true"
+    android:layout_gravity="right|top"
     >
-
-    <com.vangogh.media.view.CheckView
-        android:id="@+id/num_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
-      />
-</com.vangogh.media.view.CheckSelectFrameLayout>
+</com.vangogh.media.view.CheckView>

@@ -170,13 +170,7 @@ class GalleryActivity : BaseSelectActivity() {
             )
         }
 
-        /* override fun onBackPressed() {
-             val intent = Intent().apply {
-                 putExtra(IMAGE_ORIGINAL, cbOriginal.isChecked)
-             }
-             setResult(Activity.RESULT_CANCELED, intent)
-             finish()
-         }*/
+
 
 
     }

@@ -7,14 +7,25 @@
     android:layout_alignParentRight="true"
     android:clickable="true"
     android:paddingLeft="15dp"
-    android:layout_gravity="center"
-    android:paddingRight="8dp"
+    android:layout_gravity="center_vertical"
+    android:gravity="right"
+    android:orientation="horizontal"
     >
     <com.vangogh.media.view.AnimateCheckBox
         android:id="@+id/checkbox"
         style="@style/AnimateCheckBoxStyle"
         android:layout_width="@dimen/dimen_15dp"
+        android:layout_gravity="center_vertical"
         android:layout_height="@dimen/dimen_15dp"
          />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:text="选择"
+        android:layout_marginLeft="@dimen/dimen_3dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:textColor="@color/picture_color_white" />
 
 </com.vangogh.media.view.CheckSelectFrameLayout>

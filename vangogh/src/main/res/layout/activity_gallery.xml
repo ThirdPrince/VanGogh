@@ -41,17 +41,12 @@
             android:layout_centerVertical="true"
             android:gravity="right"
             android:orientation="horizontal">
+
             <include
                 layout="@layout/media_select_checkbox"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="23dp"
-                android:text="选择"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@color/picture_color_white" />
+
         </LinearLayout>
 
     </RelativeLayout>
