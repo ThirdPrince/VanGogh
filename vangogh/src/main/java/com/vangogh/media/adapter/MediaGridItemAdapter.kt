@@ -79,6 +79,10 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
         }
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
 

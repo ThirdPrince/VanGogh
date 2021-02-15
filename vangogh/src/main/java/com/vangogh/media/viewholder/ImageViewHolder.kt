@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.media.vangogh.R
@@ -91,10 +92,12 @@ open class ImageViewHolder(
 
     private fun setMediaMask(boolean: Boolean) {
         if (boolean) {
-            squareImageView.setColorFilter(
-                Color.GRAY,
-                PorterDuff.Mode.MULTIPLY
-            )
+
+                squareImageView.setColorFilter(
+                    Color.GRAY,
+                    PorterDuff.Mode.MULTIPLY
+                )
+
         } else {
             squareImageView.clearColorFilter()
         }

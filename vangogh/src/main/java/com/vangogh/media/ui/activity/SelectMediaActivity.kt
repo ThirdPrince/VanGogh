@@ -138,6 +138,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
 
         })
+        mediaViewModel.lvDataChanged.observe(this, Observer {
+
+            mediaViewModel.getMedia(null)
+
+        })
         mediaViewModel.lvMediaDirData.observe(this, Observer {
             mediaDirList = it
         })
@@ -166,6 +171,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         rcyView.itemAnimator = DefaultItemAnimator()
         rcyView.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
         mediaItemAdapter = MediaGridItemAdapter(this, MediaPreviewUtil.currentMediaList)
+        mediaItemAdapter.setHasStableIds(true);
         rcy_view.adapter = mediaItemAdapter
         mediaItemAdapter!!.onMediaItemClickListener = this
         mediaItemAdapter!!.onItemCheckListener = this
@@ -190,7 +196,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 when(newState){
                     RecyclerView.SCROLL_STATE_IDLE -> {
                         tvImageTime.animate().alpha(0f).start()
-                       // tvImageTime.visibility = View.GONE
                     }
                     RecyclerView.SCROLL_STATE_DRAGGING -> updateImageTime()
                 }
@@ -200,7 +205,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                //updateImageTime()
             }
         })
     }
@@ -267,8 +271,13 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         if(VanGogh.selectMediaList.contains(mediaItem)){
             VanGogh.selectMediaList.remove(mediaItem)
             mediaItemAdapter.notifyDataSetChanged()
+           // mediaItemAdapter.notifyItemChanged(position)
+            VanGogh.selectMediaList.forEach {
+                val pos = mediaItemAdapter.items.indexOf(it)
+               // mediaItemAdapter.notifyItemChanged(pos)
+            }
 
-           // mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size+1)
+            mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size+1)
         }else{
             if(VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA-1){
                 toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
@@ -281,7 +290,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             VanGogh.selectMediaList.add(mediaItem)
             mediaItemAdapter.notifyItemChanged(position)
         }
-        mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
+       mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
         updateTitle()
         updateMediaPreview()
     }

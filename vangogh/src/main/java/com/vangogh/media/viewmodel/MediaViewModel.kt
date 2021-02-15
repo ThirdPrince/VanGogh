@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
 
 /**
  * @ClassName MediaViewModel
- * @Description MediaViewModel query condition
+ * @Description MediaViewModel get media data
  * @Author dhl
  * @Date 2021/1/28 10:30
  * @Version 1.0
@@ -158,18 +158,12 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
      *  filterDamage some image  size>0 but Damage
      */
     @WorkerThread
-    private fun filterDamage(mediaList: List<MediaItem>): MutableList<MediaItem> {
-        var mediaItemList = mutableListOf<MediaItem>()
-        mediaList.forEach {
+    private fun filterDamage(mediaList: MutableList<MediaItem>): MutableList<MediaItem> {
 
-           if(it.isImage() && it.width === 0 && !ImageUtils.isImage(it.path)){
-
-           }else{
-               mediaItemList.add(it)
-           }
-
+        mediaList.filterNot {
+            it.isImage() && it.width === 0 && !ImageUtils.isImage(it.path)
         }
-        return mediaItemList
+        return mediaList
     }
     /**
      *  MediaFolder

@@ -18,6 +18,6 @@ fun ContentResolver.registerObserver(
             observer(selfChange)
         }
     }
-    registerContentObserver(uri, true, contentObserver)
+    registerContentObserver(uri, false, contentObserver)
     return contentObserver
 }

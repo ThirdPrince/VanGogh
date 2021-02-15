@@ -8,6 +8,9 @@
         android:id="@+id/iv_content_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_grid_placeholder"
         />
     <ImageView
         android:id="@+id/gif_img"
