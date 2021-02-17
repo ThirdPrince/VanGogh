@@ -45,12 +45,15 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     OnItemCheckListener {
 
     companion object {
-        fun actionStart(activity: FragmentActivity) {
-            val intent = Intent(
+
+        const val IS_AVATAR = "isAvatar"
+
+        fun actionStart(activity: FragmentActivity,isAvatar: Boolean) {
+            var intent = Intent(
                 activity,
                 SelectMediaActivity::class.java
             ).apply {
-                putExtra("selectMedia", "")
+                putExtra(IS_AVATAR, isAvatar)
             }
             activity.startActivity(intent)
 
@@ -113,6 +116,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView()
@@ -165,6 +169,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         finish()
     }
 
+
     @SuppressLint("ResourceAsColor")
     private fun initView() {
         mediaTitleLay = findViewById(R.id.media_title_lay)
@@ -177,7 +182,8 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         rcyView.layoutManager = gridLayoutManager
         rcyView.itemAnimator = DefaultItemAnimator()
         rcyView.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
-        mediaItemAdapter = MediaGridItemAdapter(this, MediaPreviewUtil.currentMediaList)
+        Log.e(TAG,"isAvatar = $isAvatar")
+        mediaItemAdapter = MediaGridItemAdapter(this, MediaPreviewUtil.currentMediaList,isAvatar)
         mediaItemAdapter.setHasStableIds(true);
         rcy_view.adapter = mediaItemAdapter
         mediaItemAdapter!!.onMediaItemClickListener = this
@@ -284,7 +290,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 // mediaItemAdapter.notifyItemChanged(pos)
             }
 
-            mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size + 1)
+           // mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size + 1)
         } else {
             if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
                 toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))

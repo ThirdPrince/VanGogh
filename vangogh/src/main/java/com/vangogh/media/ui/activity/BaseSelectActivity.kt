@@ -2,6 +2,7 @@ package com.vangogh.media.ui.activity
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
@@ -47,6 +48,8 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     protected var mediaPreviewSelect: Boolean  = false
 
 
+    protected var isAvatar :Boolean = false
+
     /**
      * activity back
      */
@@ -76,6 +79,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.media_color_grey)
         }
         setContentView(contentLayout())
+        getData()
         initSendMediaListener()
         initOriginalCheck()
         activity = this
@@ -91,11 +95,19 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    protected fun getData() {
+    private fun getData() {
         mediaPos = intent!!.getIntExtra(GalleryActivity.MEDIA_POS, 0)
+        isAvatar = intent!!.getBooleanExtra(SelectMediaActivity.IS_AVATAR,false)
         imageOriginal = intent!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL,false)
         mediaPreviewSelect = intent!!.getBooleanExtra(GalleryActivity.MEDIA_PREVIEW_SELECT,false)
         cbOriginal.isChecked = imageOriginal
+        if(isAvatar){
+            cbOriginal.visibility = View.GONE
+            mediaSend.visibility = View.GONE
+        }else{
+            cbOriginal.visibility = View.VISIBLE
+            mediaSend.visibility = View.VISIBLE
+        }
     }
 
     private fun initSendMediaListener() {

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -78,7 +79,7 @@ class GalleryActivity : BaseSelectActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getData()
+
         initListener()
         viewPager2.apply {
             offscreenPageLimit = 1
@@ -158,6 +159,13 @@ class GalleryActivity : BaseSelectActivity() {
         private fun setMediaIndex() {
             currentMedia = previewMediaList!![mediaPos]
             mediaIndexTv.text = "${mediaPos + 1} / ${previewMediaList!!.size}"
+            if(currentMedia!!.isImage()){
+                cbOriginal.visibility = View.VISIBLE
+            }else{
+                cbOriginal.visibility = View.GONE
+            }
+
+
         }
 
         private fun setSelectMediaState() {

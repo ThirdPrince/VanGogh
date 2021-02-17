@@ -28,6 +28,7 @@ import com.vangogh.media.view.CheckView
 open class ImageViewHolder(
     var activity: Activity,
      val view: View,
+    var isAvatar :Boolean,
     var onMediaItemClickListener: OnMediaItemClickListener,
     var onItemCheckListener: OnItemCheckListener
 ) : RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -50,6 +51,7 @@ open class ImageViewHolder(
         numCheckBox.setOnClickListener(this)
         gifImage = view.findViewById(R.id.gif_img)
 
+
     }
 
     override fun onClick(v: View?) {
@@ -64,7 +66,11 @@ open class ImageViewHolder(
         Glide.with(activity).asBitmap().load(mediaItem.pathUri  )
             .transition(BitmapTransitionOptions.withCrossFade())
             .apply(requestOptions).into(squareImageView)
-
+        if(isAvatar){
+            numCheckBox.visibility = View.GONE
+        }else{
+            numCheckBox.visibility = View.VISIBLE
+        }
         if (selectMediaList.contains(mediaItem)) {
             numCheckBox.isEnabled = true
             if(selectMediaList.size>0) {

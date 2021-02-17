@@ -184,7 +184,7 @@ object VanGogh {
 
 
     private fun start(context: FragmentActivity) {
-        SelectMediaActivity.actionStart(context)
+        SelectMediaActivity.actionStart(context,false)
         fragmentActivity = context
         lvMediaData.observe(fragmentActivity!!, Observer {
             onMediaResult?.onResult(it)
@@ -197,7 +197,21 @@ object VanGogh {
      */
     fun startForResult(context: FragmentActivity): VanGogh {
 
-        SelectMediaActivity.actionStart(context)
+        SelectMediaActivity.actionStart(context,false)
+        fragmentActivity = context
+        selectMediaList.clear()
+        lvMediaData.observe(fragmentActivity!!, Observer {
+            onMediaResult?.onResult(it)
+        })
+        return this
+    }
+
+    fun startForAvatarResult(context: FragmentActivity): VanGogh {
+
+        selection =  MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
+        selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS
+        VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaOnlyImage
+        SelectMediaActivity.actionStart(context,true)
         fragmentActivity = context
         selectMediaList.clear()
         lvMediaData.observe(fragmentActivity!!, Observer {

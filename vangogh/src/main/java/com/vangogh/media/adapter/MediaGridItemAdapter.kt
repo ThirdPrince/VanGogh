@@ -20,7 +20,7 @@ import com.vangogh.media.viewholder.VideoTypeViewHolder
  * @Date 2020/12/22 9:36
  * @Version 1.0
  */
-class MediaGridItemAdapter(private val activity: FragmentActivity, var items: List<MediaItem>) :
+class MediaGridItemAdapter(private val activity: FragmentActivity, var items: List<MediaItem>,var isAvatar :Boolean) :
     RecyclerView.Adapter<ImageViewHolder>() {
 
 
@@ -48,14 +48,14 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
                     R.layout.item_content_video_view,
                     parent,
                     false
-                ),onMediaItemClickListener!!,onItemCheckListener!!
+                ),false,onMediaItemClickListener!!,onItemCheckListener!!
             )
             else -> ImageViewHolder(activity,
                 mInflater.inflate(
                     R.layout.item_content_image_view,
                     parent,
                     false
-                ),onMediaItemClickListener!!,onItemCheckListener!!
+                ),isAvatar,onMediaItemClickListener!!,onItemCheckListener!!
             )
 
 

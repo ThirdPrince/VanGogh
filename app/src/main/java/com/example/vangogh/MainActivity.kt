@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
     private lateinit var videoMaxDurationRb: RadioButton
 
+    private lateinit var forAvatar: RadioButton
 
     private lateinit var vanGogh: VanGogh
 
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
         gifRb = findViewById(R.id.gif_rb)
         videoRb = findViewById(R.id.video_rb)
         videoMaxDurationRb = findViewById(R.id.video_max_duration_rb)
+        forAvatar = findViewById(R.id.forAvatar)
         val layoutManager = GridLayoutManager(this, 4)
         rcyView.layoutManager = layoutManager
         rcyView.itemAnimator = DefaultItemAnimator()
@@ -77,15 +79,25 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
     override fun onAddMediaClick() {
         selectFilter()
-        vanGogh.startForResult(this).onMediaResult = object : OnMediaResult {
-            override fun onResult(mediaItemList: List<MediaItem>) {
-                mediaList.clear()
-                mediaList.addAll(mediaItemList)
-                Log.e("Main","mediaList = ${mediaList.toString()}")
-                gridMediaAdapter.notifyDataSetChanged()
-            }
+        if( forAvatar.isChecked){
+            vanGogh.startForAvatarResult(this).onMediaResult = object :OnMediaResult{
+                override fun onResult(mediaList: List<MediaItem>) {
 
+                }
+
+            }
+        }else{
+            vanGogh.startForResult(this).onMediaResult = object : OnMediaResult {
+                override fun onResult(mediaItemList: List<MediaItem>) {
+                    mediaList.clear()
+                    mediaList.addAll(mediaItemList)
+                    Log.e("Main","mediaList = ${mediaList.toString()}")
+                    gridMediaAdapter.notifyDataSetChanged()
+                }
+
+            }
         }
+
 
     }
 
@@ -105,6 +117,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
             videoRb.isChecked -> VanGogh.onlyVideo()
 
             videoMaxDurationRb.isChecked -> VanGogh.setVideoMaxDuration(10)
+
 
         }
     }
