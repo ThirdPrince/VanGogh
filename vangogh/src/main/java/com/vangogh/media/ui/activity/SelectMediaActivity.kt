@@ -249,7 +249,9 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
 
         mediaPreview.setOnClickListener {
-            GalleryActivity.actionStart(this, 0, cbOriginal.isChecked, true)
+
+                GalleryActivity.actionStart(this, 0, cbOriginal.isChecked, true)
+
         }
     }
 
@@ -274,7 +276,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
 
     override fun onItemClick(view: View?, position: Int) {
-        GalleryActivity.actionStart(this, position, cbOriginal.isChecked, false)
+        if (isAvatar){
+            AvatarActivity.actionStart(this,position)
+        }else {
+            GalleryActivity.actionStart(this, position, cbOriginal.isChecked, false)
+        }
     }
 
     @SuppressLint("StringFormatMatches")

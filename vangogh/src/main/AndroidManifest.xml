@@ -13,6 +13,11 @@
         <activity
             android:name="com.vangogh.media.ui.activity.GalleryActivity"
             android:theme="@style/picture.WeChat.style" />
+
+        <activity
+            android:name="com.vangogh.media.ui.activity.AvatarActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/picture.WeChat.style" />
         <activity
             android:name="com.vangogh.media.ui.activity.SelectMediaActivity"
             android:screenOrientation="portrait"

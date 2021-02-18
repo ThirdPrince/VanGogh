@@ -105,7 +105,7 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
      */
     fun compressImage(mediaList: MutableList<MediaItem>) {
         viewModelScope.launch {
-            var startTime = System.currentTimeMillis()
+            //var startTime = System.currentTimeMillis()
             mediaList.forEach { it ->
                 actualImage = File(it.path)
                 actualImage?.let { imageFile ->
@@ -132,7 +132,7 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
 
             deferredList.forEachIndexed { index, deferred ->
                 compressedImage = deferred.await()
-                Log.e(TAG, "deferred result = ${compressedImage!!.absolutePath}")
+               // Log.e(TAG, "deferred result = ${compressedImage!!.absolutePath}")
                 mediaList.forEach {
                     if(it.path!!.endsWith(compressedImage!!.name)){
                         it.compressPath = compressedImage!!.absolutePath
@@ -140,8 +140,8 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
                 }
 
             }
-            var endTime = System.currentTimeMillis()
-            Log.e(TAG, "compress Time = ${endTime - startTime}")
+           // var endTime = System.currentTimeMillis()
+            //Log.e(TAG, "compress Time = ${endTime - startTime}")
             _lvMediaData.postValue(mediaList)
         }
 

@@ -13,6 +13,7 @@ import com.example.vangogh.adapter.GridMediaAdapter
 import com.example.vangogh.itf.OnAddMediaListener
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.divider.GridSpacingItemDecoration
+import com.vangogh.media.itf.OnAvatarResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.BaseSelectActivity
 import com.vangogh.media.itf.OnMediaResult as OnMediaResult
@@ -80,9 +81,11 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
     override fun onAddMediaClick() {
         selectFilter()
         if( forAvatar.isChecked){
-            vanGogh.startForAvatarResult(this).onMediaResult = object :OnMediaResult{
-                override fun onResult(mediaList: List<MediaItem>) {
-
+            vanGogh.startForAvatarResult(this).onAvatarResult = object :OnAvatarResult{
+                override fun onResult(image: MediaItem) {
+                    mediaList.clear()
+                    mediaList.add(image)
+                    gridMediaAdapter.notifyDataSetChanged()
                 }
 
             }

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.vangogh.media.itf.OnAvatarResult
 import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.SelectMediaActivity
@@ -32,8 +33,15 @@ object VanGogh {
 
     var onMediaResult: OnMediaResult? = null
 
+    var onAvatarResult:OnAvatarResult?= null
+
 
     val _lvMediaData = MutableLiveData<List<MediaItem>>()
+
+    val _lvAvatarData = MutableLiveData<MediaItem>()
+
+    val lvAvatarData: LiveData<MediaItem>
+        get() = _lvAvatarData
 
     val lvMediaData: LiveData<List<MediaItem>>
         get() = _lvMediaData
@@ -148,40 +156,6 @@ object VanGogh {
 
 
 
-    fun setSelectedFiles(selectedPhotos: ArrayList<Uri>): VanGogh {
-        //  mPickerOptionsBundle.putParcelableArrayList(FilePickerConst.KEY_SELECTED_MEDIA, selectedPhotos)
-        return this
-    }
-
-
-
-    fun setCameraPlaceholder(@DrawableRes drawable: Int): VanGogh {
-        // PickerManager.cameraDrawable = drawable
-        return this
-    }
-
-
-
-    fun enableCameraSupport(status: Boolean): VanGogh {
-        //  PickerManager.isEnableCamera = status
-        return this
-    }
-
-
-
-
-
-    fun pickMedia(context: Fragment) {
-        //  mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.MEDIA_PICKER)
-        start(context.requireActivity())
-    }
-
-    fun pickMedia(activity: FragmentActivity): VanGogh {
-        //  mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.MEDIA_PICKER)
-        start(activity)
-        return this
-    }
-
 
     private fun start(context: FragmentActivity) {
         SelectMediaActivity.actionStart(context,false)
@@ -214,8 +188,8 @@ object VanGogh {
         SelectMediaActivity.actionStart(context,true)
         fragmentActivity = context
         selectMediaList.clear()
-        lvMediaData.observe(fragmentActivity!!, Observer {
-            onMediaResult?.onResult(it)
+        lvAvatarData.observe(fragmentActivity!!, Observer {
+            onAvatarResult?.onResult(it)
         })
         return this
     }

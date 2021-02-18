@@ -61,7 +61,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * selectMedia complete
      */
-    private val mediaSend: AppCompatButton by lazy {
+    protected val mediaSend: AppCompatButton by lazy {
         findViewById<AppCompatButton>(R.id.media_send)
     }
 
@@ -89,7 +89,11 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
                 CompressMediaViewModel::class.java
             )
         selectMediaViewModel.lvMediaData.observe(this, Observer {
-            VanGogh._lvMediaData.postValue(it)
+            if(isAvatar){
+                VanGogh._lvAvatarData.postValue(it[0])
+            }else {
+                VanGogh._lvMediaData.postValue(it)
+            }
             finishSelectMediaUi()
         })
 
@@ -100,12 +104,12 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         isAvatar = intent!!.getBooleanExtra(SelectMediaActivity.IS_AVATAR,false)
         imageOriginal = intent!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL,false)
         mediaPreviewSelect = intent!!.getBooleanExtra(GalleryActivity.MEDIA_PREVIEW_SELECT,false)
-        cbOriginal.isChecked = imageOriginal
+        cbOriginal?.isChecked = imageOriginal
         if(isAvatar){
-            cbOriginal.visibility = View.GONE
+            cbOriginal?.visibility = View.GONE
             mediaSend.visibility = View.GONE
         }else{
-            cbOriginal.visibility = View.VISIBLE
+            cbOriginal?.visibility = View.VISIBLE
             mediaSend.visibility = View.VISIBLE
         }
     }
