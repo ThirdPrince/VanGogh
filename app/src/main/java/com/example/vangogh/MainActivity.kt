@@ -1,8 +1,10 @@
 package com.example.vangogh
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
     private lateinit var forAvatar: RadioButton
 
+    private lateinit var javaMedia:Button
+
     private lateinit var vanGogh: VanGogh
 
 
@@ -69,6 +73,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
         videoRb = findViewById(R.id.video_rb)
         videoMaxDurationRb = findViewById(R.id.video_max_duration_rb)
         forAvatar = findViewById(R.id.forAvatar)
+        javaMedia = findViewById(R.id.java_media)
         val layoutManager = GridLayoutManager(this, 4)
         rcyView.layoutManager = layoutManager
         rcyView.itemAnimator = DefaultItemAnimator()
@@ -76,6 +81,12 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
         gridMediaAdapter = GridMediaAdapter(this, mediaList)
         gridMediaAdapter.onAddMediaListener = activity
         rcyView.adapter = gridMediaAdapter
+
+        javaMedia.setOnClickListener {
+            val intent = Intent(this,MainActivityJava::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onAddMediaClick() {

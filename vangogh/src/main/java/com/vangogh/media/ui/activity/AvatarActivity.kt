@@ -45,10 +45,12 @@ class AvatarActivity : BaseSelectActivity() {
 
         fun actionStart(
             activity: AppCompatActivity,
-            mediaPos: Int
+            mediaPos: Int,
+            isAvatar: Boolean
         ) {
             var intent = Intent(activity, AvatarActivity::class.java).apply {
                 putExtra(MEDIA_POS, mediaPos)
+                putExtra(SelectMediaActivity.IS_AVATAR, isAvatar)
             }
             activity.startActivityForResult(intent, REQUEST_CODE)
 
@@ -92,6 +94,7 @@ class AvatarActivity : BaseSelectActivity() {
     private fun setMediaIndex() {
         currentMedia = MediaPreviewUtil.currentMediaList!![mediaPos]
         mediaSend.isEnabled = true
+        mediaSend.visibility = View.VISIBLE
         mediaSend.text = getString(R.string.media_done)
         Glide.with(this).load(currentMedia?.pathUri).into(photoView)
     }

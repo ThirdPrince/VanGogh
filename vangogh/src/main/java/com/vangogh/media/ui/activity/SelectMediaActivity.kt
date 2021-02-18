@@ -277,7 +277,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     override fun onItemClick(view: View?, position: Int) {
         if (isAvatar){
-            AvatarActivity.actionStart(this,position)
+            AvatarActivity.actionStart(this,position,isAvatar)
         }else {
             GalleryActivity.actionStart(this, position, cbOriginal.isChecked, false)
         }
