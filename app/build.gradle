@@ -46,3 +46,23 @@ dependencies {
     implementation 'com.blankj:utilcode:1.30.5'
     implementation project(':vangogh')
 }
+
+/*
+apply plugin: 'com.github.panpf.bintray-publish'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
+    }
+}
+publish {
+    userOrg = 'henglongdong'
+    groupId = 'com.vangogh.dhl'
+    artifactId = 'vangogh'
+    publishVersion = '1.0.0'
+    desc = 'make media picker easy'
+    website = 'https://github.com/ThirdPrince/VanGogh'
+}*/

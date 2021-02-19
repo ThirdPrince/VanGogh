@@ -17,6 +17,7 @@ import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.extend.toast
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.utils.ImageUtils
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.view.AnimateCheckBox
 import kotlinx.android.synthetic.main.media_select_button.*
@@ -158,6 +159,9 @@ class GalleryActivity : BaseSelectActivity() {
 
         private fun setMediaIndex() {
             currentMedia = previewMediaList!![mediaPos]
+           // Log.e(TAG, (currentMedia!!.width ===0).toString())
+            val damage = currentMedia!!.isImage() && currentMedia!!.width === 0 && !ImageUtils.isImage(currentMedia!!.path)
+            Log.e(TAG,damage.toString())
             mediaIndexTv.text = "${mediaPos + 1} / ${previewMediaList!!.size}"
             if(currentMedia!!.isImage()){
                 cbOriginal.visibility = View.VISIBLE

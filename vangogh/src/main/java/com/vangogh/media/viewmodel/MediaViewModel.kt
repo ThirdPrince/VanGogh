@@ -5,7 +5,6 @@ import android.content.ContentUris
 import android.database.ContentObserver
 import android.provider.BaseColumns
 import android.provider.MediaStore
-import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -159,12 +158,11 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
      *  filterDamage some image  size>0 but Damage
      */
     @WorkerThread
-    private fun filterDamage(mediaList: MutableList<MediaItem>): MutableList<MediaItem> {
+    private fun filterDamage(mediaList: MutableList<MediaItem>): List<MediaItem> {
 
-        mediaList.filterNot {
-            it.isImage() && it.width === 0 && !ImageUtils.isImage(it.path)
-        }
-        return mediaList
+        return mediaList.filterNot {
+               it.isImage() && it.width === 0 && !ImageUtils.isImage(it.path)
+           }
     }
     /**
      *  MediaFolder
