@@ -5,12 +5,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -117,6 +119,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     )
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView()
@@ -314,6 +317,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         updateMediaPreview()
     }
 
+    @SuppressLint("StringFormatMatches")
     private fun updateMediaPreview() {
         if (VanGogh.selectMediaList.size > 0) {
             mediaPreview.isEnabled = true
