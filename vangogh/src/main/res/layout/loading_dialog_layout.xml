@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dimen_80dp"
+    android:layout_height="@dimen/dimen_80dp"
+    android:background="@drawable/picture_dialog_custom_bg"
+    android:gravity="center"
+    android:padding="@dimen/dimen_10dp"
+    android:orientation="vertical">
+
+        <include
+            layout="@layout/loading_progress_layout"/>
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_18"
+            android:text="@string/media_please"/>
+</LinearLayout>

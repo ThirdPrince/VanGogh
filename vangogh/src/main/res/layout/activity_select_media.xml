@@ -4,23 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/media_color_grey"
     android:fitsSystemWindows="true"
-    >
+    android:orientation="vertical">
 
-    <include layout="@layout/media_grid_top_bar"/>
+    <include layout="@layout/media_grid_top_bar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_below="@id/titleViewBg"
+        android:layout_height="match_parent"
         android:layout_above="@+id/select_bar_layout"
-        android:layout_height="match_parent">
+        android:layout_below="@id/titleViewBg">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcy_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/tv_image_time"
@@ -30,20 +29,17 @@
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:textColor="@color/picture_color_white"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
     </RelativeLayout>
 
 
     <ViewStub
         android:id="@+id/view_stub"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout="@layout/loading_progress_layout"
-        >
-    </ViewStub>
+        android:layout_centerInParent="true"
+        android:layout="@layout/loading_progress_layout"></ViewStub>
 
     <include layout="@layout/media_bottom_bar" />
 

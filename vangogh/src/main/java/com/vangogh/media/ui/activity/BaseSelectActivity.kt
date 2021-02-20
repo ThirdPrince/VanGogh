@@ -2,10 +2,11 @@ package com.vangogh.media.ui.activity
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatCheckBox
@@ -14,11 +15,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
+import com.vangogh.media.ui.dialog.LoadingDialog
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.viewmodel.CompressMediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
 import kotlinx.android.synthetic.main.media_grid_top_bar.*
 import kotlinx.android.synthetic.main.media_select_button.*
+
 
 /**
  * @ClassName BaseSelectActivity
@@ -72,6 +75,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<AppCompatCheckBox>(R.id.cb_original)
     }
 
+    private lateinit var loadingDialog:LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +83,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.media_color_grey)
         }
         setContentView(contentLayout())
+        initLoadingDialog()
         getData()
         initSendMediaListener()
         initOriginalCheck()
@@ -89,11 +94,12 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
                 CompressMediaViewModel::class.java
             )
         selectMediaViewModel.lvMediaData.observe(this, Observer {
-            if(isAvatar){
+            if (isAvatar) {
                 VanGogh._lvAvatarData.postValue(it[0])
-            }else {
+            } else {
                 VanGogh._lvMediaData.postValue(it)
             }
+            dismissDialog()
             finishSelectMediaUi()
         })
 
@@ -101,9 +107,9 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun getData() {
         mediaPos = intent!!.getIntExtra(GalleryActivity.MEDIA_POS, 0)
-        isAvatar = intent!!.getBooleanExtra(SelectMediaActivity.IS_AVATAR,false)
-        imageOriginal = intent!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL,false)
-        mediaPreviewSelect = intent!!.getBooleanExtra(GalleryActivity.MEDIA_PREVIEW_SELECT,false)
+        isAvatar = intent!!.getBooleanExtra(SelectMediaActivity.IS_AVATAR, false)
+        imageOriginal = intent!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL, false)
+        mediaPreviewSelect = intent!!.getBooleanExtra(GalleryActivity.MEDIA_PREVIEW_SELECT, false)
         cbOriginal?.isChecked = imageOriginal
         if(isAvatar){
             cbOriginal?.visibility = View.GONE
@@ -118,6 +124,11 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         mediaLeftBack?.setOnClickListener(this)
         mediaSend.setOnClickListener(this)
     }
+
+    private fun initLoadingDialog(){
+        loadingDialog = LoadingDialog(this)
+    }
+
 
     /**
      * image is OriginalCheck
@@ -137,10 +148,11 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.mediaLeftBack -> backPress()
             R.id.media_send -> {
-                view_stub?.visibility = View.VISIBLE
+                //view_stub?.visibility = View.VISIBLE
                 if (VanGogh.selectMediaList.isEmpty()) {
                     VanGogh.selectMediaList.add(MediaPreviewUtil.currentMediaList!![mediaPos])
                 }
+                showDialog()
                 selectMediaViewModel.compressImage(VanGogh.selectMediaList)
             }
         }
@@ -185,6 +197,16 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         backPress()
+    }
+
+    protected fun showDialog(){
+        loadingDialog.show()
+    }
+
+    protected fun dismissDialog(){
+        if(loadingDialog.isShowing) {
+            loadingDialog.dismiss()
+        }
     }
 
 }

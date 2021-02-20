@@ -135,9 +135,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             //这是系统的方法
             requestPermissions(permissions, 0)
         } else {
+            showDialog()
             mediaViewModel.getMedia(null)
         }
         mediaViewModel.lvMediaData.observe(this, Observer {
+            dismissDialog()
             MediaPreviewUtil.currentMediaList.clear()
             MediaPreviewUtil.currentMediaList.addAll(it)
             mediaItemAdapter.notifyDataSetChanged()
@@ -273,6 +275,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            showDialog()
             mediaViewModel.getMedia(null)
         }
     }

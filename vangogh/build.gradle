@@ -23,7 +23,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 100
-        versionName "1.0.0"
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -73,7 +73,7 @@ publish {
     userOrg = 'henglongdong'
     groupId = 'com.vangogh.dhl'
     artifactId = 'media'
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.1'
     desc = 'make media picker easy'
     website = 'https://github.com/ThirdPrince/VanGogh'
 }
