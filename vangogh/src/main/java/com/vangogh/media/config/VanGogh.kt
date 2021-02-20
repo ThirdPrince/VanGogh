@@ -31,7 +31,7 @@ object VanGogh {
 
     const val TAG = "VanGogh"
 
-    var onMediaResult: OnMediaResult? = null
+    //var onMediaResult: OnMediaResult? = null
 
     var onAvatarResult:OnAvatarResult?= null
 
@@ -161,7 +161,7 @@ object VanGogh {
         SelectMediaActivity.actionStart(context,false)
         fragmentActivity = context
         lvMediaData.observe(fragmentActivity!!, Observer {
-            onMediaResult?.onResult(it)
+            //onMediaResult?.onResult(it)
         })
     }
 
@@ -169,7 +169,7 @@ object VanGogh {
      * startForMedia result
      * onResult mediaList
      */
-    fun startForResult(context: FragmentActivity): VanGogh {
+    fun startForResult(context: FragmentActivity,onMediaResult: OnMediaResult): VanGogh {
 
         SelectMediaActivity.actionStart(context,false)
         fragmentActivity = context
@@ -180,7 +180,7 @@ object VanGogh {
         return this
     }
 
-    fun startForAvatarResult(context: FragmentActivity): VanGogh {
+    fun startForAvatarResult(context: FragmentActivity,onAvatarResult: OnAvatarResult): VanGogh {
 
         selection =  MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
         selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS

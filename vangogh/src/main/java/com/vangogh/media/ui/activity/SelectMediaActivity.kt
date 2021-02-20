@@ -58,6 +58,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 putExtra(IS_AVATAR, isAvatar)
             }
             activity.startActivity(intent)
+            activity.overridePendingTransition(R.anim.picture_anim_up_in,R.anim.picture_anim_down_out)
 
         }
     }
@@ -172,6 +173,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     override fun backPress() {
         finish()
+        overridePendingTransition(0,R.anim.picture_anim_down_out)
     }
 
 

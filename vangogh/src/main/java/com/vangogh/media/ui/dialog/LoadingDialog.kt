@@ -7,6 +7,14 @@ import android.view.Menu
 import androidx.appcompat.app.AppCompatDialog
 import com.media.vangogh.R
 
+
+/**
+ * @ClassName LoadingDialog
+ * @Description  LoadingDialog
+ * @Author dhl
+ * @Date 2021/2/20 9:36
+ * @Version 1.0.1
+ */
 class LoadingDialog : AppCompatDialog {
 
     constructor(context: Context) : this(context,0)

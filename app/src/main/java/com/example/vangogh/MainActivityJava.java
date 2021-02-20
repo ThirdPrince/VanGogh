@@ -30,16 +30,14 @@ public class MainActivityJava extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VanGogh.INSTANCE.getMedia(true).startForResult(MainActivityJava.this).setOnMediaResult(new OnMediaResult() {
+                VanGogh.INSTANCE.getMedia(true).startForResult(MainActivityJava.this, new OnMediaResult() {
                     @Override
                     public void onResult(@NotNull List<MediaItem> mediaList) {
-                       for(int i = 0;i< mediaList.size();i++){
-                           media_tv.append(mediaList.get(i).getCompressPath()+"\n");
-                       }
-
+                        for(int i = 0;i< mediaList.size();i++){
+                            media_tv.append(mediaList.get(i).getCompressPath()+"\n");
+                        }
                     }
                 });
-
             }
         });
 

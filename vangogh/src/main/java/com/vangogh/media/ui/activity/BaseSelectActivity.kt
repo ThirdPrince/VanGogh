@@ -176,6 +176,9 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     private fun finishSelectMediaUi() {
         VanGogh.selectMediaActivity.forEach {
             it.finish()
+            if(it is SelectMediaActivity){
+                overridePendingTransition(0,R.anim.picture_anim_down_out)
+            }
         }
     }
 

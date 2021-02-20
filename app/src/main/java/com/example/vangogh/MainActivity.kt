@@ -92,16 +92,16 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
     override fun onAddMediaClick() {
         selectFilter()
         if( forAvatar.isChecked){
-            vanGogh.startForAvatarResult(this).onAvatarResult = object :OnAvatarResult{
+            vanGogh.startForAvatarResult(this,onAvatarResult = object :OnAvatarResult{
                 override fun onResult(image: MediaItem) {
                     mediaList.clear()
                     mediaList.add(image)
                     gridMediaAdapter.notifyDataSetChanged()
                 }
 
-            }
+            })
         }else{
-            vanGogh.startForResult(this).onMediaResult = object : OnMediaResult {
+            vanGogh.startForResult(this,onMediaResult = object :OnMediaResult{
                 override fun onResult(mediaItemList: List<MediaItem>) {
                     mediaList.clear()
                     mediaList.addAll(mediaItemList)
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
                     gridMediaAdapter.notifyDataSetChanged()
                 }
 
-            }
+            })
         }
 
 
