@@ -286,17 +286,18 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
 
     override fun onItemClick(view: View?, position: Int) {
+        val realPosition =  if (VanGoghConst.CAMERA_ENABLE) position - 1 else position
         if (isAvatar) {
-            AvatarActivity.actionStart(this, position, isAvatar)
+            AvatarActivity.actionStart(this, realPosition, isAvatar)
         } else {
-            GalleryActivity.actionStart(this, position, cbOriginal.isChecked, false)
+            GalleryActivity.actionStart(this, realPosition, cbOriginal.isChecked, false)
         }
     }
 
     @SuppressLint("StringFormatMatches")
     override fun onItemCheckClick(view: View?, position: Int, isChecked: Boolean) {
 
-        var mediaItem = mediaItemAdapter.items[position]
+        var mediaItem = mediaItemAdapter.getMedia(position)
         if (VanGogh.selectMediaList.contains(mediaItem)) {
             VanGogh.selectMediaList.remove(mediaItem)
             mediaItemAdapter.notifyDataSetChanged()
@@ -341,6 +342,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
      */
     private fun updateImageTime() {
         val position: Int = gridLayoutManager.findFirstVisibleItemPosition()
+        //val realPosition =  if (VanGoghConst.CAMERA_ENABLE) position +1 else position
         if (position != RecyclerView.NO_POSITION) {
             val mediaItem: MediaItem = mediaItemAdapter.items[position]
             if (mediaItem != null) {

@@ -49,9 +49,12 @@ object VanGoghConst {
 
     var MEDIA_TITLE = MediaTitle.MediaComplete
 
+    var CAMERA_ENABLE :Boolean = false
+
     fun reset(){
          MEDIA_TITLE = MediaTitle.MediaComplete
          MEDIA_TYPE = MediaType.MediaAll
+         CAMERA_ENABLE  = false
     }
 
 

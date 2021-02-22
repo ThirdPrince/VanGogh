@@ -51,6 +51,9 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
     private lateinit var forAvatar: RadioButton
 
+    private lateinit var forCamera: RadioButton
+
+
     private lateinit var javaMedia:Button
 
     private lateinit var vanGogh: VanGogh
@@ -74,6 +77,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
         videoRb = findViewById(R.id.video_rb)
         videoMaxDurationRb = findViewById(R.id.video_max_duration_rb)
         forAvatar = findViewById(R.id.forAvatar)
+        forCamera = findViewById(R.id.forCamera)
         javaMedia = findViewById(R.id.java_media)
         val layoutManager = GridLayoutManager(this, 4)
         rcyView.layoutManager = layoutManager
@@ -132,6 +136,8 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
             videoRb.isChecked -> VanGogh.onlyVideo()
 
             videoMaxDurationRb.isChecked -> VanGogh.setVideoMaxDuration(10)
+
+            forCamera.isChecked ->  VanGogh.enableCamera()
 
 
         }

@@ -35,15 +35,6 @@ object VanGogh {
 
     lateinit var mOnAvatarResult: OnAvatarResult
 
-    //val _lvMediaData = MutableLiveData<List<MediaItem>>()
-
-   // val _lvAvatarData = MutableLiveData<MediaItem>()
-
-   /* val lvAvatarData: LiveData<MediaItem>
-        get() = _lvAvatarData
-*/
-    /*private val lvMediaData: LiveData<List<MediaItem>>
-        get() = _lvMediaData*/
 
     private var fragmentActivity: FragmentActivity? = null
 
@@ -157,6 +148,10 @@ object VanGogh {
      */
     fun setMediaTitleSend(): VanGogh {
         VanGoghConst.MEDIA_TITLE =VanGoghConst.MediaTitle.MediaSend
+        return this
+    }
+    fun enableCamera(): VanGogh {
+        VanGoghConst.CAMERA_ENABLE = true
         return this
     }
 

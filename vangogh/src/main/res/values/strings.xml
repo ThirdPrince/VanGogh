@@ -5,7 +5,7 @@
     <string name="video_title_str">视频</string>
     <string name="picture_camera_roll_num">%1$s (%2$d)</string>
     <string name="picture_cancel">取消</string>
-    <string name="picture_take_picture">拍摄</string>
+    <string name="take_picture">拍摄照片</string>
     <string name="picture_rule">不能同时选择图片或视频</string>
     <string name="picture_message_max_num">你最多只能选择%1$s张图片或者视频</string>
     <string name="picture_min_video_num">视频最低选择不能少于%1$s个</string>
