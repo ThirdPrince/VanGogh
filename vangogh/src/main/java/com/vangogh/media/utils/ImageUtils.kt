@@ -4,7 +4,7 @@ import android.graphics.BitmapFactory
 
 /**
  * @ClassName ImageUtils
- * @Description TODO
+ * @Description Image is not Damage
  * @Author aa
  * @Date 2021/2/4 16:26
  * @Version 1.0

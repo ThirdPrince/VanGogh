@@ -2,11 +2,10 @@ package com.vangogh.media.ui.activity
 
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatCheckBox
@@ -15,11 +14,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
+import com.vangogh.media.itf.OnMediaResult
+import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.dialog.LoadingDialog
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.viewmodel.CompressMediaViewModel
-import kotlinx.android.synthetic.main.activity_select_media.*
-import kotlinx.android.synthetic.main.media_grid_top_bar.*
 import kotlinx.android.synthetic.main.media_select_button.*
 
 
@@ -42,7 +41,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var activity: BaseSelectActivity
 
 
-    lateinit var selectMediaViewModel: CompressMediaViewModel
+    lateinit var compressMediaViewModel: CompressMediaViewModel
 
     var mediaPos: Int = 0
 
@@ -77,6 +76,8 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var loadingDialog:LoadingDialog
 
+    private lateinit var onMediaResult:OnMediaResult
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -89,15 +90,15 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         initOriginalCheck()
         activity = this
         VanGogh.selectMediaActivity.add(this)
-        selectMediaViewModel =
+        compressMediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 CompressMediaViewModel::class.java
             )
-        selectMediaViewModel.lvMediaData.observe(this, Observer {
+        compressMediaViewModel.lvMediaData.observe(this, Observer {
             if (isAvatar) {
-                VanGogh._lvAvatarData.postValue(it[0])
+                VanGogh.mOnAvatarResult.onResult(it[0])
             } else {
-                VanGogh._lvMediaData.postValue(it)
+                VanGogh.mOnMediaResult.onResult(it)
             }
             dismissDialog()
             finishSelectMediaUi()
@@ -153,7 +154,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
                     VanGogh.selectMediaList.add(MediaPreviewUtil.currentMediaList!![mediaPos])
                 }
                 showDialog()
-                selectMediaViewModel.compressImage(VanGogh.selectMediaList)
+                compressMediaViewModel.compressImage(VanGogh.selectMediaList)
             }
         }
     }

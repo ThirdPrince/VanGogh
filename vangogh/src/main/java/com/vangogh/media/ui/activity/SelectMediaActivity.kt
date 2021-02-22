@@ -50,7 +50,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
         const val IS_AVATAR = "isAvatar"
 
-        fun actionStart(activity: FragmentActivity,isAvatar: Boolean) {
+        fun actionStart(activity: FragmentActivity, isAvatar: Boolean) {
             var intent = Intent(
                 activity,
                 SelectMediaActivity::class.java
@@ -58,7 +58,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 putExtra(IS_AVATAR, isAvatar)
             }
             activity.startActivity(intent)
-            activity.overridePendingTransition(R.anim.picture_anim_up_in,R.anim.picture_anim_down_out)
+            activity.overridePendingTransition(
+                R.anim.picture_anim_up_in,
+                R.anim.picture_anim_down_out
+            )
 
         }
     }
@@ -154,7 +157,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         })
         mediaViewModel.lvMediaDirData.observe(this, Observer {
             mediaDirList = it
-            if(popWindow != null && popWindow?.dirCheckPosition != 0){
+            if (popWindow != null && popWindow?.dirCheckPosition != 0) {
                 var mediaItemList = mediaDirList[popWindow?.dirCheckPosition!!].medias
                 MediaPreviewUtil.currentMediaList.clear()
                 MediaPreviewUtil.currentMediaList.addAll(mediaItemList)
@@ -173,7 +176,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     override fun backPress() {
         finish()
-        overridePendingTransition(0,R.anim.picture_anim_down_out)
+        overridePendingTransition(0, R.anim.picture_anim_down_out)
     }
 
 
@@ -189,8 +192,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         rcyView.layoutManager = gridLayoutManager
         rcyView.itemAnimator = DefaultItemAnimator()
         rcyView.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
-        Log.e(TAG,"isAvatar = $isAvatar")
-        mediaItemAdapter = MediaGridItemAdapter(this, MediaPreviewUtil.currentMediaList,isAvatar)
+        mediaItemAdapter = MediaGridItemAdapter(this, MediaPreviewUtil.currentMediaList, isAvatar)
         mediaItemAdapter.setHasStableIds(true);
         rcy_view.adapter = mediaItemAdapter
         mediaItemAdapter!!.onMediaItemClickListener = this
@@ -257,7 +259,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
         mediaPreview.setOnClickListener {
 
-                GalleryActivity.actionStart(this, 0, cbOriginal.isChecked, true)
+            GalleryActivity.actionStart(this, 0, cbOriginal.isChecked, true)
 
         }
     }
@@ -284,9 +286,9 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
 
     override fun onItemClick(view: View?, position: Int) {
-        if (isAvatar){
-            AvatarActivity.actionStart(this,position,isAvatar)
-        }else {
+        if (isAvatar) {
+            AvatarActivity.actionStart(this, position, isAvatar)
+        } else {
             GalleryActivity.actionStart(this, position, cbOriginal.isChecked, false)
         }
     }
@@ -304,7 +306,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 // mediaItemAdapter.notifyItemChanged(pos)
             }
 
-           // mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size + 1)
+            // mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size + 1)
         } else {
             if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
                 toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))

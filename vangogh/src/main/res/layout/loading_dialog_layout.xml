@@ -15,6 +15,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textColor="#ffffff"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_16"
             android:text="@string/media_please"/>
 </LinearLayout>

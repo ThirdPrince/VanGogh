@@ -31,20 +31,19 @@ object VanGogh {
 
     const val TAG = "VanGogh"
 
-    //var onMediaResult: OnMediaResult? = null
+    lateinit var mOnMediaResult: OnMediaResult
 
-    var onAvatarResult:OnAvatarResult?= null
+    lateinit var mOnAvatarResult: OnAvatarResult
 
+    //val _lvMediaData = MutableLiveData<List<MediaItem>>()
 
-    val _lvMediaData = MutableLiveData<List<MediaItem>>()
+   // val _lvAvatarData = MutableLiveData<MediaItem>()
 
-    val _lvAvatarData = MutableLiveData<MediaItem>()
-
-    val lvAvatarData: LiveData<MediaItem>
+   /* val lvAvatarData: LiveData<MediaItem>
         get() = _lvAvatarData
-
-    val lvMediaData: LiveData<List<MediaItem>>
-        get() = _lvMediaData
+*/
+    /*private val lvMediaData: LiveData<List<MediaItem>>
+        get() = _lvMediaData*/
 
     private var fragmentActivity: FragmentActivity? = null
 
@@ -56,7 +55,7 @@ object VanGogh {
     var selectMediaActivity = mutableListOf<Activity>()
 
 
-    var selectMediaList = mutableListOf<MediaItem>()
+     var selectMediaList = mutableListOf<MediaItem>()
 
     /**
      * default select conditions
@@ -160,9 +159,9 @@ object VanGogh {
     private fun start(context: FragmentActivity) {
         SelectMediaActivity.actionStart(context,false)
         fragmentActivity = context
-        lvMediaData.observe(fragmentActivity!!, Observer {
+      /*  lvMediaData.observe(fragmentActivity!!, Observer {
             //onMediaResult?.onResult(it)
-        })
+        })*/
     }
 
     /**
@@ -173,13 +172,21 @@ object VanGogh {
 
         SelectMediaActivity.actionStart(context,false)
         fragmentActivity = context
-        selectMediaList.clear()
-        lvMediaData.observe(fragmentActivity!!, Observer {
+        selectMediaList = mutableListOf()
+        mOnMediaResult = onMediaResult
+        //selectMediaList.clear()
+        //.removeObserver {  fragmentActivity}
+     /*   lvMediaData.observe(fragmentActivity!!, Observer {
+
             onMediaResult?.onResult(it)
-        })
+        })*/
         return this
     }
 
+    /**
+     * startForAvatar result
+     * onResult mediaItem
+     */
     fun startForAvatarResult(context: FragmentActivity,onAvatarResult: OnAvatarResult): VanGogh {
 
         selection =  MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
@@ -187,10 +194,8 @@ object VanGogh {
         VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaOnlyImage
         SelectMediaActivity.actionStart(context,true)
         fragmentActivity = context
-        selectMediaList.clear()
-        lvAvatarData.observe(fragmentActivity!!, Observer {
-            onAvatarResult?.onResult(it)
-        })
+        selectMediaList = mutableListOf()
+        mOnAvatarResult = onAvatarResult
         return this
     }
 

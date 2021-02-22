@@ -16,6 +16,7 @@ import id.zelory.compressor.constraint.default
 import id.zelory.compressor.constraint.destination
 import kotlinx.coroutines.*
 import java.io.File
+import java.util.*
 
 /**
  * @ClassName MediaGridItemAdapter
@@ -141,7 +142,9 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
 
             }
            // var endTime = System.currentTimeMillis()
-            //Log.e(TAG, "compress Time = ${endTime - startTime}")
+            //Log.e(TAG, "compress Time = ${endTime - startTime}"
+            /*val mediaListNew = mutableListOf<MediaItem>()
+            Collections.copy(mediaList, mediaListNew);*/
             _lvMediaData.postValue(mediaList)
         }
 
@@ -151,5 +154,9 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
         return File("${imageCompressFile?.absolutePath}${File.separator}${actualImage!!.name}")
     }
 
+    override fun onCleared() {
+        super.onCleared()
+
+    }
 
 }
