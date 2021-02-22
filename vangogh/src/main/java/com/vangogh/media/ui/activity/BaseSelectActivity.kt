@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
+import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.dialog.LoadingDialog
@@ -76,7 +77,6 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var loadingDialog:LoadingDialog
 
-    private lateinit var onMediaResult:OnMediaResult
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +88,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         getData()
         initSendMediaListener()
         initOriginalCheck()
+        updateTitle()
         activity = this
         VanGogh.selectMediaActivity.add(this)
         compressMediaViewModel =
@@ -100,6 +101,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 VanGogh.mOnMediaResult.onResult(it)
             }
+            VanGoghConst.reset()
             dismissDialog()
             finishSelectMediaUi()
         })
@@ -163,10 +165,20 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     protected fun updateTitle() {
         if (VanGogh.selectMediaList.size > 0) {
             media_send.isEnabled = true
-            media_send.text = getString(R.string.media_send_num, VanGogh.selectMediaList.size, 9)
+            when(VanGoghConst.MEDIA_TITLE){
+                VanGoghConst.MediaTitle.MediaComplete -> media_send.text = getString(R.string.media_complete_num, VanGogh.selectMediaList.size, 9)
+                VanGoghConst.MediaTitle.MediaSend -> media_send.text = getString(R.string.media_send_num, VanGogh.selectMediaList.size, 9)
+
+            }
+            //media_send.text = getString(R.string.media_send_num, VanGogh.selectMediaList.size, 9)
         } else {
             media_send.isEnabled = false
-            media_send.text = resources.getString(R.string.media_send_not_enable)
+            when(VanGoghConst.MEDIA_TITLE){
+                VanGoghConst.MediaTitle.MediaComplete ->media_send.text = resources.getString(R.string.media_complete)
+                VanGoghConst.MediaTitle.MediaSend ->   media_send.text = resources.getString(R.string.media_send_not_enable)
+
+            }
+           // media_send.text = resources.getString(R.string.media_send_not_enable)
         }
 
     }

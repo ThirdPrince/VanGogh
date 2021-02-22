@@ -152,6 +152,14 @@ object VanGogh {
         return this
     }
 
+    /**
+     * default complete
+     */
+    fun setMediaTitleSend(): VanGogh {
+        VanGoghConst.MEDIA_TITLE =VanGoghConst.MediaTitle.MediaSend
+        return this
+    }
+
 
 
 
@@ -159,9 +167,6 @@ object VanGogh {
     private fun start(context: FragmentActivity) {
         SelectMediaActivity.actionStart(context,false)
         fragmentActivity = context
-      /*  lvMediaData.observe(fragmentActivity!!, Observer {
-            //onMediaResult?.onResult(it)
-        })*/
     }
 
     /**
@@ -174,12 +179,6 @@ object VanGogh {
         fragmentActivity = context
         selectMediaList = mutableListOf()
         mOnMediaResult = onMediaResult
-        //selectMediaList.clear()
-        //.removeObserver {  fragmentActivity}
-     /*   lvMediaData.observe(fragmentActivity!!, Observer {
-
-            onMediaResult?.onResult(it)
-        })*/
         return this
     }
 

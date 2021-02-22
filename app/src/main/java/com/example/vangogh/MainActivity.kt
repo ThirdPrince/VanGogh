@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.vangogh.adapter.GridMediaAdapter
 import com.example.vangogh.itf.OnAddMediaListener
 import com.vangogh.media.config.VanGogh
+import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.itf.OnAvatarResult
 import com.vangogh.media.models.MediaItem
@@ -101,7 +102,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
             })
         }else{
-            vanGogh.startForResult(this,onMediaResult = object :OnMediaResult{
+            vanGogh.setMediaTitleSend().startForResult(this,onMediaResult = object :OnMediaResult{
                 override fun onResult(mediaItemList: List<MediaItem>) {
                     mediaList.clear()
                     mediaList.addAll(mediaItemList)

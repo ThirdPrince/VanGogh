@@ -41,6 +41,8 @@ class VideoPlayActivity : AppCompatActivity() {
         private const val UPDATE_UI = 1024
     }
 
+    lateinit var back:ImageView
+
     lateinit var mediaItem: MediaItem
     lateinit var videoView :VideoView
     lateinit var videoPlay:ImageView
@@ -74,6 +76,7 @@ class VideoPlayActivity : AppCompatActivity() {
 
     }
     private fun initView(){
+        back = findViewById(R.id.ic_back)
         videoPlay = findViewById(R.id.iv_play)
         videoView = findViewById(R.id.video_view)
         playSeek = findViewById(R.id.play_seek)
@@ -84,6 +87,11 @@ class VideoPlayActivity : AppCompatActivity() {
         videoHandler.sendEmptyMessageDelayed(UPDATE_UI,500)
     }
     private fun initEvent(){
+
+
+        back.setOnClickListener {
+            finish()
+        }
         videoPlay.setOnClickListener(View.OnClickListener {
             if (videoView.isPlaying) {
                 videoPlay.setImageResource(R.drawable.play_btn_style)

@@ -25,6 +25,20 @@ object VanGoghConst {
             const val MediaOnlyGif = 3
         }
     }
+
+
+    @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD, AnnotationTarget.FUNCTION)
+    @MustBeDocumented
+    @IntDef(MediaTitle.MediaComplete, MediaTitle.MediaSend)
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
+    annotation
+    class MediaTitle {
+        companion object {
+            const val MediaComplete = 0
+            const val MediaSend = 1
+
+        }
+    }
     var MAX_MEDIA = 9
     var GRID_SPAN_CONT = 4
     var MEDIA_MAX_SIZE = Int.MAX_VALUE
@@ -32,6 +46,14 @@ object VanGoghConst {
     var VIDEO_MAX_DURATION = Int.MAX_VALUE
 
     var MEDIA_TYPE = MediaType.MediaAll
+
+    var MEDIA_TITLE = MediaTitle.MediaComplete
+
+    fun reset(){
+         MEDIA_TITLE = MediaTitle.MediaComplete
+         MEDIA_TYPE = MediaType.MediaAll
+    }
+
 
 
 
