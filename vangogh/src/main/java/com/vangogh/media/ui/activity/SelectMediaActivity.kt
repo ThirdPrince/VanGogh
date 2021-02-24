@@ -26,15 +26,22 @@ import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.extend.toast
+import com.vangogh.media.itf.OnCameraClickListener
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.utils.CameraManager
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.utils.MediaTimeUtils
 import com.vangogh.media.view.MediaDirPopWindow
 import com.vangogh.media.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
+
 
 /**
  * @ClassName SelectMediaActivity
@@ -44,7 +51,7 @@ import kotlinx.android.synthetic.main.activity_select_media.*
  * @Version 1.0
  */
 class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaItemClickListener,
-    OnItemCheckListener {
+    OnItemCheckListener, OnCameraClickListener {
 
     companion object {
 
@@ -90,6 +97,8 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     private lateinit var titleViewBg: View
 
     private lateinit var ivArrow: ImageView
+
+    private lateinit var cameraManager: CameraManager
 
     /**
      * preview media
@@ -152,6 +161,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         })
         mediaViewModel.lvDataChanged.observe(this, Observer {
 
+            Log.e(TAG,"lvDataChanged")
             mediaViewModel.getMedia(null)
 
         })
@@ -195,8 +205,9 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         mediaItemAdapter = MediaGridItemAdapter(this, MediaPreviewUtil.currentMediaList, isAvatar)
         mediaItemAdapter.setHasStableIds(true);
         rcy_view.adapter = mediaItemAdapter
-        mediaItemAdapter!!.onMediaItemClickListener = this
-        mediaItemAdapter!!.onItemCheckListener = this
+        mediaItemAdapter.onMediaItemClickListener = this
+        mediaItemAdapter.onItemCheckListener = this
+        mediaItemAdapter.onCameraClickListener = this
         when (VanGoghConst.MEDIA_TYPE) {
             VanGoghConst.MediaType.MediaAll -> mediaTitle.text = getString(R.string.media_title_str)
             VanGoghConst.MediaType.MediaOnlyImage -> mediaTitle.text =
@@ -272,21 +283,33 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     }
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            showDialog()
-            mediaViewModel.getMedia(null)
+    /**
+     * camera click
+     */
+    override fun onCameraClick(view: View?) {
+         cameraManager = CameraManager(this)
+        try {
+            uiScope.launch {
+                val cameraIntent = withContext(Dispatchers.IO) {
+                    cameraManager?.cameraIntent()
+                }
+                if (cameraIntent != null)
+                    startActivityForResult(cameraIntent, CameraManager.REQUEST_CAMERA)
+                else
+                    toast(getString(R.string.no_camera_exists))
+
+            }
+        }catch (e:IOException){
+            e.printStackTrace()
         }
     }
 
 
+    /**
+     * item click
+     */
     override fun onItemClick(view: View?, position: Int) {
-        val realPosition =  if (VanGoghConst.CAMERA_ENABLE) position - 1 else position
+        val realPosition = if (VanGoghConst.CAMERA_ENABLE) position - 1 else position
         if (isAvatar) {
             AvatarActivity.actionStart(this, realPosition, isAvatar)
         } else {
@@ -306,8 +329,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 val pos = mediaItemAdapter.items.indexOf(it)
                 // mediaItemAdapter.notifyItemChanged(pos)
             }
-
-            // mediaItemAdapter.notifyItemRangeChanged(position, VanGogh.selectMediaList.size + 1)
         } else {
             if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
                 toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
@@ -342,7 +363,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
      */
     private fun updateImageTime() {
         val position: Int = gridLayoutManager.findFirstVisibleItemPosition()
-        //val realPosition =  if (VanGoghConst.CAMERA_ENABLE) position +1 else position
         if (position != RecyclerView.NO_POSITION) {
             val mediaItem: MediaItem = mediaItemAdapter.items[position]
             if (mediaItem != null) {
@@ -369,6 +389,27 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                     }
                 }
             }
+
+            CameraManager.REQUEST_CAMERA ->{
+                if((resultCode == Activity.RESULT_OK)){
+                   // mediaViewModel.getMedia(null)
+                }
+
+            }
+
+
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            showDialog()
+            mediaViewModel.getMedia(null)
         }
     }
 

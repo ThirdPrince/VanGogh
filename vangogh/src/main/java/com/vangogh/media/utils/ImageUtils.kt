@@ -1,6 +1,8 @@
 package com.vangogh.media.utils
 
 import android.graphics.BitmapFactory
+import android.util.Log
+import com.vangogh.media.viewmodel.MediaViewModel
 
 /**
  * @ClassName ImageUtils
@@ -13,6 +15,7 @@ object ImageUtils {
 
     fun isImage(filePath: String?): Boolean {
         return try {
+            //Log.e("ImageUtils","currentThread = ${Thread.currentThread().name}")
             val options = BitmapFactory.Options()
             options.inJustDecodeBounds = true
             BitmapFactory.decodeFile(filePath, options)

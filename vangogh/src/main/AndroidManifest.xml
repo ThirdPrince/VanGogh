@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.media.vangogh">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -22,6 +23,16 @@
             android:name="com.vangogh.media.ui.activity.SelectMediaActivity"
             android:screenOrientation="portrait"
             android:theme="@style/picture.WeChat.style" />
+       <provider
+            android:name="com.vangogh.media.utils.VanGoghProvider"
+            android:authorities="${applicationId}.vangogh.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGoghConst
+import com.vangogh.media.itf.OnCameraClickListener
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaItem
@@ -33,6 +34,8 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
 
     var onItemCheckListener: OnItemCheckListener? = null
 
+    var onCameraClickListener: OnCameraClickListener? = null
+
 
     /**
      * checkedList
@@ -52,7 +55,7 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
                     R.layout.item_content_camera_view,
                     parent,
                     false
-                ),false,onMediaItemClickListener!!,onItemCheckListener!!
+                ),onCameraClickListener!!
             )
             VIDEO -> VideoTypeViewHolder(activity,
                 mInflater.inflate(

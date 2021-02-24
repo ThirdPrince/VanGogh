@@ -5,6 +5,7 @@ import android.content.ContentUris
 import android.database.ContentObserver
 import android.provider.BaseColumns
 import android.provider.MediaStore
+import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -76,6 +77,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
 
     fun getMedia(bucketId: String? = null) {
         launchDataLoad {
+            //Log.e("getMedia","currentThread = ${Thread.currentThread().name}")
             val medias = queryImages(bucketId)
             _lvMediaData.postValue(medias)
             val mediasFilter = filterDamage(medias)
@@ -137,12 +139,9 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
                 mediaItem.dataToken = mediaTime
-              /*  Log.e(
-                    TAG,
-                    "path = $imagePath:::imageSize = $imageSize:::width = $imageWidth:: bucketName::=$bucketName"
-                )*/
+                Log.e(TAG,"path =$imagePath")
                 if(mediaItem.isVideo()){
-                    //Log.e(TAG,"mediaDuration =$mediaDuration")
+                    Log.e(TAG,"mediaDuration =$mediaDuration")
                     if(  mediaDuration > VanGoghConst.VIDEO_MAX_DURATION || mediaDuration === 0L)
                     continue
                 }
@@ -158,61 +157,72 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
      *  filterDamage some image  size>0 but Damage
      */
     @WorkerThread
-    private fun filterDamage(mediaList: MutableList<MediaItem>): List<MediaItem> {
+    private suspend fun filterDamage(mediaList: MutableList<MediaItem>): List<MediaItem> {
 
-        return mediaList.filterNot {
-               it.isImage() && it.width === 0 && !ImageUtils.isImage(it.path)
-           }
+        var mediaListNotDamage :List<MediaItem>  = mutableListOf()
+        withContext(Dispatchers.IO){
+             mediaListNotDamage = mediaList.filterNot {
+                it.isImage() && it.width === 0 && !ImageUtils.isImage(it.path)
+            }
+        }
+        return mediaListNotDamage
     }
     /**
      *  MediaFolder
      */
     @WorkerThread
-    private fun getMediaDir(mediaList: List<MediaItem>): MutableList<MediaDir> {
+    private suspend fun getMediaDir(mediaList: List<MediaItem>): MutableList<MediaDir> {
         var mediaDirList = mutableListOf<MediaDir>()
         val videoDir = MediaDir()
-        mediaList.forEach {
-            val mediaDir = MediaDir()
-            mediaDir.id = it.id
-            mediaDir.bucketId = it.bucketId
-            mediaDir.name = it.bucketName
-            mediaDir.dateAdded = it.dataToken
-            if (!mediaDirList.contains(mediaDir)) {
-                mediaDir.medias.add(it)
-                mediaDir.setCoverPath(it.pathUri)
-                mediaDirList.add(mediaDir)
-            } else {
-                mediaDirList[mediaDirList.indexOf(mediaDir)]
-                    .medias.add(it)
-            }
+        withContext(Dispatchers.IO) {
+            mediaList.forEach {
+                val mediaDir = MediaDir()
+                mediaDir.id = it.id
+                mediaDir.bucketId = it.bucketId
+                mediaDir.name = it.bucketName
+                mediaDir.dateAdded = it.dataToken
+                if (!mediaDirList.contains(mediaDir)) {
+                    mediaDir.medias.add(it)
+                    mediaDir.setCoverPath(it.pathUri)
+                    mediaDirList.add(mediaDir)
+                } else {
+                    mediaDirList[mediaDirList.indexOf(mediaDir)]
+                        .medias.add(it)
+                }
 
-            if (it.isVideo()) {
-                videoDir.id = it.id
-                videoDir.bucketId = it.bucketId
-                videoDir.medias.add(it)
-                videoDir.setCoverPath(it.pathUri)
-                videoDir.name = getApplication<Application>().getString(R.string.media_all_video)
+                if (it.isVideo()) {
+                    videoDir.id = it.id
+                    videoDir.bucketId = it.bucketId
+                    videoDir.medias.add(it)
+                    videoDir.setCoverPath(it.pathUri)
+                    videoDir.name =
+                        getApplication<Application>().getString(R.string.media_all_video)
+                }
             }
-        }
-        if (!videoDir.isEmpty() && VanGoghConst.MEDIA_TYPE !== VanGoghConst.MediaType.MediaOnlyVideo) {
-            mediaDirList.add(0, videoDir)
-        }
-        if (mediaList.isNotEmpty()) {
-            val mediaDir = MediaDir()
-            val mediaItem = mediaList.first()
-            mediaDir.id = mediaItem.id
-            mediaDir.bucketId = mediaItem.bucketId
-            mediaDir.name = getApplication<Application>().getString(R.string.media_title_str)
-            when(VanGoghConst.MEDIA_TYPE){
-                VanGoghConst.MediaType.MediaAll ->  mediaDir.name = getApplication<Application>().getString(R.string.media_title_str)
-                VanGoghConst.MediaType.MediaOnlyImage ->  mediaDir.name =getApplication<Application>().getString(R.string.image_title_str)
-                VanGoghConst.MediaType.MediaOnlyGif ->  mediaDir.name = getApplication<Application>().getString(R.string.gif_title_str)
-                VanGoghConst.MediaType.MediaOnlyVideo ->  mediaDir.name = getApplication<Application>().getString(R.string.video_title_str)
+            if (!videoDir.isEmpty() && VanGoghConst.MEDIA_TYPE !== VanGoghConst.MediaType.MediaOnlyVideo) {
+                mediaDirList.add(0, videoDir)
             }
-            mediaDir.dateAdded = mediaItem.dataToken
-            mediaDir.setCoverPath(mediaItem.pathUri)
-            mediaDir.medias.addAll(mediaList)
-            mediaDirList.add(0, mediaDir)
+            if (mediaList.isNotEmpty()) {
+                val mediaDir = MediaDir()
+                val mediaItem = mediaList.first()
+                mediaDir.id = mediaItem.id
+                mediaDir.bucketId = mediaItem.bucketId
+                mediaDir.name = getApplication<Application>().getString(R.string.media_title_str)
+                when (VanGoghConst.MEDIA_TYPE) {
+                    VanGoghConst.MediaType.MediaAll -> mediaDir.name =
+                        getApplication<Application>().getString(R.string.media_title_str)
+                    VanGoghConst.MediaType.MediaOnlyImage -> mediaDir.name =
+                        getApplication<Application>().getString(R.string.image_title_str)
+                    VanGoghConst.MediaType.MediaOnlyGif -> mediaDir.name =
+                        getApplication<Application>().getString(R.string.gif_title_str)
+                    VanGoghConst.MediaType.MediaOnlyVideo -> mediaDir.name =
+                        getApplication<Application>().getString(R.string.video_title_str)
+                }
+                mediaDir.dateAdded = mediaItem.dataToken
+                mediaDir.setCoverPath(mediaItem.pathUri)
+                mediaDir.medias.addAll(mediaList)
+                mediaDirList.add(0, mediaDir)
+            }
         }
         return mediaDirList
     }

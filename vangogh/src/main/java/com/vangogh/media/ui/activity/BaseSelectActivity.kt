@@ -21,6 +21,8 @@ import com.vangogh.media.ui.dialog.LoadingDialog
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.viewmodel.CompressMediaViewModel
 import kotlinx.android.synthetic.main.media_select_button.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 
 /**
@@ -36,7 +38,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         const val TAG = "BaseSelectActivity"
     }
-
+    val uiScope  =  CoroutineScope(Dispatchers.Main)
 
 
     lateinit var activity: BaseSelectActivity
