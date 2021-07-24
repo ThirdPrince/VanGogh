@@ -67,4 +67,8 @@ data class MediaItem(
     fun isCompress():Boolean{
         return isImage() && size > compressSize
     }
+
+    override fun equals(other: Any?): Boolean {
+        return this.pathUri == (other as MediaItem).pathUri
+    }
 }

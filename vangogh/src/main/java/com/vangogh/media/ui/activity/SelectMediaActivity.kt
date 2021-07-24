@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -40,6 +42,7 @@ import kotlinx.android.synthetic.main.activity_select_media.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.IOException
 
 
@@ -56,6 +59,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     companion object {
 
         const val IS_AVATAR = "isAvatar"
+        const val SELECTED_LIST = "SelectedList"
 
         fun actionStart(activity: FragmentActivity, isAvatar: Boolean) {
             var intent = Intent(
@@ -63,6 +67,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 SelectMediaActivity::class.java
             ).apply {
                 putExtra(IS_AVATAR, isAvatar)
+                //putExtra(SELECTED_LIST,selectedList)
             }
             activity.startActivity(intent)
             activity.overridePendingTransition(
@@ -98,7 +103,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
     private lateinit var ivArrow: ImageView
 
-    private lateinit var cameraManager: CameraManager
+    private var cameraManager: CameraManager? = null
 
     /**
      * preview media
@@ -155,13 +160,24 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             dismissDialog()
             MediaPreviewUtil.currentMediaList.clear()
             MediaPreviewUtil.currentMediaList.addAll(it)
+
+            MediaPreviewUtil.currentMediaList.forEach { media ->
+                if (media.path.equals(cameraManager?.cameraRealPath)) {
+                    VanGogh.selectMediaList.add(media)
+                }
+
+
+            }
+//            mediaItemAdapter.selectMediaList = selectedList
+//            VanGogh.selectMediaList = selectedList
+            updateTitle()
             mediaItemAdapter.notifyDataSetChanged()
 
 
         })
         mediaViewModel.lvDataChanged.observe(this, Observer {
 
-            Log.e(TAG,"lvDataChanged")
+            //Log.e(TAG,"lvDataChanged")
             mediaViewModel.getMedia(null)
 
         })
@@ -287,7 +303,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
      * camera click
      */
     override fun onCameraClick(view: View?) {
-         cameraManager = CameraManager(this)
+        cameraManager = CameraManager(this)
         try {
             uiScope.launch {
                 val cameraIntent = withContext(Dispatchers.IO) {
@@ -299,7 +315,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                     toast(getString(R.string.no_camera_exists))
 
             }
-        }catch (e:IOException){
+        } catch (e: IOException) {
             e.printStackTrace()
         }
     }
@@ -390,9 +406,14 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 }
             }
 
-            CameraManager.REQUEST_CAMERA ->{
-                if((resultCode == Activity.RESULT_OK)){
-                   // mediaViewModel.getMedia(null)
+            CameraManager.REQUEST_CAMERA -> {
+                if ((resultCode == Activity.RESULT_OK)) {
+                    sendBroadcast(
+                        Intent(
+                            Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                            Uri.fromFile(File(cameraManager?.cameraRealPath))
+                        )
+                    )
                 }
 
             }

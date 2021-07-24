@@ -70,8 +70,10 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
             contentObserver = getApplication<Application>().contentResolver.registerObserver(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             ) {
+                Log.d(TAG,"observer = $it")
                 _lvDataChanged.value = true
             }
+
         }
     }
 
@@ -139,9 +141,9 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
                 mediaItem.dataToken = mediaTime
-                Log.e(TAG,"path =$imagePath")
+                //Log.e(TAG,"path =$imagePath")
                 if(mediaItem.isVideo()){
-                    Log.e(TAG,"mediaDuration =$mediaDuration")
+                    //Log.e(TAG,"mediaDuration =$mediaDuration")
                     if(  mediaDuration > VanGoghConst.VIDEO_MAX_DURATION || mediaDuration === 0L)
                     continue
                 }

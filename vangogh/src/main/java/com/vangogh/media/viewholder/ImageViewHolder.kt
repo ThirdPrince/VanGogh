@@ -3,6 +3,7 @@ package com.vangogh.media.viewholder
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +31,7 @@ open class ImageViewHolder(
      val view: View,
     var isAvatar :Boolean,
     var onMediaItemClickListener: OnMediaItemClickListener,
-    var onItemCheckListener: OnItemCheckListener
+    var onItemCheckListener: OnItemCheckListener, var selectedList: MutableList<MediaItem>
 ) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
     private var requestOptions = RequestOptions.centerCropTransform()
@@ -71,13 +72,17 @@ open class ImageViewHolder(
         }else{
             numCheckBox.visibility = View.VISIBLE
         }
+        Log.e("ImageViewHolder","selectMediaList  = ${selectMediaList.size}")
         if (selectMediaList.contains(mediaItem)) {
+            var num = selectMediaList.indexOf(mediaItem)
+            Log.e("ImageViewHolder","num = ${num+1}")
             numCheckBox.isEnabled = true
             if(selectMediaList.size>0) {
                 numCheckBox.setCheckedNum(selectMediaList.indexOf(mediaItem)+1)
             }
             setMediaMask(true)
         } else {
+            Log.e("ImageViewHolder","UNCHECKED")
             numCheckBox.setCheckedNum(CheckView.UNCHECKED)
             setMediaMask(false)
         }

@@ -1,17 +1,17 @@
 package com.vangogh.media.utils
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import androidx.annotation.WorkerThread
+import androidx.core.content.FileProvider
 import com.vangogh.media.utils.MediaTimeUtils.getCameraTime
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.IOException
+
 
 /**
  * @ClassName CameraManager
@@ -27,18 +27,17 @@ class CameraManager(val context: Context) {
     var cameraRealPath: String? = null
 
     @Throws(IOException::class)
-    private fun createCameraFile(): Uri? {
+    private fun createCameraUri(): Uri? {
         val cameraFileName = "IMG_" + getCameraTime() + ".jpg"
-        val resolver = context.contentResolver
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, cameraFileName)
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-          /*  put(MediaStore.MediaColumns.SIZE, 300*1024)
-            put(MediaStore.MediaColumns.DATE_TAKEN, System.currentTimeMillis())*/
+        val cameraFile = File( Environment.getExternalStorageDirectory(),cameraFileName)
+        cameraPathUri = if (Build.VERSION.SDK_INT >= 24) {
+            FileProvider.getUriForFile(context, VanGoghProvider.getProvideName(context), cameraFile)
+        } else {
+            Uri.fromFile(cameraFile)
         }
 
-        cameraRealPath = cameraFileName
-        cameraPathUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        cameraRealPath = cameraFile.absolutePath
 
         return cameraPathUri
     }
@@ -48,17 +47,11 @@ class CameraManager(val context: Context) {
     @Throws(IOException::class)
     fun  cameraIntent(): Intent? {
         var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-           // Log.e("CameraManager","currentThread = ${Thread.currentThread().name}")
             if (cameraIntent.resolveActivity(context.packageManager) != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val photoURI = createCameraFile()
                     cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     cameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                } else {
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, createCameraFile())
-                }
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, createCameraUri())
+
             } else {
                return  null
             }
@@ -68,11 +61,6 @@ class CameraManager(val context: Context) {
     }
 
 
-    fun deleteContentUri(path: Uri?) {
-        if (path != null) {
-            context.contentResolver.delete(path, null, null)
-        }
-    }
 
     companion object {
 

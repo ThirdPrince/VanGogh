@@ -56,6 +56,11 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     protected var isAvatar :Boolean = false
 
     /**
+     * 已选中的media
+     */
+    protected var selectedList = mutableListOf<MediaItem>()
+
+    /**
      * activity back
      */
 
@@ -113,6 +118,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     private fun getData() {
         mediaPos = intent!!.getIntExtra(GalleryActivity.MEDIA_POS, 0)
         isAvatar = intent!!.getBooleanExtra(SelectMediaActivity.IS_AVATAR, false)
+        //selectedList = intent!!.getParcelableArrayListExtra(SelectMediaActivity.SELECTED_LIST)
         imageOriginal = intent!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL, false)
         mediaPreviewSelect = intent!!.getBooleanExtra(GalleryActivity.MEDIA_PREVIEW_SELECT, false)
         cbOriginal?.isChecked = imageOriginal

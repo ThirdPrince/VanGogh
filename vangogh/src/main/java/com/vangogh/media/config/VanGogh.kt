@@ -15,10 +15,8 @@ import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.SelectMediaActivity
 import com.vangogh.media.utils.MediaQueryConditions
-import com.vangogh.media.utils.MediaQueryConditions.MEDIA_SELECTION_ARGS
-import com.vangogh.media.viewmodel.CompressMediaViewModel
-import java.time.Duration
-import java.util.ArrayList
+
+import kotlin.collections.ArrayList
 
 /**
  * @ClassName MediaGridItemAdapter
@@ -155,14 +153,14 @@ object VanGogh {
         return this
     }
 
-
-
-
-
-    private fun start(context: FragmentActivity) {
-        SelectMediaActivity.actionStart(context,false)
-        fragmentActivity = context
+    fun setSelectedMedia(selectedMedia: MutableList<MediaItem>): VanGogh {
+       // mPickerOptionsBundle.putParcelableArrayList(FilePickerConst.KEY_SELECTED_MEDIA, selectedPhotos)
+       // VanGogh.selectMediaList = selectedMedia
+        selectMediaList.clear()
+        selectMediaList.addAll(selectedMedia)
+        return this
     }
+
 
     /**
      * startForMedia result
@@ -172,10 +170,12 @@ object VanGogh {
 
         SelectMediaActivity.actionStart(context,false)
         fragmentActivity = context
-        selectMediaList = mutableListOf()
         mOnMediaResult = onMediaResult
         return this
     }
+
+
+
 
     /**
      * startForAvatar result

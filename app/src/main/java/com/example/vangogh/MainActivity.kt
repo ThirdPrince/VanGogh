@@ -106,7 +106,8 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
             })
         }else{
-            vanGogh.setMediaTitleSend().startForResult(this,onMediaResult = object :OnMediaResult{
+            vanGogh.setMediaTitleSend().setSelectedMedia(mediaList).startForResult(this,
+                onMediaResult = object :OnMediaResult{
                 override fun onResult(mediaItemList: List<MediaItem>) {
                     mediaList.clear()
                     mediaList.addAll(mediaItemList)

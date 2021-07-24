@@ -55,6 +55,7 @@ object VanGoghConst {
          MEDIA_TITLE = MediaTitle.MediaComplete
          MEDIA_TYPE = MediaType.MediaAll
          CAMERA_ENABLE  = false
+          VanGogh.selectMediaList.clear()
     }
 
 

@@ -40,7 +40,7 @@ object MediaTimeUtils {
 
     fun  getCameraTime():String{
         val date = Date(System.currentTimeMillis())
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val sdf = SimpleDateFormat("yyyy-MM-dd_HHmmss")
          return  sdf.format(date)
     }
 }
