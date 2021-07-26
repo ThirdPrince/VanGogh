@@ -19,7 +19,7 @@ import com.vangogh.media.view.AnimateCheckBox
  * @Date 2021/1/26 10:25
  * @Version 1.0
  */
-class VideoTypeViewHolder( activity: Activity, view: View, isAvatar:Boolean, onMediaItemClickListener: OnMediaItemClickListener,  onItemCheckListener: OnItemCheckListener, selectedList: MutableList<MediaItem>): ImageViewHolder(  activity,view, isAvatar,onMediaItemClickListener, onItemCheckListener,selectedList){
+class VideoTypeViewHolder( activity: Activity, view: View, isAvatar:Boolean, onMediaItemClickListener: OnMediaItemClickListener,  onItemCheckListener: OnItemCheckListener): ImageViewHolder(  activity,view, isAvatar,onMediaItemClickListener, onItemCheckListener){
 
     var durationTv: TextView = view.findViewById(R.id.durationTv) as TextView
 

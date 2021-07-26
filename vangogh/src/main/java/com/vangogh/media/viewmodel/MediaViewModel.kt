@@ -3,12 +3,14 @@ package com.vangogh.media.viewmodel
 import android.app.Application
 import android.content.ContentUris
 import android.database.ContentObserver
+import android.net.Uri
 import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.core.log.EasyLog
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
@@ -79,8 +81,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
 
     fun getMedia(bucketId: String? = null) {
         launchDataLoad {
-            //Log.e("getMedia","currentThread = ${Thread.currentThread().name}")
-            val medias = queryImages(bucketId)
+            val medias = queryImages()
             _lvMediaData.postValue(medias)
             val mediasFilter = filterDamage(medias)
             if(mediasFilter.size != medias.size) {
@@ -92,12 +93,18 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         }
     }
 
+    fun getCamera(uri: Uri){
+        launchDataLoad {
+            val medias = queryImages(uri)
+            _lvMediaData.postValue(medias)
+        }
+    }
+
 
     @WorkerThread
-    suspend fun queryImages(bucketId: String?): MutableList<MediaItem> {
+    suspend fun queryImages(uri: Uri = MediaStore.Files.getContentUri("external")): MutableList<MediaItem> {
         var mediaItemList = mutableListOf<MediaItem>()
         withContext(Dispatchers.IO) {
-            val uri = MediaStore.Files.getContentUri("external")
             val sortOrder = mediaProjection[mediaProjection.size - 1] + " DESC"
             val cursor = getApplication<Application>().contentResolver.query(
                 uri,
@@ -141,7 +148,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
                 mediaItem.dataToken = mediaTime
-                //Log.e(TAG,"path =$imagePath")
+               EasyLog.d(TAG,"mediaMineType = $mediaMineType")
                 if(mediaItem.isVideo()){
                     //Log.e(TAG,"mediaDuration =$mediaDuration")
                     if(  mediaDuration > VanGoghConst.VIDEO_MAX_DURATION || mediaDuration === 0L)

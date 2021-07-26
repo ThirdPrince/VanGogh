@@ -34,6 +34,7 @@ import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.CameraManager
+import com.vangogh.media.utils.ImageUtils
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.utils.MediaTimeUtils
 import com.vangogh.media.view.MediaDirPopWindow
@@ -59,7 +60,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     companion object {
 
         const val IS_AVATAR = "isAvatar"
-        const val SELECTED_LIST = "SelectedList"
+        //const val SELECTED_LIST = "SelectedList"
 
         fun actionStart(activity: FragmentActivity, isAvatar: Boolean) {
             var intent = Intent(
@@ -158,18 +159,12 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
         mediaViewModel.lvMediaData.observe(this, Observer {
             dismissDialog()
+            if(it.size == MediaPreviewUtil.currentMediaList.size){
+                return@Observer
+            }
             MediaPreviewUtil.currentMediaList.clear()
             MediaPreviewUtil.currentMediaList.addAll(it)
 
-            MediaPreviewUtil.currentMediaList.forEach { media ->
-                if (media.path.equals(cameraManager?.cameraRealPath)) {
-                    VanGogh.selectMediaList.add(media)
-                }
-
-
-            }
-//            mediaItemAdapter.selectMediaList = selectedList
-//            VanGogh.selectMediaList = selectedList
             updateTitle()
             mediaItemAdapter.notifyDataSetChanged()
 
@@ -177,7 +172,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         })
         mediaViewModel.lvDataChanged.observe(this, Observer {
 
-            //Log.e(TAG,"lvDataChanged")
             mediaViewModel.getMedia(null)
 
         })
@@ -285,9 +279,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
 
         mediaPreview.setOnClickListener {
-
             GalleryActivity.actionStart(this, 0, cbOriginal.isChecked, true)
-
         }
     }
 
@@ -340,7 +332,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         if (VanGogh.selectMediaList.contains(mediaItem)) {
             VanGogh.selectMediaList.remove(mediaItem)
             mediaItemAdapter.notifyDataSetChanged()
-            // mediaItemAdapter.notifyItemChanged(position)
             VanGogh.selectMediaList.forEach {
                 val pos = mediaItemAdapter.items.indexOf(it)
                 // mediaItemAdapter.notifyItemChanged(pos)
@@ -408,6 +399,19 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
             CameraManager.REQUEST_CAMERA -> {
                 if ((resultCode == Activity.RESULT_OK)) {
+                    val widthAndHeight = ImageUtils.getImageSize(cameraManager?.cameraRealPath)
+                    val size = File(cameraManager?.cameraRealPath).length()
+                    val cameraItem = MediaItem()
+                    cameraItem.width = widthAndHeight[0]
+                    cameraItem.height = widthAndHeight[1]
+                    cameraItem.path = cameraManager?.cameraRealPath
+                    cameraItem.pathUri = cameraManager?.cameraPathUri
+                    cameraItem.size = size
+                    cameraItem.mineType = "image/jpeg"
+                    MediaPreviewUtil.currentMediaList.add(0,cameraItem)
+                    VanGogh.selectMediaList.add(cameraItem)
+                    mediaItemAdapter.notifyDataSetChanged()
+                    updateTitle()
                     sendBroadcast(
                         Intent(
                             Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,

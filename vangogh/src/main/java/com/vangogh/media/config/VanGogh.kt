@@ -132,7 +132,7 @@ object VanGogh {
     }
 
     /**
-     * just gif
+     * just video
      */
     fun onlyVideo(): VanGogh {
         selection = MediaQueryConditions.VIDEO_SELECTION

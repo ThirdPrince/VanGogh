@@ -14,5 +14,5 @@ object MediaPreviewUtil {
       * current show mediaList
       */
      var currentMediaList = mutableListOf<MediaItem>()
-     //var currentMediaList: ArrayList<MediaItem>  = ArrayList()
+
 }

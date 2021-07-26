@@ -28,17 +28,18 @@ import com.vangogh.media.view.CheckView
  */
 open class ImageViewHolder(
     var activity: Activity,
-     val view: View,
-    var isAvatar :Boolean,
+    val view: View,
+    var isAvatar: Boolean,
     var onMediaItemClickListener: OnMediaItemClickListener,
-    var onItemCheckListener: OnItemCheckListener, var selectedList: MutableList<MediaItem>
+    var onItemCheckListener: OnItemCheckListener
 ) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
     private var requestOptions = RequestOptions.centerCropTransform()
         .placeholder(R.drawable.image_grid_placeholder).error(R.drawable.image_grid_placeholder)
 
     private var squareImageView: ImageView
-   // private var checkBox: AnimateCheckBox
+
+    // private var checkBox: AnimateCheckBox
     private var numCheckBox: CheckView
     private var gifImage: ImageView? = null
 
@@ -46,43 +47,36 @@ open class ImageViewHolder(
     init {
         view.setOnClickListener(this)
         squareImageView = view.findViewById(R.id.iv_content_image)
-        //checkBox = view.findViewById(R.id.checkbox) as AnimateCheckBox
         numCheckBox = view.findViewById(R.id.num_checkbox)
         numCheckBox.setCountable(true)
         numCheckBox.setOnClickListener(this)
         gifImage = view.findViewById(R.id.gif_img)
-
-
     }
 
     override fun onClick(v: View?) {
-        when(v){
-            numCheckBox ->   onItemCheckListener.onItemCheckClick(v, adapterPosition, true)
+        when (v) {
+            numCheckBox -> onItemCheckListener.onItemCheckClick(v, adapterPosition, true)
             view -> onMediaItemClickListener?.onItemClick(v, adapterPosition)
         }
 
     }
 
     open fun bindData(mediaItem: MediaItem) {
-        Glide.with(activity).asBitmap().load(mediaItem.pathUri  )
+        Glide.with(activity).asBitmap().load(mediaItem.pathUri)
             .transition(BitmapTransitionOptions.withCrossFade())
             .apply(requestOptions).into(squareImageView)
-        if(isAvatar){
+        if (isAvatar) {
             numCheckBox.visibility = View.GONE
-        }else{
+        } else {
             numCheckBox.visibility = View.VISIBLE
         }
-        Log.e("ImageViewHolder","selectMediaList  = ${selectMediaList.size}")
         if (selectMediaList.contains(mediaItem)) {
-            var num = selectMediaList.indexOf(mediaItem)
-            Log.e("ImageViewHolder","num = ${num+1}")
             numCheckBox.isEnabled = true
-            if(selectMediaList.size>0) {
-                numCheckBox.setCheckedNum(selectMediaList.indexOf(mediaItem)+1)
+            if (selectMediaList.size > 0) {
+                numCheckBox.setCheckedNum(selectMediaList.indexOf(mediaItem) + 1)
             }
             setMediaMask(true)
         } else {
-            Log.e("ImageViewHolder","UNCHECKED")
             numCheckBox.setCheckedNum(CheckView.UNCHECKED)
             setMediaMask(false)
         }
@@ -102,12 +96,10 @@ open class ImageViewHolder(
 
     private fun setMediaMask(boolean: Boolean) {
         if (boolean) {
-
-                squareImageView.setColorFilter(
-                    Color.GRAY,
-                    PorterDuff.Mode.MULTIPLY
-                )
-
+            squareImageView.setColorFilter(
+                Color.GRAY,
+                PorterDuff.Mode.MULTIPLY
+            )
         } else {
             squareImageView.clearColorFilter()
         }

@@ -42,7 +42,6 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
      */
     var selectMediaList = mutableListOf<MediaItem>()
 
-    var selectedList = mutableListOf<MediaItem>()
 
 
 
@@ -64,14 +63,14 @@ class MediaGridItemAdapter(private val activity: FragmentActivity, var items: Li
                     R.layout.item_content_video_view,
                     parent,
                     false
-                ),false,onMediaItemClickListener!!,onItemCheckListener!!,selectedList
+                ),false,onMediaItemClickListener!!,onItemCheckListener!!
             )
             else -> ImageViewHolder(activity,
                 mInflater.inflate(
                     R.layout.item_content_image_view,
                     parent,
                     false
-                ),isAvatar,onMediaItemClickListener!!,onItemCheckListener!!, selectedList
+                ),isAvatar,onMediaItemClickListener!!,onItemCheckListener!!
             )
 
 

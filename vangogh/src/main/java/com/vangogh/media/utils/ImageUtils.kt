@@ -1,8 +1,6 @@
 package com.vangogh.media.utils
 
 import android.graphics.BitmapFactory
-import android.util.Log
-import com.vangogh.media.viewmodel.MediaViewModel
 
 /**
  * @ClassName ImageUtils
@@ -15,13 +13,23 @@ object ImageUtils {
 
     fun isImage(filePath: String?): Boolean {
         return try {
-            //Log.e("ImageUtils","currentThread = ${Thread.currentThread().name}")
             val options = BitmapFactory.Options()
             options.inJustDecodeBounds = true
             BitmapFactory.decodeFile(filePath, options)
             options.outWidth > 0 && options.outHeight > 0
         } catch (e: Exception) {
             false
+        }
+    }
+
+    fun getImageSize(filePath: String?):IntArray{
+         return try {
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeFile(filePath, options)
+            intArrayOf( options.outWidth,options.outHeight)
+        } catch (e: Exception) {
+            intArrayOf(0,0)
         }
     }
 }
