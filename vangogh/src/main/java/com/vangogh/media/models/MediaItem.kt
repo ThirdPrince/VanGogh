@@ -69,6 +69,10 @@ data class MediaItem(
     }
 
     override fun equals(other: Any?): Boolean {
-        return this.pathUri == (other as MediaItem).pathUri
+        if(other == null){
+            return false
+        }
+        val otherMedia = other as MediaItem
+        return (this.pathUri == otherMedia.pathUri || this.path == otherMedia.path)
     }
 }

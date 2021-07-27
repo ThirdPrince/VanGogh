@@ -160,7 +160,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
 
 
     /**
-     *  filterDamage some image  size >0 but Damage
+     *  filterDamage some image  size > 0 but Damage
      */
     @WorkerThread
     private suspend fun filterDamage(mediaList: MutableList<MediaItem>): List<MediaItem> {

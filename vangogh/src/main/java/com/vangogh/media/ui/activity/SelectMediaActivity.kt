@@ -159,13 +159,14 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
         mediaViewModel.lvMediaData.observe(this, Observer {
             dismissDialog()
-            if(it.size == MediaPreviewUtil.currentMediaList.size){
+            if(cameraManager?.cameraPathUri != null){
                 return@Observer
             }
             MediaPreviewUtil.currentMediaList.clear()
             MediaPreviewUtil.currentMediaList.addAll(it)
-            updateTitle()
-            mediaItemAdapter.notifyDataSetChanged()
+            refreshMedia()
+//            updateTitle()
+//            mediaItemAdapter.notifyDataSetChanged()
 
 
         })
@@ -405,8 +406,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                     cameraItem.dataToken = System.currentTimeMillis()
                     MediaPreviewUtil.currentMediaList.add(0,cameraItem)
                     VanGogh.selectMediaList.add(cameraItem)
-                    mediaItemAdapter.notifyDataSetChanged()
-                    updateTitle()
+                    refreshMedia()
                     sendBroadcast(
                         Intent(
                             Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
