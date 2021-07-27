@@ -154,8 +154,6 @@ object VanGogh {
     }
 
     fun setSelectedMedia(selectedMedia: MutableList<MediaItem>): VanGogh {
-       // mPickerOptionsBundle.putParcelableArrayList(FilePickerConst.KEY_SELECTED_MEDIA, selectedPhotos)
-       // VanGogh.selectMediaList = selectedMedia
         selectMediaList.clear()
         selectMediaList.addAll(selectedMedia)
         return this

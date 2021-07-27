@@ -164,7 +164,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             }
             MediaPreviewUtil.currentMediaList.clear()
             MediaPreviewUtil.currentMediaList.addAll(it)
-
             updateTitle()
             mediaItemAdapter.notifyDataSetChanged()
 
@@ -183,7 +182,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 MediaPreviewUtil.currentMediaList.addAll(mediaItemList)
                 mediaItemAdapter.notifyDataSetChanged()
             }
-
 
         })
 
@@ -332,10 +330,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         if (VanGogh.selectMediaList.contains(mediaItem)) {
             VanGogh.selectMediaList.remove(mediaItem)
             mediaItemAdapter.notifyDataSetChanged()
-            VanGogh.selectMediaList.forEach {
-                val pos = mediaItemAdapter.items.indexOf(it)
-                // mediaItemAdapter.notifyItemChanged(pos)
-            }
         } else {
             if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
                 toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
@@ -408,6 +402,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                     cameraItem.pathUri = cameraManager?.cameraPathUri
                     cameraItem.size = size
                     cameraItem.mineType = "image/jpeg"
+                    cameraItem.dataToken = System.currentTimeMillis()
                     MediaPreviewUtil.currentMediaList.add(0,cameraItem)
                     VanGogh.selectMediaList.add(cameraItem)
                     mediaItemAdapter.notifyDataSetChanged()

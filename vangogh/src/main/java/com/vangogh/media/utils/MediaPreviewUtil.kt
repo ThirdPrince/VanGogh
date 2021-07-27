@@ -10,8 +10,9 @@ import com.vangogh.media.models.MediaItem
  * @Version 1.0
  */
 object MediaPreviewUtil {
+
      /**
-      * current show mediaList
+      * current dir show mediaList
       */
      var currentMediaList = mutableListOf<MediaItem>()
 

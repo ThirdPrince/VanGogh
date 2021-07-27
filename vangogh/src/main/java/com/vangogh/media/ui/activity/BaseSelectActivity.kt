@@ -159,7 +159,6 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.mediaLeftBack -> backPress()
             R.id.media_send -> {
-                //view_stub?.visibility = View.VISIBLE
                 if (VanGogh.selectMediaList.isEmpty()) {
                     VanGogh.selectMediaList.add(MediaPreviewUtil.currentMediaList!![mediaPos])
                 }
@@ -176,9 +175,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             when(VanGoghConst.MEDIA_TITLE){
                 VanGoghConst.MediaTitle.MediaComplete -> media_send.text = getString(R.string.media_complete_num, VanGogh.selectMediaList.size, 9)
                 VanGoghConst.MediaTitle.MediaSend -> media_send.text = getString(R.string.media_send_num, VanGogh.selectMediaList.size, 9)
-
             }
-            //media_send.text = getString(R.string.media_send_num, VanGogh.selectMediaList.size, 9)
         } else {
             media_send.isEnabled = false
             when(VanGoghConst.MEDIA_TITLE){
@@ -186,7 +183,6 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
                 VanGoghConst.MediaTitle.MediaSend ->   media_send.text = resources.getString(R.string.media_send_not_enable)
 
             }
-           // media_send.text = resources.getString(R.string.media_send_not_enable)
         }
 
     }

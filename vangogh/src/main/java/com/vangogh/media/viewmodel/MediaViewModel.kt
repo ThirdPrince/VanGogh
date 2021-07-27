@@ -72,7 +72,6 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
             contentObserver = getApplication<Application>().contentResolver.registerObserver(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             ) {
-                Log.d(TAG,"observer = $it")
                 _lvDataChanged.value = true
             }
 
@@ -148,13 +147,11 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.mineType = mediaMineType
                 mediaItem.duration = mediaDuration
                 mediaItem.dataToken = mediaTime
-               EasyLog.d(TAG,"mediaMineType = $mediaMineType")
+                EasyLog.d(TAG,"mediaMineType = $mediaMineType")
                 if(mediaItem.isVideo()){
-                    //Log.e(TAG,"mediaDuration =$mediaDuration")
                     if(  mediaDuration > VanGoghConst.VIDEO_MAX_DURATION || mediaDuration === 0L)
                     continue
                 }
-
                 mediaItemList.add(mediaItem)
             }
         }
@@ -163,7 +160,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
 
 
     /**
-     *  filterDamage some image  size>0 but Damage
+     *  filterDamage some image  size >0 but Damage
      */
     @WorkerThread
     private suspend fun filterDamage(mediaList: MutableList<MediaItem>): List<MediaItem> {
@@ -171,7 +168,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         var mediaListNotDamage :List<MediaItem>  = mutableListOf()
         withContext(Dispatchers.IO){
              mediaListNotDamage = mediaList.filterNot {
-                it.isImage() && it.width === 0 && !ImageUtils.isImage(it.path)
+                it.isImage()  && !ImageUtils.isImage(it.path) //&& it.width === 0
             }
         }
         return mediaListNotDamage
