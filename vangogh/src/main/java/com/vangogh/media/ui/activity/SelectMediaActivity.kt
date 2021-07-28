@@ -159,16 +159,12 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
         mediaViewModel.lvMediaData.observe(this, Observer {
             dismissDialog()
-            if(cameraManager?.cameraPathUri != null){
+            if (cameraManager?.cameraPathUri != null) {
                 return@Observer
             }
             MediaPreviewUtil.currentMediaList.clear()
             MediaPreviewUtil.currentMediaList.addAll(it)
             refreshMedia()
-//            updateTitle()
-//            mediaItemAdapter.notifyDataSetChanged()
-
-
         })
         mediaViewModel.lvDataChanged.observe(this, Observer {
 
@@ -404,7 +400,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                     cameraItem.size = size
                     cameraItem.mineType = "image/jpeg"
                     cameraItem.dataToken = System.currentTimeMillis()
-                    MediaPreviewUtil.currentMediaList.add(0,cameraItem)
+                    MediaPreviewUtil.currentMediaList.add(0, cameraItem)
                     VanGogh.selectMediaList.add(cameraItem)
                     refreshMedia()
                     sendBroadcast(

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.vangogh.media.cache.LRUImageCache
 import com.vangogh.media.itf.OnAvatarResult
 import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
@@ -44,21 +45,22 @@ object VanGogh {
     var selectMediaActivity = mutableListOf<Activity>()
 
 
-     var selectMediaList = mutableListOf<MediaItem>()
+    var selectMediaList = mutableListOf<MediaItem>()
 
     /**
      * default select conditions
      */
 
-    var selection  = MediaQueryConditions.MEDIA_SELECTION
+    var selection = MediaQueryConditions.MEDIA_SELECTION
 
-    var selectArgs  = MediaQueryConditions.MEDIA_SELECTION_ARGS
+    var selectArgs = MediaQueryConditions.MEDIA_SELECTION_ARGS
 
 
     fun setMaxMediaCount(maxCount: Int): VanGogh {
         VanGoghConst.MAX_MEDIA = maxCount
         return this
     }
+
     fun setRowCount(spanCount: Int): VanGogh {
         VanGoghConst.GRID_SPAN_CONT = spanCount
         return this
@@ -81,7 +83,7 @@ object VanGogh {
      * maxDuration s
      */
     fun setVideoMaxDuration(maxDuration: Int): VanGogh {
-        VanGoghConst.VIDEO_MAX_DURATION = maxDuration * 1000+500
+        VanGoghConst.VIDEO_MAX_DURATION = maxDuration * 1000 + 500
         //selectArgs = MEDIA_SELECTION_ARGS
         return this
     }
@@ -91,12 +93,12 @@ object VanGogh {
      * all media image + gif +video
      */
     fun getMedia(containsGif: Boolean = true): VanGogh {
-        if(!containsGif){
-            selection =  MediaQueryConditions.MEDIA_SELECTION_NOT_GIF
+        if (!containsGif) {
+            selection = MediaQueryConditions.MEDIA_SELECTION_NOT_GIF
             selectArgs = MediaQueryConditions.MEDIA_SELECTION_ARGS_NOT_GIF
-        }else{
-             selection  = MediaQueryConditions.MEDIA_SELECTION
-             selectArgs  = MediaQueryConditions.MEDIA_SELECTION_ARGS
+        } else {
+            selection = MediaQueryConditions.MEDIA_SELECTION
+            selectArgs = MediaQueryConditions.MEDIA_SELECTION_ARGS
         }
         VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaAll
         return this
@@ -108,17 +110,16 @@ object VanGogh {
      */
     fun onlyImage(containsGif: Boolean = true): VanGogh {
 
-        if(containsGif){
-            selection =  MediaQueryConditions.IMAGE_SELECTION
+        if (containsGif) {
+            selection = MediaQueryConditions.IMAGE_SELECTION
             selectArgs = MediaQueryConditions.IMAGE_SELECTION_ARGS
-        }else{
-            selection =  MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
+        } else {
+            selection = MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
             selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS
         }
         VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaOnlyImage
         return this
     }
-
 
 
     /**
@@ -145,9 +146,10 @@ object VanGogh {
      * default complete
      */
     fun setMediaTitleSend(): VanGogh {
-        VanGoghConst.MEDIA_TITLE =VanGoghConst.MediaTitle.MediaSend
+        VanGoghConst.MEDIA_TITLE = VanGoghConst.MediaTitle.MediaSend
         return this
     }
+
     fun enableCamera(): VanGogh {
         VanGoghConst.CAMERA_ENABLE = true
         return this
@@ -164,27 +166,25 @@ object VanGogh {
      * startForMedia result
      * onResult mediaList
      */
-    fun startForResult(context: FragmentActivity,onMediaResult: OnMediaResult): VanGogh {
+    fun startForResult(context: FragmentActivity, onMediaResult: OnMediaResult): VanGogh {
 
-        SelectMediaActivity.actionStart(context,false)
+        SelectMediaActivity.actionStart(context, false)
         fragmentActivity = context
         mOnMediaResult = onMediaResult
         return this
     }
 
 
-
-
     /**
      * startForAvatar result
      * onResult mediaItem
      */
-    fun startForAvatarResult(context: FragmentActivity,onAvatarResult: OnAvatarResult): VanGogh {
+    fun startForAvatarResult(context: FragmentActivity, onAvatarResult: OnAvatarResult): VanGogh {
 
-        selection =  MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
+        selection = MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
         selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS
         VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaOnlyImage
-        SelectMediaActivity.actionStart(context,true)
+        SelectMediaActivity.actionStart(context, true)
         fragmentActivity = context
         selectMediaList = mutableListOf()
         mOnAvatarResult = onAvatarResult

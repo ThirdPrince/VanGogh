@@ -111,7 +111,6 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
                 override fun onResult(mediaItemList: List<MediaItem>) {
                     mediaList.clear()
                     mediaList.addAll(mediaItemList)
-                    Log.e("Main","mediaList = ${mediaList.toString()}")
                     gridMediaAdapter.notifyDataSetChanged()
                 }
 

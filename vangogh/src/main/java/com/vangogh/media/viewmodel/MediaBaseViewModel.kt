@@ -18,7 +18,7 @@ import kotlinx.coroutines.*
 open class MediaBaseViewModel(application: Application) : AndroidViewModel(application) {
 
 
-    fun launchDataLoad(block: suspend (scope: CoroutineScope) -> Unit): Job {
+    fun getMediaAsync(block: suspend (scope: CoroutineScope) -> Unit): Job {
         return viewModelScope.launch {
             block(this)
         }

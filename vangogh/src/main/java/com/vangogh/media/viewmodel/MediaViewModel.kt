@@ -6,7 +6,6 @@ import android.database.ContentObserver
 import android.net.Uri
 import android.provider.BaseColumns
 import android.provider.MediaStore
-import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -79,7 +78,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
     }
 
     fun getMedia(bucketId: String? = null) {
-        launchDataLoad {
+        getMediaAsync {
             val medias = queryImages()
             _lvMediaData.postValue(medias)
             val mediasFilter = filterDamage(medias)
@@ -92,12 +91,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         }
     }
 
-    fun getCamera(uri: Uri){
-        launchDataLoad {
-            val medias = queryImages(uri)
-            _lvMediaData.postValue(medias)
-        }
-    }
+
 
 
     @WorkerThread

@@ -51,6 +51,8 @@ object VanGoghConst {
 
     var CAMERA_ENABLE :Boolean = false
 
+    val MAX_IMG_CACHE_SIZE = 5*10
+
     fun reset(){
          MEDIA_TITLE = MediaTitle.MediaComplete
          MEDIA_TYPE = MediaType.MediaAll
