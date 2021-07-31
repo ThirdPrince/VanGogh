@@ -71,7 +71,7 @@ apply plugin: 'com.github.panpf.bintray-publish'
 
 publish {
     userOrg = 'henglongdong'
-    groupId = 'com.vangogh.dhl'
+    groupId = 'io.github.thirdprince'//o.github.myusername com.vangogh.dhl
     artifactId = 'media'
     publishVersion = '1.0.1'
     desc = 'make media picker easy'
