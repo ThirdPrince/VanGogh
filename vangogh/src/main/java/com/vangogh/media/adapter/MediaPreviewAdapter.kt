@@ -1,17 +1,13 @@
 package com.vangogh.media.adapter
 
-import android.app.Activity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCrossFade
-import com.bumptech.glide.request.RequestOptions
 import com.github.chrisbanes.photoview.PhotoView
 import com.media.vangogh.R
 import com.vangogh.media.itf.OnMediaItemClickListener
@@ -68,9 +64,9 @@ class MediaPreviewAdapter(private val activity: FragmentActivity, var items: Lis
 
         val mediaItem = items[position]
         if(mediaItem.isGif()){
-            Glide.with(activity).asGif().load(mediaItem.path).into(holder.photoView)
+            Glide.with(activity).asGif().load(mediaItem.originalPath).into(holder.photoView)
         }else {
-            Glide.with(activity).asBitmap().load(mediaItem.path).transition(withCrossFade())
+            Glide.with(activity).asBitmap().load(mediaItem.originalPath).transition(withCrossFade())
                 .into(holder.photoView)
         }
         if(mediaItem.isVideo()){

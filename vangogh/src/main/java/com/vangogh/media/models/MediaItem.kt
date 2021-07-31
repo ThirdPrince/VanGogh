@@ -1,11 +1,8 @@
 package com.vangogh.media.models
 
-import android.icu.text.AlphabeticIndex
 import android.net.Uri
 import android.os.Parcelable
-import androidx.versionedparcelable.ParcelField
 import kotlinx.android.parcel.Parcelize
-import java.time.Duration
 
 /**
  * @ClassName MediaItem
@@ -22,8 +19,9 @@ data class MediaItem(
     var bucketName:String ?= null,
     var name: String? = null,
     var pathUri: Uri? = null,
-    var path: String? = null,
+    var originalPath: String? = null,
     var compressPath:String?=null,
+    var path:String?=null,
     var size: Long = 0,
     var width: Int = 0,
     var height: Int = 0,
@@ -35,8 +33,9 @@ data class MediaItem(
     Parcelable {
 
     override fun toString(): String {
-        return "path = $path \n" +
+        return "originalPath = $originalPath \n" +
                 "compressPath = $compressPath \n"+
+                "path = $path \n"+
                 "size = $size \n"+
                 "width = $width \n" +
                 "height = $height \n" +
@@ -73,6 +72,6 @@ data class MediaItem(
             return false
         }
         val otherMedia = other as MediaItem
-        return (this.pathUri == otherMedia.pathUri || this.path == otherMedia.path)
+        return (this.pathUri == otherMedia.pathUri || this.originalPath == otherMedia.originalPath)
     }
 }

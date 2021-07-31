@@ -29,7 +29,7 @@ class LRUImageCache<T, U>(private val capacity:Int) : LinkedHashMap<String, Long
 //            EasyLog.e(TAG,"it = ${it.value}")
 //            maxSize += it.value
 //        }
-        maxSize = this.entries.size
+        maxSize = size
         val imageCacheKey = eldest?.key
         val beyondMaxSize = maxSize > capacity
         if(beyondMaxSize){

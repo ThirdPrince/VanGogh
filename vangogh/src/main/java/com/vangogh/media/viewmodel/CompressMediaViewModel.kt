@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.core.log.EasyLog
 import com.vangogh.media.cache.LRUImageCache
-import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst.MAX_IMG_CACHE_SIZE
 import com.vangogh.media.models.MediaItem
 import id.zelory.compressor.Compressor
@@ -21,9 +20,6 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
-import java.io.FileOutputStream
-import java.io.ObjectOutputStream
-import java.util.LinkedHashMap
 
 /**
  * @ClassName MediaGridItemAdapter
@@ -80,44 +76,9 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
     var lruImageCache = LRUImageCache<String,Long>(MAX_IMG_CACHE_SIZE)
 
     var sp: SharedPreferences =
-        getApplication<Application>().getSharedPreferences("SaveMap", Context.MODE_PRIVATE)
+        getApplication<Application>().getSharedPreferences(compressCacheByImage, Context.MODE_PRIVATE)
     var editor: SharedPreferences.Editor = sp.edit()
 
-
-
-    /**
-     * async compress
-     */
-    fun selectMedia(mediaList: MutableList<MediaItem>) {
-
-        getMediaAsync {
-            var startTime = System.currentTimeMillis()
-            mediaList.forEach {
-                actualImage = File(it.path)
-                actualImage?.let { imageFile ->
-                    val file = getCompressImageFile(actualImage!!)
-                    if (!file.exists()) {
-
-                        compressedImage =
-                            Compressor.compress(getApplication<Application>(), imageFile) {
-                                default()
-                                val file = getCompressImageFile(actualImage!!)
-                                destination(file)
-
-                            }
-                        it.compressPath = compressedImage!!.absolutePath
-                    } else {
-                        it.compressPath = file.absolutePath
-                    }
-
-                }
-            }
-            var endTime = System.currentTimeMillis()
-            Log.e(TAG, "compress Time = ${endTime - startTime}")
-            _lvMediaData.postValue(mediaList)
-
-        }
-    }
 
     /**
      * async compress
@@ -126,7 +87,7 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
     fun compressImage(mediaList: MutableList<MediaItem>) {
         viewModelScope.launch {
             mediaList.forEach { it ->
-                actualImage = File(it.path)
+                actualImage = File(it.originalPath)
                 actualImage?.let { imageFile ->
                     if (it.isCompress()) {
                         val file = getCompressImageFile(imageFile)
@@ -143,7 +104,7 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
                             deferredList.add(compressedImage)
                         }
                     }else{
-                        it.compressPath = it.path
+                        it.compressPath = it.originalPath
                     }
                 }
 
@@ -152,14 +113,19 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
             deferredList.forEachIndexed { index, deferred ->
                 compressedImage = deferred.await()
                 mediaList.forEach {
-                    if(it.path!!.endsWith(compressedImage!!.name)){
+                    if(it.originalPath!!.endsWith(compressedImage!!.name)){
                         it.compressPath = compressedImage!!.absolutePath
                     }
-
                 }
 
             }
-            EasyLog.e(TAG,"files = ${imageCompressFile?.listFiles()?.size!!}")
+            mediaList.forEach{
+                if(it.isOriginal){
+                    it.path = it.originalPath
+                }else{
+                    it.path = it.compressPath
+                }
+            }
             if(imageCompressFile?.listFiles()?.size!! > MAX_IMG_CACHE_SIZE) {
                 lruImageCache = getMap(compressCacheByImage)!!
                 mediaList.forEach {
@@ -167,7 +133,7 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
                 }
                 saveMap(compressCacheByImage,lruImageCache)
             }
-            EasyLog.e(TAG,"files = ${imageCompressFile?.listFiles()?.size!!}")
+            //EasyLog.e(TAG,"files = ${imageCompressFile?.listFiles()?.size!!}")
             EasyLog.e(TAG,lruImageCache.size.toString())
             _lvMediaData.postValue(mediaList)
         }

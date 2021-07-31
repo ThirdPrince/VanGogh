@@ -11,6 +11,7 @@ import android.widget.RadioGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.core.log.EasyLog
 import com.example.vangogh.adapter.GridMediaAdapter
 import com.example.vangogh.itf.OnAddMediaListener
 import com.vangogh.media.config.VanGogh
@@ -28,7 +29,9 @@ import com.vangogh.media.itf.OnMediaResult as OnMediaResult
  * @Date 2021/1/26 10:25
  * @Version 1.0
  */
+const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity(), OnAddMediaListener{
+
 
     private lateinit var gridMediaAdapter: GridMediaAdapter
     private var mediaList = mutableListOf<MediaItem>()
@@ -109,6 +112,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
             vanGogh.setMediaTitleSend().setSelectedMedia(mediaList).startForResult(this,
                 onMediaResult = object :OnMediaResult{
                 override fun onResult(mediaItemList: List<MediaItem>) {
+                    EasyLog.e(TAG,"mediaItemList = ${mediaItemList.toString()}")
                     mediaList.clear()
                     mediaList.addAll(mediaItemList)
                     gridMediaAdapter.notifyDataSetChanged()

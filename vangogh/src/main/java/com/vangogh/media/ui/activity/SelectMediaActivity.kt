@@ -8,14 +8,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -395,7 +393,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                     val cameraItem = MediaItem()
                     cameraItem.width = widthAndHeight[0]
                     cameraItem.height = widthAndHeight[1]
-                    cameraItem.path = cameraManager?.cameraRealPath
+                    cameraItem.originalPath = cameraManager?.cameraRealPath
                     cameraItem.pathUri = cameraManager?.cameraPathUri
                     cameraItem.size = size
                     cameraItem.mineType = "image/jpeg"

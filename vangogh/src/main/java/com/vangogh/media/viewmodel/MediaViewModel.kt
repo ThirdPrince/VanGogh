@@ -134,7 +134,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
                 mediaItem.pathUri = uri
                 mediaItem.bucketId = bucketId
                 mediaItem.bucketName = bucketName
-                mediaItem.path = imagePath
+                mediaItem.originalPath = imagePath
                 mediaItem.width = imageWidth
                 mediaItem.height = imageHeight
                 mediaItem.size = imageSize
@@ -162,7 +162,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
         var mediaListNotDamage :List<MediaItem>  = mutableListOf()
         withContext(Dispatchers.IO){
              mediaListNotDamage = mediaList.filterNot {
-                it.isImage()  && !ImageUtils.isImage(it.path) //&& it.width === 0
+                it.isImage()  && !ImageUtils.isImage(it.originalPath) //&& it.width === 0
             }
         }
         return mediaListNotDamage
