@@ -128,7 +128,9 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
             }
             if(imageCompressFile?.listFiles()?.size!! > MAX_IMG_CACHE_SIZE) {
                 lruImageCache = getMap(compressCacheByImage)!!
-                mediaList.forEach {
+                mediaList.filter {
+                    it.isImage() && (it.originalPath != it.compressPath)
+                }.forEach {
                     lruImageCache[it.compressPath!!] = File(it.compressPath).length()
                 }
                 saveMap(compressCacheByImage,lruImageCache)

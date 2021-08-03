@@ -34,6 +34,7 @@ class LRUImageCache<T, U>(private val capacity:Int) : LinkedHashMap<String, Long
         val beyondMaxSize = maxSize > capacity
         if(beyondMaxSize){
           File(imageCacheKey).delete()
+            EasyLog.e(TAG,imageCacheKey.toString())
         }
         return beyondMaxSize
     }
