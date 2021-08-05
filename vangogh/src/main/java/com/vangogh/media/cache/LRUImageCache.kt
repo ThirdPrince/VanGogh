@@ -2,6 +2,8 @@ package com.vangogh.media.cache
 
 import android.app.Application
 import com.core.log.EasyLog
+import com.vangogh.media.config.VanGogh
+import com.vangogh.media.models.MediaItem
 import java.io.File
 import java.security.AccessControlContext
 
@@ -33,7 +35,13 @@ class LRUImageCache<T, U>(private val capacity:Int) : LinkedHashMap<String, Long
         val imageCacheKey = eldest?.key
         val beyondMaxSize = maxSize > capacity
         if(beyondMaxSize){
-          File(imageCacheKey).delete()
+
+            VanGogh.selectMediaList.forEach {
+                if(it.compressPath == imageCacheKey){
+                    return false
+                }
+            }
+            File(imageCacheKey).delete()
             EasyLog.e(TAG,imageCacheKey.toString())
         }
         return beyondMaxSize
