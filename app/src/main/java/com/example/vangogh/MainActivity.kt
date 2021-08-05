@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
             })
         }else{
-            vanGogh.setMediaTitleSend().setSelectedMedia(mediaList).startForResult(this,
+            vanGogh.setMediaTitleSend().setMaxMediaCount(15).setSelectedMedia(mediaList).startForResult(this,
                 onMediaResult = object :OnMediaResult{
                 override fun onResult(mediaItemList: List<MediaItem>) {
                     EasyLog.e(TAG,"mediaItemList = ${mediaItemList.toString()}")

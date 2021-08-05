@@ -173,8 +173,8 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         if (VanGogh.selectMediaList.size > 0) {
             media_send.isEnabled = true
             when(VanGoghConst.MEDIA_TITLE){
-                VanGoghConst.MediaTitle.MediaComplete -> media_send.text = getString(R.string.media_complete_num, VanGogh.selectMediaList.size, 9)
-                VanGoghConst.MediaTitle.MediaSend -> media_send.text = getString(R.string.media_send_num, VanGogh.selectMediaList.size, 9)
+                VanGoghConst.MediaTitle.MediaComplete -> media_send.text = getString(R.string.media_complete_num, VanGogh.selectMediaList.size, VanGoghConst.MAX_MEDIA)
+                VanGoghConst.MediaTitle.MediaSend -> media_send.text = getString(R.string.media_send_num, VanGogh.selectMediaList.size, VanGoghConst.MAX_MEDIA)
             }
         } else {
             media_send.isEnabled = false
