@@ -24,8 +24,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 100
-        versionName "1.0.0"
+        versionCode 101
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -78,7 +78,7 @@ group='com.github.ThirdPrince'
 //    userOrg = 'henglongdong'
 //    groupId = 'io.github.thirdprince'//o.github.myusername com.vangogh.dhl
 //    artifactId = 'media'
-//    publishVersion = '1.0.1'
+//    publishVersion = '1.0.0'
 //    desc = 'make media picker easy'
 //    website = 'https://github.com/ThirdPrince/VanGogh'
 //}
