@@ -44,8 +44,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.blankj:utilcode:1.30.5'
-    //implementation 'com.vangogh.dhl:media:1.0.1'
-    implementation project(':vangogh')
+     implementation project(':vangogh')
+    //implementation 'com.github.ThirdPrince:VanGogh:1.0.0'
 }
 
 
