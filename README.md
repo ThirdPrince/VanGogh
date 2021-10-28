@@ -4,9 +4,10 @@
  download demoApp :https://www.pgyer.com/lzGS
  
 
-![Uploading Screenshot_20211028-095725.jpg…]()
-![Uploading Screenshot_20211028-095734.jpg…]()
 
 
-Uploading SVID_20211028_095807_1.mp4…
 
+
+
+![Screenshot_20211028-095725](https://user-images.githubusercontent.com/26602893/139173765-0bc711d2-7820-40a1-af54-9a59704561d6.jpg)
+![Screenshot_20211028-095734](https://user-images.githubusercontent.com/26602893/139173777-61c612d7-b80b-4b2d-830d-9d0d7f291192.jpg)
