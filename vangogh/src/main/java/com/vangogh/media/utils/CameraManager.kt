@@ -16,7 +16,7 @@ import java.io.IOException
 /**
  * @ClassName CameraManager
  * @Description dhl
- * @Author aa
+ * @Author dhl
  * @Date 2021/2/23 9:42
  * @Version 1.0
  */

@@ -56,6 +56,7 @@ object VanGoghConst {
     fun reset(){
          MEDIA_TITLE = MediaTitle.MediaComplete
          MEDIA_TYPE = MediaType.MediaAll
+         MAX_MEDIA = 9
          CAMERA_ENABLE  = false
           VanGogh.selectMediaList.clear()
     }

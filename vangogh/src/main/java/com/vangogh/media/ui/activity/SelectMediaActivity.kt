@@ -12,14 +12,15 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.core.log.EasyLog
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaGridItemAdapter
 import com.vangogh.media.config.VanGogh
@@ -31,10 +32,7 @@ import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
-import com.vangogh.media.utils.CameraManager
-import com.vangogh.media.utils.ImageUtils
-import com.vangogh.media.utils.MediaPreviewUtil
-import com.vangogh.media.utils.MediaTimeUtils
+import com.vangogh.media.utils.*
 import com.vangogh.media.view.MediaDirPopWindow
 import com.vangogh.media.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.activity_select_media.*
@@ -52,6 +50,10 @@ import java.io.IOException
  * @Date 2020/12/22 9:36
  * @Version 1.0
  */
+
+const val STORAGE_REQUEST = 1024
+const val CAMERA_REQUEST = 1025
+
 class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaItemClickListener,
     OnItemCheckListener, OnCameraClickListener {
 
@@ -134,6 +136,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
+    private val permissionCamera = arrayOf(Manifest.permission.CAMERA)
 
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -146,15 +149,14 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 MediaViewModel::class.java
             )
-
-        val checkPermission = this?.let { ActivityCompat.checkSelfPermission(it, permissions[0]) }
-        if (checkPermission != PackageManager.PERMISSION_GRANTED) {
-            //这是系统的方法
-            requestPermissions(permissions, 0)
+        if (!PermissionUtils.checkSelfPermission(this, permissions[0])) {
+            requestPermissions(permissions, STORAGE_REQUEST)
         } else {
             showDialog()
             mediaViewModel.getMedia(null)
         }
+
+
         mediaViewModel.lvMediaData.observe(this, Observer {
             dismissDialog()
             if (cameraManager?.cameraPathUri != null) {
@@ -287,7 +289,22 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     /**
      * camera click
      */
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCameraClick(view: View?) {
+        if (!PermissionUtils.checkSelfPermission(this, permissionCamera[0])) {
+            requestPermissions(permissionCamera, CAMERA_REQUEST)
+        } else {
+            openCamera()
+        }
+
+    }
+
+    /**
+     * 打开相机
+     */
+    private fun openCamera() {
         cameraManager = CameraManager(this)
         try {
             uiScope.launch {
@@ -304,7 +321,6 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             e.printStackTrace()
         }
     }
-
 
     /**
      * item click
@@ -398,6 +414,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                     cameraItem.size = size
                     cameraItem.mineType = "image/jpeg"
                     cameraItem.dataToken = System.currentTimeMillis()
+                    if (VanGogh.selectMediaList.size >= VanGoghConst.MAX_MEDIA) {
+                        toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
+                        return
+                    }
                     MediaPreviewUtil.currentMediaList.add(0, cameraItem)
                     VanGogh.selectMediaList.add(cameraItem)
                     refreshMedia()
@@ -421,10 +441,21 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            showDialog()
-            mediaViewModel.getMedia(null)
+        when (requestCode) {
+            STORAGE_REQUEST -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showDialog()
+                    mediaViewModel.getMedia(null)
+                }
+            }
+            CAMERA_REQUEST -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera()
+                }
+
+            }
         }
+
     }
 
 
