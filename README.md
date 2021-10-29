@@ -1,9 +1,30 @@
 # VanGogh
  simple MediaPicker like wechat
  
- download app :https://www.pgyer.com/lzGS
+ download demoApp :https://www.pgyer.com/lzGS
  
-![Screenshot_20211020_102129_com example vangogh](https://user-images.githubusercontent.com/26602893/138018759-2f563d40-96f8-42f6-a4f0-5aaafab4feef.jpg)
-![Screenshot_20211020_102144_com example vangogh](https://user-images.githubusercontent.com/26602893/138018766-57c18a38-8b1a-4ced-a7bd-c6a88b3ab866.jpg)
-![Screenshot_20211020_102149_com example vangogh](https://user-images.githubusercontent.com/26602893/138018774-71d96eb8-fed4-4e88-ae96-344f62edfa80.jpg)
-![Screenshot_20211020_102155_com example vangogh](https://user-images.githubusercontent.com/26602893/138018778-320b6f97-a180-4347-8e5e-a6c65188b244.jpg)
+
+
+<div align=center><img width="250" height="400" src="https://user-images.githubusercontent.com/26602893/139173765-0bc711d2-7820-40a1-af54-9a59704561d6.jpg"/></div>
+<div align=center><img width="250" height="400" src="https://user-images.githubusercontent.com/26602893/139173777-61c612d7-b80b-4b2d-830d-9d0d7f291192.jpg"/></div>
+
+<div align=center><img width="250" height="400" src="https://user-images.githubusercontent.com/26602893/139175153-fd6d0c77-df27-4095-b528-e9955e756618.gif"/></div>
+
+
+Step 1. Add the JitPack repository to your build file
+
+Add it in your root build.gradle at the end of repositories:
+
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+ 
+ Step 2. Add the dependency
+
+	dependencies {
+	        implementation 'com.github.ThirdPrince:VanGogh:1.0.2'
+	}
+ 
