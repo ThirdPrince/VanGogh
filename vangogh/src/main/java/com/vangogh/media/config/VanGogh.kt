@@ -1,23 +1,14 @@
 package com.vangogh.media.config
 
 import android.app.Activity
-import android.net.Uri
 import android.provider.MediaStore
-import androidx.annotation.DrawableRes
-import androidx.fragment.app.Fragment
-import androidx.annotation.IntegerRes
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import com.vangogh.media.cache.LRUImageCache
 import com.vangogh.media.itf.OnAvatarResult
+import com.vangogh.media.itf.OnCameraResult
 import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.SelectMediaActivity
 import com.vangogh.media.utils.MediaQueryConditions
-
-import kotlin.collections.ArrayList
 
 /**
  * @ClassName MediaGridItemAdapter
@@ -28,11 +19,13 @@ import kotlin.collections.ArrayList
  */
 object VanGogh {
 
-    const val TAG = "VanGogh"
+    private const val TAG = "VanGogh"
 
     lateinit var mOnMediaResult: OnMediaResult
 
     lateinit var mOnAvatarResult: OnAvatarResult
+
+    lateinit var mOnCameraResult: OnCameraResult
 
 
     private var fragmentActivity: FragmentActivity? = null
@@ -188,6 +181,18 @@ object VanGogh {
         fragmentActivity = context
         selectMediaList = mutableListOf()
         mOnAvatarResult = onAvatarResult
+        return this
+    }
+
+
+    /**
+     * startForCameraResult result
+     * onResult mediaItem
+     */
+    fun startForCameraResult(context: FragmentActivity, onCameraResult: OnCameraResult): VanGogh {
+        SelectMediaActivity.actionStart(context, isAvatar = false,isCamera = true)
+        fragmentActivity = context
+        mOnCameraResult = onCameraResult
         return this
     }
 

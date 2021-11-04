@@ -38,7 +38,8 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         const val TAG = "BaseSelectActivity"
     }
-    val uiScope  =  CoroutineScope(Dispatchers.Main)
+
+    val uiScope = CoroutineScope(Dispatchers.Main)
 
 
     lateinit var activity: BaseSelectActivity
@@ -48,12 +49,15 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     var mediaPos: Int = 0
 
-    protected var imageOriginal: Boolean  = false
+    protected var imageOriginal: Boolean = false
 
-    protected var mediaPreviewSelect: Boolean  = false
+    protected var mediaPreviewSelect: Boolean = false
 
 
-    protected var isAvatar :Boolean = false
+    protected var isAvatar: Boolean = false
+
+
+    protected var isCamera: Boolean = false
 
     /**
      * 已选中的media
@@ -82,7 +86,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<AppCompatCheckBox>(R.id.cb_original)
     }
 
-    private lateinit var loadingDialog:LoadingDialog
+    private lateinit var loadingDialog: LoadingDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,14 +122,14 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     private fun getData() {
         mediaPos = intent!!.getIntExtra(GalleryActivity.MEDIA_POS, 0)
         isAvatar = intent!!.getBooleanExtra(SelectMediaActivity.IS_AVATAR, false)
-        //selectedList = intent!!.getParcelableArrayListExtra(SelectMediaActivity.SELECTED_LIST)
+        isCamera = intent!!.getBooleanExtra(SelectMediaActivity.IS_CAMERA, false)
         imageOriginal = intent!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL, false)
         mediaPreviewSelect = intent!!.getBooleanExtra(GalleryActivity.MEDIA_PREVIEW_SELECT, false)
         cbOriginal?.isChecked = imageOriginal
-        if(isAvatar){
+        if (isAvatar) {
             cbOriginal?.visibility = View.GONE
             mediaSend.visibility = View.GONE
-        }else{
+        } else {
             cbOriginal?.visibility = View.VISIBLE
             mediaSend.visibility = View.VISIBLE
         }
@@ -136,7 +140,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         mediaSend.setOnClickListener(this)
     }
 
-    private fun initLoadingDialog(){
+    private fun initLoadingDialog() {
         loadingDialog = LoadingDialog(this)
     }
 
@@ -146,7 +150,6 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
      */
     private fun initOriginalCheck() {
         cbOriginal?.setOnCheckedChangeListener { buttonView, isChecked ->
-
             VanGogh.selectMediaList.forEach {
                 it.isOriginal = isChecked
             }
@@ -172,15 +175,25 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     protected fun updateTitle() {
         if (VanGogh.selectMediaList.size > 0) {
             media_send.isEnabled = true
-            when(VanGoghConst.MEDIA_TITLE){
-                VanGoghConst.MediaTitle.MediaComplete -> media_send.text = getString(R.string.media_complete_num, VanGogh.selectMediaList.size, VanGoghConst.MAX_MEDIA)
-                VanGoghConst.MediaTitle.MediaSend -> media_send.text = getString(R.string.media_send_num, VanGogh.selectMediaList.size, VanGoghConst.MAX_MEDIA)
+            when (VanGoghConst.MEDIA_TITLE) {
+                VanGoghConst.MediaTitle.MediaComplete -> media_send.text = getString(
+                    R.string.media_complete_num,
+                    VanGogh.selectMediaList.size,
+                    VanGoghConst.MAX_MEDIA
+                )
+                VanGoghConst.MediaTitle.MediaSend -> media_send.text = getString(
+                    R.string.media_send_num,
+                    VanGogh.selectMediaList.size,
+                    VanGoghConst.MAX_MEDIA
+                )
             }
         } else {
             media_send.isEnabled = false
-            when(VanGoghConst.MEDIA_TITLE){
-                VanGoghConst.MediaTitle.MediaComplete ->media_send.text = resources.getString(R.string.media_complete)
-                VanGoghConst.MediaTitle.MediaSend ->   media_send.text = resources.getString(R.string.media_send_not_enable)
+            when (VanGoghConst.MEDIA_TITLE) {
+                VanGoghConst.MediaTitle.MediaComplete -> media_send.text =
+                    resources.getString(R.string.media_complete)
+                VanGoghConst.MediaTitle.MediaSend -> media_send.text =
+                    resources.getString(R.string.media_send_not_enable)
 
             }
         }
@@ -193,8 +206,8 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     private fun finishSelectMediaUi() {
         VanGogh.selectMediaActivity.forEach {
             it.finish()
-            if(it is SelectMediaActivity){
-                overridePendingTransition(0,R.anim.picture_anim_down_out)
+            if (it is SelectMediaActivity) {
+                overridePendingTransition(0, R.anim.picture_anim_down_out)
             }
         }
     }
@@ -204,7 +217,6 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
      */
     @LayoutRes
     protected abstract fun contentLayout(): Int
-
 
 
     protected abstract fun backPress()
@@ -219,12 +231,12 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         backPress()
     }
 
-    protected fun showDialog(){
+    protected fun showDialog() {
         loadingDialog.show()
     }
 
-    protected fun dismissDialog(){
-        if(loadingDialog.isShowing) {
+    protected fun dismissDialog() {
+        if (loadingDialog.isShowing) {
             loadingDialog.dismiss()
         }
     }

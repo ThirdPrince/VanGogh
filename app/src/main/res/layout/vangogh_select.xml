@@ -77,6 +77,14 @@
             android:id="@+id/forCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="forCameraInMediaList"
+            android:textColor="#000000"/>
+
+
+        <RadioButton
+            android:id="@+id/justCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="forCamera"
             android:textColor="#000000"/>
 

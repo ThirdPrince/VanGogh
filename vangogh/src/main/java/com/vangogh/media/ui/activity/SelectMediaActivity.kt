@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,9 @@ import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.*
 import com.vangogh.media.view.MediaDirPopWindow
+import com.vangogh.media.viewmodel.CompressMediaViewModel
 import com.vangogh.media.viewmodel.MediaViewModel
+import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.activity_select_media.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,14 +63,16 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     companion object {
 
         const val IS_AVATAR = "isAvatar"
+        const val IS_CAMERA = "isCamera"
         //const val SELECTED_LIST = "SelectedList"
 
-        fun actionStart(activity: FragmentActivity, isAvatar: Boolean) {
+        fun actionStart(activity: FragmentActivity, isAvatar: Boolean, isCamera: Boolean = false) {
             var intent = Intent(
                 activity,
                 SelectMediaActivity::class.java
             ).apply {
                 putExtra(IS_AVATAR, isAvatar)
+                putExtra(IS_CAMERA, isCamera)
                 //putExtra(SELECTED_LIST,selectedList)
             }
             activity.startActivity(intent)
@@ -142,9 +147,19 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (isCamera) {
+            if (!PermissionUtils.checkSelfPermission(this, permissionCamera[0])) {
+                requestPermissions(permissionCamera, CAMERA_REQUEST)
+            } else {
+                openCamera()
+            }
+            return
+
+        }
         initView()
         initMediaDirPop()
         initScrollEvent()
+
         mediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 MediaViewModel::class.java
@@ -414,19 +429,44 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                     cameraItem.size = size
                     cameraItem.mineType = "image/jpeg"
                     cameraItem.dataToken = System.currentTimeMillis()
-                    if (VanGogh.selectMediaList.size >= VanGoghConst.MAX_MEDIA) {
-                        toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
-                        return
-                    }
-                    MediaPreviewUtil.currentMediaList.add(0, cameraItem)
-                    VanGogh.selectMediaList.add(cameraItem)
-                    refreshMedia()
                     sendBroadcast(
                         Intent(
                             Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                             Uri.fromFile(File(cameraManager?.cameraRealPath))
                         )
                     )
+                    val actualImage = File(cameraItem.originalPath)
+                    actualImage?.let { imageFile ->
+                        lifecycleScope.launch {
+                            val compressFile =
+                                Compressor.compress(this@SelectMediaActivity, imageFile)
+                            cameraItem.compressPath = compressFile.absolutePath
+                            cameraItem.path =    cameraItem.compressPath
+                            if (isCamera) {
+                                VanGogh.mOnCameraResult.onResult(cameraItem)
+                                finish()
+                                return@launch
+                          }
+                            if (VanGogh.selectMediaList.size >= VanGoghConst.MAX_MEDIA) {
+                                toast(
+                                    getString(
+                                        R.string.picture_message_max_num,
+                                        VanGoghConst.MAX_MEDIA
+                                    )
+                                )
+                                return@launch
+                            }
+                            MediaPreviewUtil.currentMediaList.add(0, cameraItem)
+                            VanGogh.selectMediaList.add(cameraItem)
+                            refreshMedia()
+                        }
+
+                    }
+
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    if (isCamera) {
+                        finish()
+                    }
                 }
 
             }

@@ -18,6 +18,7 @@ import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.itf.OnAvatarResult
+import com.vangogh.media.itf.OnCameraResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.BaseSelectActivity
 import com.vangogh.media.itf.OnMediaResult as OnMediaResult
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
     private lateinit var forCamera: RadioButton
 
+    private lateinit var justCamera: RadioButton
 
     private lateinit var javaMedia:Button
 
@@ -82,6 +84,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
         forAvatar = findViewById(R.id.forAvatar)
         forCamera = findViewById(R.id.forCamera)
         javaMedia = findViewById(R.id.java_media)
+        justCamera = findViewById(R.id.justCamera);
         val layoutManager = GridLayoutManager(this, 4)
         rcyView.layoutManager = layoutManager
         rcyView.itemAnimator = DefaultItemAnimator()
@@ -99,8 +102,22 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
     override fun onAddMediaClick() {
         selectFilter()
+
+        if(justCamera.isChecked){
+            vanGogh.startForCameraResult(this,object :OnCameraResult{
+                override fun onResult(image: MediaItem) {
+                    EasyLog.e(TAG,"image = ${image.toString()}")
+                    mediaList.clear()
+                    mediaList.add(image)
+                    gridMediaAdapter.notifyDataSetChanged()
+                }
+
+            })
+            return
+        }
         if( forAvatar.isChecked){
-            vanGogh.startForAvatarResult(this,onAvatarResult = object :OnAvatarResult{
+            vanGogh.startForAvatarResult(this,onAvatarResult = object :
+                OnAvatarResult {
                 override fun onResult(image: MediaItem) {
                     mediaList.clear()
                     mediaList.add(image)
@@ -110,7 +127,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
             })
         }else{
             vanGogh.setMediaTitleSend().setMaxMediaCount(1).setSelectedMedia(mediaList).startForResult(this,
-                onMediaResult = object :OnMediaResult{
+                onMediaResult = object : OnMediaResult {
                 override fun onResult(mediaItemList: List<MediaItem>) {
                     EasyLog.e(TAG,"mediaItemList = ${mediaItemList.toString()}")
                     mediaList.clear()
@@ -143,6 +160,7 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
             videoMaxDurationRb.isChecked -> VanGogh.setVideoMaxDuration(10)
 
             forCamera.isChecked ->  VanGogh.enableCamera()
+
 
 
         }
