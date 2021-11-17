@@ -67,4 +67,6 @@
     <string name="picture_know">我知道了</string>
     <string name="picture_data_null">这里空空如也…</string>
     <string name="no_camera_exists">没有相机的应用程序！</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -5,7 +5,7 @@ import com.vangogh.media.models.MediaItem
 
 /**
  * @ClassName OnCameraResult
- * @Description TODO
+ * @Description forCamera
  * @Author aa
  * @Date 2021/1/19 10:37
  * @Version 1.0

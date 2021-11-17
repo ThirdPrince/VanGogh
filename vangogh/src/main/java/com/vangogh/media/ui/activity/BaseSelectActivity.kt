@@ -16,6 +16,7 @@ import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.itf.OnMediaResult
+import com.vangogh.media.life.VanGoghLifeObserver
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.dialog.LoadingDialog
 import com.vangogh.media.utils.MediaPreviewUtil
@@ -106,13 +107,13 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 CompressMediaViewModel::class.java
             )
+        lifecycle.addObserver(VanGoghLifeObserver())
         compressMediaViewModel.lvMediaData.observe(this, Observer {
             if (isAvatar) {
                 VanGogh.mOnAvatarResult.onResult(it[0])
             } else {
                 VanGogh.mOnMediaResult.onResult(it)
             }
-            VanGoghConst.reset()
             dismissDialog()
             finishSelectMediaUi()
         })
