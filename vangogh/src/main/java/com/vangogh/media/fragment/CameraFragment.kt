@@ -48,7 +48,7 @@ class CameraFragment : Fragment() {
         const val TAG = "CameraFragment"
     }
 
-    private val permissionCamera = arrayOf(Manifest.permission.CAMERA)
+    private val permissionCamera = arrayOf(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     val uiScope = CoroutineScope(Dispatchers.Main)
 
