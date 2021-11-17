@@ -16,6 +16,7 @@ import com.core.log.EasyLog
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
+import com.vangogh.media.config.VanGoghConst.COMPRESS_SIZE
 import com.vangogh.media.extend.toast
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.CAMERA_REQUEST
@@ -26,6 +27,9 @@ import com.vangogh.media.utils.ImageUtils
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.utils.PermissionUtils
 import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.default
+import id.zelory.compressor.constraint.destination
+import id.zelory.compressor.constraint.size
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -121,29 +125,36 @@ class CameraFragment : Fragment() {
         when (requestCode) {
             CameraManager.REQUEST_CAMERA -> {
                 if ((resultCode == Activity.RESULT_OK)) {
-                    val widthAndHeight = ImageUtils.getImageSize(cameraManager?.cameraRealPath)
-                    val size = File(cameraManager?.cameraRealPath).length()
                     val cameraItem = MediaItem()
-                    cameraItem.width = widthAndHeight[0]
-                    cameraItem.height = widthAndHeight[1]
                     cameraItem.originalPath = cameraManager?.cameraRealPath
-                    cameraItem.pathUri = cameraManager?.cameraPathUri
-                    cameraItem.size = size
-                    cameraItem.mineType = "image/jpeg"
-                    cameraItem.dataToken = System.currentTimeMillis()
-                    activity?.sendBroadcast(
-                        Intent(
-                            Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                            Uri.fromFile(File(cameraManager?.cameraRealPath))
-                        )
-                    )
                     val actualImage = File(cameraItem.originalPath)
                     actualImage?.let { imageFile ->
                         lifecycleScope.launch {
                             val compressFile =
-                                Compressor.compress(activity!!, imageFile)
+                                Compressor.compress(activity!!, imageFile){
+                                    default()
+                                    size(COMPRESS_SIZE)//100K
+                                    destination(imageFile)
+                                }
                             cameraItem.compressPath = compressFile.absolutePath
                             cameraItem.path = cameraItem.compressPath
+                            val widthAndHeight = ImageUtils.getImageSize(cameraItem.path)
+                            val size = File(cameraManager?.cameraRealPath).length()
+                            cameraItem.pathUri = cameraManager?.cameraPathUri
+                            cameraItem.size = size
+                            cameraItem.mineType = "image/jpeg"
+                            cameraItem.dataToken = System.currentTimeMillis()
+                            activity?.sendBroadcast(
+                                Intent(
+                                    Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                    Uri.fromFile(File(cameraManager?.cameraRealPath))
+                                )
+                            )
+                            cameraItem.width = widthAndHeight[0]
+                            cameraItem.height = widthAndHeight[1]
+                            EasyLog.e(TAG,"compressFile path = ${compressFile.absolutePath}")
+                            EasyLog.e(TAG,"compressFile size = ${compressFile.length()/1024}")
+
                             VanGogh.mOnCameraResult.onResult(cameraItem)
                             activity?.supportFragmentManager?.beginTransaction()
                                 ?.remove(this@CameraFragment)?.commitAllowingStateLoss()
@@ -162,8 +173,4 @@ class CameraFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        EasyLog.e(TAG, "onDestroy")
-    }
 }

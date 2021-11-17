@@ -51,6 +51,8 @@ object VanGoghConst {
 
     var CAMERA_ENABLE :Boolean = false
 
+    var COMPRESS_SIZE = 100 * 1024L // 100Kb
+
     const val MAX_IMG_CACHE_SIZE = 5
 
     fun reset(){

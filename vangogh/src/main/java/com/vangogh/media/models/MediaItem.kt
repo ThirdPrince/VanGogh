@@ -2,6 +2,7 @@ package com.vangogh.media.models
 
 import android.net.Uri
 import android.os.Parcelable
+import com.vangogh.media.config.VanGoghConst.COMPRESS_SIZE
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -11,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
  * @Date 2020/12/22 9:36
  * @Version 1.0
  */
-private const val compressSize = 100* 1024  // 100Kb
+
 @Parcelize
 data class MediaItem(
     var id: Long = 0,
@@ -64,7 +65,7 @@ data class MediaItem(
      *
      */
     fun isCompress():Boolean{
-        return isImage() && size > compressSize
+        return isImage() && size > COMPRESS_SIZE
     }
 
     override fun equals(other: Any?): Boolean {
