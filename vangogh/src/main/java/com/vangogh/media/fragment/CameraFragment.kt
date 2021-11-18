@@ -75,10 +75,6 @@ class CameraFragment : Fragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
 
     /**
      * 打开相机
