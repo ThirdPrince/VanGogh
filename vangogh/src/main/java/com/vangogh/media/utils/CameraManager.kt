@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Environment.DIRECTORY_PICTURES
 import android.provider.MediaStore
 import androidx.annotation.WorkerThread
 import androidx.core.content.FileProvider
@@ -29,7 +30,7 @@ class CameraManager(val context: Context) {
     @Throws(IOException::class)
     private fun createCameraUri(): Uri? {
         val cameraFileName = "IMG_" + getCameraTime() + ".jpg"
-        val cameraFile = File( Environment.getExternalStorageDirectory(),cameraFileName)
+        val cameraFile = File(Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES),cameraFileName)
         cameraPathUri = if (Build.VERSION.SDK_INT >= 24) {
             FileProvider.getUriForFile(context, VanGoghProvider.getProvideName(context), cameraFile)
         } else {
