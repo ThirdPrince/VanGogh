@@ -66,6 +66,7 @@ dependencies {
     implementation  'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'id.zelory:compressor:3.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    //implementation("io.coil-kt:coil:1.4.0")
 }
 
 
