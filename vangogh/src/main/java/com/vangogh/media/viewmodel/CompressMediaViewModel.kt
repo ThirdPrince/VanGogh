@@ -10,8 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.core.log.EasyLog
 import com.vangogh.media.cache.LRUImageCache
-import com.vangogh.media.config.VanGoghConst.MAX_IMG_CACHE_SIZE
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.utils.ImageCacheManager
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.default
 import id.zelory.compressor.constraint.destination
@@ -29,7 +29,7 @@ import java.io.File
  * @Version 1.0
  */
 
-private const val  compressCachePath = "vanGoghCache"
+private const val compressCachePath = "vanGoghCache"
 
 private const val compressCacheByImage = "imageCache"
 
@@ -58,7 +58,7 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
     /**
      * compressImage root
      */
-    private  var imageCompressFile: File?= null
+    private var imageCompressFile: File? = null
 
     /**
      * async compressImage
@@ -66,17 +66,18 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
     var deferredList = mutableListOf<Deferred<File>>()
 
 
-
-
     init {
         imageCompressFile =
             getApplication<Application>().getExternalFilesDir(compressCachePath)!!
     }
 
-    var lruImageCache = LRUImageCache<String,Long>(MAX_IMG_CACHE_SIZE)
+    //var lruImageCache = LRUImageCache<String,Long>(MAX_IMG_CACHE_SIZE)
 
     var sp: SharedPreferences =
-        getApplication<Application>().getSharedPreferences(compressCacheByImage, Context.MODE_PRIVATE)
+        getApplication<Application>().getSharedPreferences(
+            compressCacheByImage,
+            Context.MODE_PRIVATE
+        )
     var editor: SharedPreferences.Editor = sp.edit()
 
 
@@ -103,7 +104,7 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
                             }
                             deferredList.add(compressedImage)
                         }
-                    }else{
+                    } else {
                         it.compressPath = it.originalPath
                     }
                 }
@@ -113,30 +114,34 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
             deferredList.forEachIndexed { index, deferred ->
                 compressedImage = deferred.await()
                 mediaList.forEach {
-                    if(it.originalPath!!.endsWith(compressedImage!!.name)){
+                    if (it.originalPath!!.endsWith(compressedImage!!.name)) {
                         it.compressPath = compressedImage!!.absolutePath
                     }
                 }
 
             }
-            mediaList.forEach{
-                if(it.isOriginal){
+            mediaList.forEach {
+                if (it.isOriginal) {
                     it.path = it.originalPath
-                }else{
+                } else {
                     it.path = it.compressPath
                 }
             }
-            if(imageCompressFile?.listFiles()?.size!! > MAX_IMG_CACHE_SIZE) {
-                lruImageCache = getMap(compressCacheByImage)!!
-                mediaList.filter {
-                    it.isImage() && (it.originalPath != it.compressPath)
-                }.forEach {
-                    lruImageCache[it.compressPath!!] = File(it.compressPath).length()
-                }
-                saveMap(compressCacheByImage,lruImageCache)
+            //if(imageCompressFile?.listFiles()?.size!! >= MAX_IMG_CACHE_SIZE) {
+            if (ImageCacheManager.lruImageCache.isEmpty()) {
+                ImageCacheManager.lruImageCache = getMap(compressCacheByImage)!!
             }
-            //EasyLog.e(TAG,"files = ${imageCompressFile?.listFiles()?.size!!}")
-            EasyLog.e(TAG,lruImageCache.size.toString())
+
+            mediaList.filter {
+                it.isImage() && (it.originalPath != it.compressPath)
+            }.forEach {
+                ImageCacheManager.lruImageCache[it.compressPath!!] = File(it.compressPath).length()
+            }
+            EasyLog.e(TAG, ImageCacheManager.lruImageCache.size.toString())
+            saveMap(compressCacheByImage, ImageCacheManager.lruImageCache)
+            //  }
+            EasyLog.e(TAG, "files = ${imageCompressFile?.listFiles()?.size!!}")
+            EasyLog.e(TAG, ImageCacheManager.lruImageCache.size.toString())
             _lvMediaData.postValue(mediaList)
         }
 
@@ -146,44 +151,48 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
         return File("${imageCompressFile?.absolutePath}${File.separator}${actualImage!!.name}")
     }
 
-   private suspend fun saveMap(key: String, datas: LRUImageCache<String, Long>) = withContext(Dispatchers.IO){
-        val mJsonArray = JSONArray()
-        val iterator: Iterator<Map.Entry<String, Long>> = datas.entries.iterator()
-        val jsonObject = JSONObject()
-        while (iterator.hasNext()) {
-            val entry = iterator.next()
-            try {
-                jsonObject.put(entry.key, entry.value)
-            } catch (e: JSONException) {
-            }
-        }
-        mJsonArray.put(jsonObject)
-        editor.putString(key, mJsonArray.toString())
-        editor.commit()
-    }
-    private suspend fun getMap(key: String): LRUImageCache<String, Long>?= withContext(Dispatchers.IO) {
-        val datas: LRUImageCache<String, Long> = LRUImageCache(MAX_IMG_CACHE_SIZE)
-        val result: String? = sp.getString(key, "")
-        if(TextUtils.isEmpty(result)){
-            return@withContext datas
-        }
-        try {
-            val array = JSONArray(result)
-            for (i in 0 until array.length()) {
-                val itemObject = array.getJSONObject(i)
-                val names = itemObject.names()
-                if (names != null) {
-                    for (j in 0 until names.length()) {
-                        val name = names.getString(j)
-                        val value = itemObject.getLong(name)
-                        datas[name] = value
-                    }
+    private suspend fun saveMap(key: String, datas: LRUImageCache<String, Long>) =
+        withContext(Dispatchers.IO) {
+            val mJsonArray = JSONArray()
+            val iterator: Iterator<Map.Entry<String, Long>> = datas.entries.iterator()
+            val jsonObject = JSONObject()
+            while (iterator.hasNext()) {
+                val entry = iterator.next()
+                try {
+                    jsonObject.put(entry.key, entry.value)
+                } catch (e: JSONException) {
                 }
             }
-        } catch (e: JSONException) {
-            e.printStackTrace()
+            mJsonArray.put(jsonObject)
+            editor.putString(key, mJsonArray.toString())
+            editor.commit()
         }
-        return@withContext datas
-    }
+
+    private suspend fun getMap(key: String): LRUImageCache<String, Long>? =
+        withContext(Dispatchers.IO) {
+            val datas: LRUImageCache<String, Long> = LRUImageCache(ImageCacheManager.MAX_IMG_CACHE_SIZE)
+            val result: String? = sp.getString(key, "")
+            EasyLog.e(TAG, "result = $result")
+            if (TextUtils.isEmpty(result)) {
+                return@withContext datas
+            }
+            try {
+                val array = JSONArray(result)
+                for (i in 0 until array.length()) {
+                    val itemObject = array.getJSONObject(i)
+                    val names = itemObject.names()
+                    if (names != null) {
+                        for (j in 0 until names.length()) {
+                            val name = names.getString(j)
+                            val value = itemObject.getLong(name)
+                            datas[name] = value
+                        }
+                    }
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            return@withContext datas
+        }
 
 }

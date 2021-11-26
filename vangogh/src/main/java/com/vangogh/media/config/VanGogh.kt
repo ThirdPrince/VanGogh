@@ -13,7 +13,7 @@ import com.vangogh.media.utils.CameraManager
 import com.vangogh.media.utils.MediaQueryConditions
 
 /**
- * @ClassName MediaGridItemAdapter
+ * @ClassName VanGogh
  * @Description vanGogh builder
  * @Author dhl
  * @Date 2020/12/22 9:36
@@ -198,5 +198,11 @@ object VanGogh {
         mOnCameraResult = onCameraResult
         return this
     }
+
+    /**
+     * latest image
+     */
+     //fun startForLatestImage()
+
 
 }

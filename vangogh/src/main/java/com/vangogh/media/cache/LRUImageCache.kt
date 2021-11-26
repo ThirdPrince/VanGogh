@@ -25,24 +25,19 @@ class LRUImageCache<T, U>(private val capacity:Int) : LinkedHashMap<String, Long
 
     private  var maxSize = 0
 
+    private  lateinit var deleFile :File
+
     override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Long>?): Boolean {
 
-//        this.entries.forEach {
-//            EasyLog.e(TAG,"it = ${it.value}")
-//            maxSize += it.value
-//        }
         maxSize = size
         val imageCacheKey = eldest?.key
-        val beyondMaxSize = maxSize > capacity
+        val beyondMaxSize = maxSize >= capacity
         if(beyondMaxSize){
+            deleFile = File(imageCacheKey)
 
-            VanGogh.selectMediaList.forEach {
-                if(it.compressPath == imageCacheKey){
-                    return false
-                }
+            if(deleFile?.exists()){
+                deleFile?.delete()
             }
-            File(imageCacheKey).delete()
-            EasyLog.e(TAG,imageCacheKey.toString())
         }
         return beyondMaxSize
     }

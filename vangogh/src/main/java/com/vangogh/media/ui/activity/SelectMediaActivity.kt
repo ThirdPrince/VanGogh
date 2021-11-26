@@ -263,7 +263,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     }
 
     private fun initMediaDirPop() {
+
         mediaTitleLay.setOnClickListener {
+            if(!::mediaDirList.isInitialized){
+                return@setOnClickListener
+            }
             if (popWindow == null) {
                 popWindow = MediaDirPopWindow(this, mediaDirList, ivArrow)
             }

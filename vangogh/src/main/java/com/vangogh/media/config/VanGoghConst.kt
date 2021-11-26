@@ -40,7 +40,9 @@ object VanGoghConst {
         }
     }
     var MAX_MEDIA = 9
+
     var GRID_SPAN_CONT = 4
+
     var MEDIA_MAX_SIZE = Int.MAX_VALUE
 
     var VIDEO_MAX_DURATION = Int.MAX_VALUE
@@ -53,7 +55,6 @@ object VanGoghConst {
 
     var COMPRESS_SIZE = 100 * 1024L // 100Kb
 
-    const val MAX_IMG_CACHE_SIZE = 5
 
     fun reset(){
          MEDIA_TITLE = MediaTitle.MediaComplete
