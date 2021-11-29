@@ -28,6 +28,7 @@ import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.extend.toast
+import com.vangogh.media.fragment.CameraFragment
 import com.vangogh.media.itf.OnCameraClickListener
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
@@ -40,6 +41,9 @@ import com.vangogh.media.view.MediaDirPopWindow
 import com.vangogh.media.viewmodel.CompressMediaViewModel
 import com.vangogh.media.viewmodel.MediaViewModel
 import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.default
+import id.zelory.compressor.constraint.destination
+import id.zelory.compressor.constraint.size
 import kotlinx.android.synthetic.main.activity_select_media.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -170,7 +174,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         if (!PermissionUtils.checkSelfPermission(this, permissions[0])) {
             requestPermissions(permissions, STORAGE_REQUEST)
         } else {
-            if(currentMediaList.size == 0){
+            if (currentMediaList.size == 0) {
                 showDialog()
             }
 
@@ -271,7 +275,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     private fun initMediaDirPop() {
 
         mediaTitleLay.setOnClickListener {
-            if(!::mediaDirList.isInitialized){
+            if (!::mediaDirList.isInitialized) {
                 return@setOnClickListener
             }
             if (popWindow == null) {
@@ -429,34 +433,35 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
 
             CameraManager.REQUEST_CAMERA -> {
                 if ((resultCode == Activity.RESULT_OK)) {
-                    val widthAndHeight = ImageUtils.getImageSize(cameraManager?.cameraRealPath)
-                    val size = File(cameraManager?.cameraRealPath).length()
+
                     val cameraItem = MediaItem()
-                    cameraItem.width = widthAndHeight[0]
-                    cameraItem.height = widthAndHeight[1]
                     cameraItem.originalPath = cameraManager?.cameraRealPath
-                    cameraItem.pathUri = cameraManager?.cameraPathUri
-                    cameraItem.size = size
-                    cameraItem.mineType = "image/jpeg"
-                    cameraItem.dataToken = System.currentTimeMillis()
-                    sendBroadcast(
-                        Intent(
-                            Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                            Uri.fromFile(File(cameraManager?.cameraRealPath))
-                        )
-                    )
                     val actualImage = File(cameraItem.originalPath)
                     actualImage?.let { imageFile ->
                         lifecycleScope.launch {
                             val compressFile =
-                                Compressor.compress(this@SelectMediaActivity, imageFile)
+                                Compressor.compress(activity!!, imageFile) {
+                                    default()
+                                    size(VanGoghConst.COMPRESS_SIZE)//100K
+                                    destination(imageFile)
+                                }
                             cameraItem.compressPath = compressFile.absolutePath
-                            cameraItem.path =    cameraItem.compressPath
-                            if (isCamera) {
-                                VanGogh.mOnCameraResult.onResult(cameraItem)
-                                finish()
-                                return@launch
-                          }
+                            cameraItem.path = cameraItem.compressPath
+                            val widthAndHeight = ImageUtils.getImageSize(cameraItem.path)
+                            val size = File(cameraManager?.cameraRealPath).length()
+                            cameraItem.pathUri = cameraManager?.cameraPathUri
+                            cameraItem.size = size
+                            cameraItem.mineType = "image/jpeg"
+                            cameraItem.dataToken = System.currentTimeMillis()
+                            activity?.sendBroadcast(
+                                Intent(
+                                    Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                    Uri.fromFile(File(cameraManager?.cameraRealPath))
+                                )
+                            )
+                            cameraItem.width = widthAndHeight[0]
+                            cameraItem.height = widthAndHeight[1]
+
                             if (VanGogh.selectMediaList.size >= VanGoghConst.MAX_MEDIA) {
                                 toast(
                                     getString(
@@ -469,9 +474,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                             MediaPreviewUtil.currentMediaList.add(0, cameraItem)
                             VanGogh.selectMediaList.add(cameraItem)
                             refreshMedia()
-                        }
 
+                        }
                     }
+
 
                 } else if (resultCode == Activity.RESULT_CANCELED) {
                     if (isCamera) {
