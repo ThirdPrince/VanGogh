@@ -35,6 +35,7 @@ import com.vangogh.media.life.VanGoghLifeObserver
 import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.*
+import com.vangogh.media.utils.MediaPreviewUtil.currentMediaList
 import com.vangogh.media.view.MediaDirPopWindow
 import com.vangogh.media.viewmodel.CompressMediaViewModel
 import com.vangogh.media.viewmodel.MediaViewModel
@@ -169,7 +170,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         if (!PermissionUtils.checkSelfPermission(this, permissions[0])) {
             requestPermissions(permissions, STORAGE_REQUEST)
         } else {
-            showDialog()
+            if(currentMediaList.size == 0){
+                showDialog()
+            }
+
             mediaViewModel.getMedia(null)
         }
 

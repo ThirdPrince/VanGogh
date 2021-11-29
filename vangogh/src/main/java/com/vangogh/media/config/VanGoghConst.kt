@@ -14,7 +14,12 @@ object VanGoghConst {
 
     @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD, AnnotationTarget.FUNCTION)
     @MustBeDocumented
-    @IntDef(MediaType.MediaAll, MediaType.MediaOnlyImage, MediaType.MediaOnlyVideo,MediaType.MediaOnlyGif)
+    @IntDef(
+        MediaType.MediaAll,
+        MediaType.MediaOnlyImage,
+        MediaType.MediaOnlyVideo,
+        MediaType.MediaOnlyGif
+    )
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation
     class MediaType {
@@ -39,6 +44,7 @@ object VanGoghConst {
 
         }
     }
+
     var MAX_MEDIA = 9
 
     var GRID_SPAN_CONT = 4
@@ -51,21 +57,18 @@ object VanGoghConst {
 
     var MEDIA_TITLE = MediaTitle.MediaComplete
 
-    var CAMERA_ENABLE :Boolean = false
+    var CAMERA_ENABLE: Boolean = false
 
     var COMPRESS_SIZE = 100 * 1024L // 100Kb
 
 
-    fun reset(){
-         MEDIA_TITLE = MediaTitle.MediaComplete
-         MEDIA_TYPE = MediaType.MediaAll
-         MAX_MEDIA = 9
-         CAMERA_ENABLE  = false
-          VanGogh.selectMediaList.clear()
+    fun reset() {
+        MEDIA_TITLE = MediaTitle.MediaComplete
+        MEDIA_TYPE = MediaType.MediaAll
+        MAX_MEDIA = 9
+        CAMERA_ENABLE = false
+        VanGogh.selectMediaList.clear()
     }
-
-
-
 
 
 }
