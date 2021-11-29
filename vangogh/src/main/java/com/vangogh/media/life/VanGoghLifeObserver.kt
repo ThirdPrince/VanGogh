@@ -6,12 +6,12 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.vangogh.media.config.VanGoghConst
 
 /**
- * @Title: $
+ * @Title: VanGoghLifeObserver
  * @Package $
  * @Description: Vangogh life
- * @author $
- * @date $
- * @version V1.0
+ * @author dhl
+ * @date 2021
+ * @version V1.0.4
  */
 class VanGoghLifeObserver :LifecycleObserver{
 

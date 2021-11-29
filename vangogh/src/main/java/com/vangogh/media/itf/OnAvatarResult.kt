@@ -4,12 +4,12 @@ import android.view.View
 import com.vangogh.media.models.MediaItem
 
 /**
- * @ClassName OnMediaResult
+ * @ClassName OnAvatarResult
  * @Description TODO
- * @Author aa
+ * @Author dhl
  * @Date 2021/1/19 10:37
  * @Version 1.0
  */
-interface OnAvatarResult {
-    fun onResult(image:MediaItem)
+interface OnAvatarResult:OnSingleMediaResult {
+
 }
