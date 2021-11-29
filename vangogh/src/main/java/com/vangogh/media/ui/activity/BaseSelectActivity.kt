@@ -60,10 +60,6 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     protected var isCamera: Boolean = false
 
-    /**
-     * 已选中的media
-     */
-    protected var selectedList = mutableListOf<MediaItem>()
 
     /**
      * activity back
@@ -107,7 +103,6 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 CompressMediaViewModel::class.java
             )
-        lifecycle.addObserver(VanGoghLifeObserver())
         compressMediaViewModel.lvMediaData.observe(this, Observer {
             if (isAvatar) {
                 VanGogh.mOnAvatarResult.onResult(it[0])

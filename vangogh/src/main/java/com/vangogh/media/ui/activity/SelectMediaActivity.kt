@@ -31,6 +31,7 @@ import com.vangogh.media.extend.toast
 import com.vangogh.media.itf.OnCameraClickListener
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
+import com.vangogh.media.life.VanGoghLifeObserver
 import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.*
@@ -159,6 +160,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         initView()
         initMediaDirPop()
         initScrollEvent()
+        lifecycle.addObserver(VanGoghLifeObserver())
 
         mediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
