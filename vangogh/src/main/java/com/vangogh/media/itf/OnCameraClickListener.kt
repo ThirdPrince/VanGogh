@@ -4,7 +4,7 @@ package com.vangogh.media.itf
 import android.view.View
 
 /**
- * @author dhl camrea
+ * @author dhl camera
  * Listens on the  camera click.
  */
 interface OnCameraClickListener {

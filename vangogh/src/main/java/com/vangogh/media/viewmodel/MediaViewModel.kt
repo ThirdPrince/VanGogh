@@ -79,7 +79,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
 
     fun getMedia(bucketId: String? = null) {
         getMediaAsync {
-            val medias = queryImages()
+            val medias = queryMedia()
             _lvMediaData.postValue(medias)
             val mediasFilter = filterDamage(medias)
             if(mediasFilter.size != medias.size) {
@@ -95,7 +95,7 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
 
 
     @WorkerThread
-    suspend fun queryImages(uri: Uri = MediaStore.Files.getContentUri("external")): MutableList<MediaItem> {
+    suspend fun queryMedia(uri: Uri = MediaStore.Files.getContentUri("external")): MutableList<MediaItem> {
         var mediaItemList = mutableListOf<MediaItem>()
         withContext(Dispatchers.IO) {
             val sortOrder = mediaProjection[mediaProjection.size - 1] + " DESC"

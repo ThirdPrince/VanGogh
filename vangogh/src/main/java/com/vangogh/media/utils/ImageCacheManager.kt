@@ -5,16 +5,16 @@ import com.vangogh.media.config.VanGoghConst
 
 
 /**
- * @Title: $
+ * @Title: ImageCacheManager
  * @Package $
  * @Description: compressImage cache
- * @author $
- * @date $
+ * @author dhl
+ * @date 2021 12
  * @version V1.0
  */
 object ImageCacheManager {
 
-    const val MAX_IMG_CACHE_SIZE = 2.shl(3)
+    const val MAX_IMG_CACHE_SIZE = 2.shl(4)
 
     var lruImageCache = LRUImageCache<String,Long>(MAX_IMG_CACHE_SIZE)
 
