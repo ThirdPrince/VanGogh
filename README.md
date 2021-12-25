@@ -25,6 +25,9 @@ Add it in your root build.gradle at the end of repositories:
  Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.ThirdPrince:VanGogh:1.0.3'
+	        implementation 'com.github.ThirdPrince:VanGogh:1.0.6'
 	}
  
+Step 3 add 
+
+     android:requestLegacyExternalStorage="true" to your mainifest
