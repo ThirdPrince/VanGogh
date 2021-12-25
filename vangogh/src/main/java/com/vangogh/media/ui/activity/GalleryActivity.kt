@@ -94,7 +94,7 @@ class GalleryActivity : BaseSelectActivity() {
             registerOnPageChangeCallback(object : OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    if (!mediaPreviewSelect){
+                    if (!mediaPreviewSelect) {
 
                     }
                     mediaPos = position
@@ -119,68 +119,68 @@ class GalleryActivity : BaseSelectActivity() {
     }
 
 
-        private fun initListener() {
-            topBarRoot.setOnClickListener {
-                finish()
-            }
-            checkbox.setOnCheckedChangeListener(object : AnimateCheckBox.OnCheckedChangeListener {
-                @SuppressLint("StringFormatMatches")
-                override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {
-                    if (isChecked) {
-                        imageOriginal = true
-                        if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
-                            toast(
-                                getString(
-                                    R.string.picture_message_max_num,
-                                    VanGoghConst.MAX_MEDIA
-                                )
+    private fun initListener() {
+        topBarRoot.setOnClickListener {
+            finish()
+        }
+        checkbox.setOnCheckedChangeListener(object : AnimateCheckBox.OnCheckedChangeListener {
+            @SuppressLint("StringFormatMatches")
+            override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {
+                if (isChecked) {
+                    imageOriginal = true
+                    if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
+                        toast(
+                            getString(
+                                R.string.picture_message_max_num,
+                                VanGoghConst.MAX_MEDIA
                             )
-                            checkbox.isChecked = false
-                            return
-                        }
-                        if (!VanGogh.selectMediaList.contains(currentMedia)) {
-                            if (cbOriginal.isChecked) {
-                                currentMedia!!.isOriginal = true
-                            }
-                            VanGogh.selectMediaList.add(currentMedia!!)
-                        }
-
-                    } else {
-                        imageOriginal = false
-                        VanGogh.selectMediaList.remove(currentMedia!!)
+                        )
+                        checkbox.isChecked = false
+                        return
                     }
-                    updateTitle()
+                    if (!VanGogh.selectMediaList.contains(currentMedia)) {
+                        if (cbOriginal.isChecked) {
+                            currentMedia!!.isOriginal = true
+                        }
+                        VanGogh.selectMediaList.add(currentMedia!!)
+                    }
+
+                } else {
+                    imageOriginal = false
+                    VanGogh.selectMediaList.remove(currentMedia!!)
                 }
-
-            })
-        }
-
-        private fun setMediaIndex() {
-            currentMedia = previewMediaList!![mediaPos]
-           // Log.e(TAG, (currentMedia!!.width ===0).toString())
-            val damage = currentMedia!!.isImage() && currentMedia!!.width === 0 && !ImageUtils.isImage(currentMedia!!.originalPath)
-            Log.e(TAG,damage.toString())
-            mediaIndexTv.text = "${mediaPos + 1} / ${previewMediaList!!.size}"
-            if(currentMedia!!.isImage()){
-                cbOriginal.visibility = View.VISIBLE
-            }else{
-                cbOriginal.visibility = View.GONE
+                updateTitle()
             }
 
+        })
+    }
 
+    private fun setMediaIndex() {
+        currentMedia = previewMediaList!![mediaPos]
+        // Log.e(TAG, (currentMedia!!.width ===0).toString())
+        val damage = currentMedia!!.isImage() && currentMedia!!.width === 0 && !ImageUtils.isImage(
+            currentMedia!!.originalPath
+        )
+        Log.e(TAG, damage.toString())
+        mediaIndexTv.text = "${mediaPos + 1} / ${previewMediaList!!.size}"
+        if (currentMedia!!.isImage()) {
+            cbOriginal.visibility = View.VISIBLE
+        } else {
+            cbOriginal.visibility = View.GONE
         }
-
-        private fun setSelectMediaState() {
-            checkbox.setChecked(
-                VanGogh.selectMediaList.contains(
-                    previewMediaList?.get(
-                        mediaPos
-                    )
-                ), false
-            )
-        }
-
-
 
 
     }
+
+    private fun setSelectMediaState() {
+        checkbox.setChecked(
+            VanGogh.selectMediaList.contains(
+                previewMediaList?.get(
+                    mediaPos
+                )
+            ), false
+        )
+    }
+
+
+}
