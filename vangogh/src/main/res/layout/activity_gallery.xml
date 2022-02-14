@@ -19,6 +19,17 @@
         android:layout_height="@dimen/dp_45"
         android:layout_alignParentBottom="true">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/pic_editor"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:gravity="center"
+            android:textColor="@color/picture_color_white"
+            android:textSize="14sp"
+            android:text="@string/picture_edit"
+            android:layout_height="wrap_content"/>
+
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/cb_original"
             android:layout_width="wrap_content"

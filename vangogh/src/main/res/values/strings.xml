@@ -53,6 +53,8 @@
     <string name="picture_not_crop_data">无可用裁剪数据</string>
     <string name="picture_original_image">原图</string>
 
+    <string name="picture_edit">编辑</string>
+
     <string name="picture_preview_num">预览(%1$d)</string>
     <string name="picture_select">选择</string>
     <string name="picture_data_exception">获取相册数据异常...</string>

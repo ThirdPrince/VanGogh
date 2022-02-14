@@ -44,7 +44,6 @@ import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.default
 import id.zelory.compressor.constraint.destination
 import id.zelory.compressor.constraint.size
-import kotlinx.android.synthetic.main.activity_select_media.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -234,7 +233,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         rcyView.addItemDecoration(GridSpacingItemDecoration(4, 5, false))
         mediaItemAdapter = MediaGridItemAdapter(this, MediaPreviewUtil.currentMediaList, isAvatar)
         mediaItemAdapter.setHasStableIds(true);
-        rcy_view.adapter = mediaItemAdapter
+        rcyView.adapter = mediaItemAdapter
         mediaItemAdapter.onMediaItemClickListener = this
         mediaItemAdapter.onItemCheckListener = this
         mediaItemAdapter.onCameraClickListener = this

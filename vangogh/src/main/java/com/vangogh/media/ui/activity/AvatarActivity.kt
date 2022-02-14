@@ -20,9 +20,7 @@ import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.extend.toast
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.MediaPreviewUtil
-import com.vangogh.media.view.AnimateCheckBox
-import kotlinx.android.synthetic.main.media_select_button.*
-import kotlin.collections.forEach as forEach
+
 
 /**
  * @ClassName AvatarActivity
@@ -93,9 +91,9 @@ class AvatarActivity : BaseSelectActivity() {
 
     private fun setMediaIndex() {
         currentMedia = MediaPreviewUtil.currentMediaList!![mediaPos]
-        mediaSend.isEnabled = true
-        mediaSend.visibility = View.VISIBLE
-        mediaSend.text = getString(R.string.media_done)
+        mediaSend?.isEnabled = true
+        mediaSend?.visibility = View.VISIBLE
+        mediaSend?.text = getString(R.string.media_done)
         Glide.with(this).load(currentMedia?.pathUri).into(photoView)
     }
 

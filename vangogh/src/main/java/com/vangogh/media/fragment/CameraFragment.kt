@@ -15,16 +15,11 @@ import androidx.lifecycle.lifecycleScope
 import com.core.log.EasyLog
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
-import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.config.VanGoghConst.COMPRESS_SIZE
-import com.vangogh.media.extend.toast
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.CAMERA_REQUEST
-import com.vangogh.media.ui.activity.GalleryActivity
-import com.vangogh.media.ui.activity.STORAGE_REQUEST
 import com.vangogh.media.utils.CameraManager
 import com.vangogh.media.utils.ImageUtils
-import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.utils.PermissionUtils
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.default
@@ -67,7 +62,7 @@ class CameraFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (!PermissionUtils.checkSelfPermission(context!!, permissionCamera[0])) {
+        if (!PermissionUtils.checkSelfPermission(requireContext(), permissionCamera[0])) {
             requestPermissions(permissionCamera, CAMERA_REQUEST)
         } else {
             openCamera()
@@ -80,7 +75,8 @@ class CameraFragment : Fragment() {
      * 打开相机
      */
     private fun openCamera() {
-        cameraManager = CameraManager(context!!)
+        cameraManager = CameraManager(requireContext())
+
         try {
             uiScope.launch {
                 val cameraIntent = withContext(Dispatchers.IO) {

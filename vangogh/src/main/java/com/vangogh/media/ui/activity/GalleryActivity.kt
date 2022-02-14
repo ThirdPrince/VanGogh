@@ -9,8 +9,12 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.core.log.EasyLog
+import com.vangogh.media.picEdit.dialog.EditorFinishCallback
+import com.vangogh.media.picEdit.dialog.PictureEditorDialog
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaPreviewAdapter
 import com.vangogh.media.config.VanGogh
@@ -70,6 +74,8 @@ class GalleryActivity : BaseSelectActivity() {
 
     private val checkbox by lazy { findViewById<AnimateCheckBox>(R.id.checkbox) }
 
+    private val picEdit by lazy { findViewById<AppCompatTextView>(R.id.pic_editor) }
+
     private var previewMediaList = mutableListOf<MediaItem>()
 
 
@@ -112,7 +118,7 @@ class GalleryActivity : BaseSelectActivity() {
 
     override fun backPress() {
         val intentBack = Intent().apply {
-            putExtra(GalleryActivity.IMAGE_ORIGINAL, cbOriginal.isChecked)
+            putExtra(GalleryActivity.IMAGE_ORIGINAL, cbOriginal?.isChecked)
         }
         setResult(Activity.RESULT_CANCELED, intentBack)
         finish()
@@ -122,6 +128,19 @@ class GalleryActivity : BaseSelectActivity() {
     private fun initListener() {
         topBarRoot.setOnClickListener {
             finish()
+        }
+
+        picEdit.setOnClickListener {
+            currentMedia?.originalPath?.let { it1 ->
+                PictureEditorDialog.newInstance()
+                    .setBitmapPath(it1)
+                    .setEditorFinishCallback(object : EditorFinishCallback {
+                        override fun onFinish(path: String) {
+                         EasyLog.e(TAG,"path = $path")
+                        }
+                    })
+                    .show(supportFragmentManager)
+            }
         }
         checkbox.setOnCheckedChangeListener(object : AnimateCheckBox.OnCheckedChangeListener {
             @SuppressLint("StringFormatMatches")
@@ -139,7 +158,7 @@ class GalleryActivity : BaseSelectActivity() {
                         return
                     }
                     if (!VanGogh.selectMediaList.contains(currentMedia)) {
-                        if (cbOriginal.isChecked) {
+                        if (cbOriginal?.isChecked) {
                             currentMedia!!.isOriginal = true
                         }
                         VanGogh.selectMediaList.add(currentMedia!!)

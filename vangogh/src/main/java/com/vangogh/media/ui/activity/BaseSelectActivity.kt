@@ -21,7 +21,6 @@ import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.dialog.LoadingDialog
 import com.vangogh.media.utils.MediaPreviewUtil
 import com.vangogh.media.viewmodel.CompressMediaViewModel
-import kotlinx.android.synthetic.main.media_select_button.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
@@ -65,23 +64,23 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
      * activity back
      */
 
-    private val mediaLeftBack: ImageView by lazy {
-        findViewById<ImageView>(R.id.mediaLeftBack)
-    }
+    private  var mediaLeftBack: ImageView? = null
+//    by lazy {
+//        findViewById(R.id.mediaLeftBack)
+//    }
 
     /**
      * selectMedia complete
      */
-    protected val mediaSend: AppCompatButton by lazy {
-        findViewById<AppCompatButton>(R.id.media_send)
-    }
+    protected  lateinit var mediaSend: AppCompatButton
 
     /**
      *  check box for image isOriginal
      */
-    protected val cbOriginal: AppCompatCheckBox by lazy {
-        findViewById<AppCompatCheckBox>(R.id.cb_original)
-    }
+    protected  lateinit var cbOriginal: AppCompatCheckBox
+//    by lazy {
+//        findViewById(R.id.cb_original)
+//    }
 
     private lateinit var loadingDialog: LoadingDialog
 
@@ -92,6 +91,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.media_color_grey)
         }
         setContentView(contentLayout())
+        initView()
         initLoadingDialog()
         getData()
         initSendMediaListener()
@@ -124,16 +124,23 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         cbOriginal?.isChecked = imageOriginal
         if (isAvatar) {
             cbOriginal?.visibility = View.GONE
-            mediaSend.visibility = View.GONE
+            mediaSend?.visibility = View.GONE
         } else {
             cbOriginal?.visibility = View.VISIBLE
-            mediaSend.visibility = View.VISIBLE
+            mediaSend?.visibility = View.VISIBLE
         }
     }
 
     private fun initSendMediaListener() {
         mediaLeftBack?.setOnClickListener(this)
-        mediaSend.setOnClickListener(this)
+        mediaSend?.setOnClickListener(this)
+    }
+    private fun initView(){
+        mediaLeftBack =  findViewById(R.id.mediaLeftBack)
+        mediaSend =  findViewById(R.id.media_send)
+        cbOriginal = findViewById(R.id.cb_original)
+
+
     }
 
     private fun initLoadingDialog() {
@@ -170,25 +177,25 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     protected fun updateTitle() {
         if (VanGogh.selectMediaList.size > 0) {
-            media_send.isEnabled = true
+            mediaSend?.isEnabled = true
             when (VanGoghConst.MEDIA_TITLE) {
-                VanGoghConst.MediaTitle.MediaComplete -> media_send.text = getString(
+                VanGoghConst.MediaTitle.MediaComplete -> mediaSend?.text = getString(
                     R.string.media_complete_num,
                     VanGogh.selectMediaList.size,
                     VanGoghConst.MAX_MEDIA
                 )
-                VanGoghConst.MediaTitle.MediaSend -> media_send.text = getString(
+                VanGoghConst.MediaTitle.MediaSend -> mediaSend?.text = getString(
                     R.string.media_send_num,
                     VanGogh.selectMediaList.size,
                     VanGoghConst.MAX_MEDIA
                 )
             }
         } else {
-            media_send.isEnabled = false
+            mediaSend?.isEnabled = false
             when (VanGoghConst.MEDIA_TITLE) {
-                VanGoghConst.MediaTitle.MediaComplete -> media_send.text =
+                VanGoghConst.MediaTitle.MediaComplete -> mediaSend?.text =
                     resources.getString(R.string.media_complete)
-                VanGoghConst.MediaTitle.MediaSend -> media_send.text =
+                VanGoghConst.MediaTitle.MediaSend -> mediaSend?.text =
                     resources.getString(R.string.media_send_not_enable)
 
             }

@@ -3,9 +3,7 @@ package com.example.vangogh
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -15,12 +13,10 @@ import com.core.log.EasyLog
 import com.example.vangogh.adapter.GridMediaAdapter
 import com.example.vangogh.itf.OnAddMediaListener
 import com.vangogh.media.config.VanGogh
-import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.itf.OnAvatarResult
 import com.vangogh.media.itf.OnCameraResult
 import com.vangogh.media.models.MediaItem
-import com.vangogh.media.ui.activity.BaseSelectActivity
 import com.vangogh.media.itf.OnMediaResult as OnMediaResult
 
 /**

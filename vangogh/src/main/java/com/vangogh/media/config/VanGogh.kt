@@ -1,6 +1,7 @@
 package com.vangogh.media.config
 
 import android.app.Activity
+import android.content.Intent
 import android.provider.MediaStore
 import androidx.fragment.app.FragmentActivity
 import com.vangogh.media.fragment.CameraFragment
@@ -8,8 +9,8 @@ import com.vangogh.media.itf.OnAvatarResult
 import com.vangogh.media.itf.OnCameraResult
 import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.picEdit.utils.ActivityCallback
 import com.vangogh.media.ui.activity.SelectMediaActivity
-import com.vangogh.media.utils.CameraManager
 import com.vangogh.media.utils.MediaQueryConditions
 
 /**
