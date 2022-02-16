@@ -212,7 +212,7 @@ class PictureEditorView @JvmOverloads constructor(
         peMatrix.reset()
         val width = max(bitmapRectF.width().toInt(), 1)
         val height = max(bitmapRectF.height().toInt(), 1)
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)  //ARGB_8888
         val canvas = Canvas(bitmap)
         canvas.drawColor(Color.TRANSPARENT)
         draw(canvas)

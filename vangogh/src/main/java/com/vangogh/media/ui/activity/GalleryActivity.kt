@@ -130,13 +130,21 @@ class GalleryActivity : BaseSelectActivity() {
             finish()
         }
 
+
+
         picEdit.setOnClickListener {
-            currentMedia?.originalPath?.let { it1 ->
+            currentMedia?.path?.let { it1 ->
                 PictureEditorDialog.newInstance()
                     .setBitmapPath(it1)
                     .setEditorFinishCallback(object : EditorFinishCallback {
                         override fun onFinish(path: String) {
                          EasyLog.e(TAG,"path = $path")
+                            checkbox.isChecked = true
+                            updateTitle()
+                            currentMedia?.originalPath = path
+                            viewPager2.adapter?.notifyDataSetChanged()
+
+
                         }
                     })
                     .show(supportFragmentManager)
@@ -176,7 +184,10 @@ class GalleryActivity : BaseSelectActivity() {
 
     private fun setMediaIndex() {
         currentMedia = previewMediaList!![mediaPos]
-        // Log.e(TAG, (currentMedia!!.width ===0).toString())
+        if(!currentMedia?.isImage()!!) {
+            picEdit.visibility = View.GONE
+        }
+        preCompressImage()
         val damage = currentMedia!!.isImage() && currentMedia!!.width === 0 && !ImageUtils.isImage(
             currentMedia!!.originalPath
         )
@@ -199,6 +210,12 @@ class GalleryActivity : BaseSelectActivity() {
                 )
             ), false
         )
+    }
+
+    private fun preCompressImage(){
+        val mediaList = mutableListOf<MediaItem>()
+        mediaList.add(currentMedia!!)
+        compressMediaViewModel.compressImage(mediaList,true)
     }
 
 

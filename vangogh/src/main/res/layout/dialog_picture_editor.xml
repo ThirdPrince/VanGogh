@@ -180,6 +180,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:padding="10dp"
+            android:visibility="gone"
             android:src="@drawable/pe_sticker" />
 
         <ImageView
@@ -220,7 +221,7 @@
                 android:id="@+id/complete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/selector_btn_config"
+                android:background="@drawable/media_send_bg"
                 android:gravity="center"
                 android:text="完成"
                 android:textColor="#ffffff"

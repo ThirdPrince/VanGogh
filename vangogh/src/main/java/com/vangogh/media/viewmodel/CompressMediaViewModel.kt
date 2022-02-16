@@ -85,7 +85,7 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
      * async compress
      * only compress image (exclude gif video)
      */
-    fun compressImage(mediaList: MutableList<MediaItem>) {
+    fun compressImage(mediaList: MutableList<MediaItem> ,preCompress:Boolean = false) {
         viewModelScope.launch {
             mediaList.forEach { it ->
                 actualImage = File(it.originalPath)
@@ -142,7 +142,9 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
             //  }
             EasyLog.e(TAG, "files = ${imageCompressFile?.listFiles()?.size!!}")
             EasyLog.e(TAG, ImageCacheManager.lruImageCache.size.toString())
-            _lvMediaData.postValue(mediaList)
+            if(!preCompress) {
+                _lvMediaData.postValue(mediaList)
+            }
         }
 
     }

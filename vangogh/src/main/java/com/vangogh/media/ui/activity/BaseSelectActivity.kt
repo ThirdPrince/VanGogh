@@ -2,7 +2,6 @@ package com.vangogh.media.ui.activity
 
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
-import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.life.VanGoghLifeObserver
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.dialog.LoadingDialog
