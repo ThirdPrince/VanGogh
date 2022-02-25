@@ -7,7 +7,7 @@
         android:id="@+id/titleViewBg"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="?colorPrimary" />
+        android:background="@color/media_color_grey" />
 
     <ImageView
         android:id="@+id/mediaLeftBack"
@@ -16,8 +16,9 @@
         android:layout_alignTop="@id/titleViewBg"
         android:layout_alignBottom="@id/titleViewBg"
         android:layout_centerVertical="true"
+        android:src="@drawable/picture_icon_close"
         android:padding="15dp"
-        android:src="?attr/picture.leftBack.icon" />
+         />
 
     <RelativeLayout
         android:id="@+id/rlAlbum"
@@ -38,12 +39,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:textColor="@color/picture_color_white"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxEms="8"
                 android:maxLines="1"
                 android:text="@string/media_title_str"
-                android:textColor="?picture.title.textColor"
                 android:textSize="16sp" />
 
             <ImageView

@@ -73,6 +73,7 @@ data class MediaItem(
             return false
         }
         val otherMedia = other as MediaItem
-        return (this.pathUri == otherMedia.pathUri || this.originalPath == otherMedia.originalPath)
+        return  this.originalPath == otherMedia.originalPath
+       // return (this.pathUri == otherMedia.pathUri || this.originalPath == otherMedia.originalPath)
     }
 }

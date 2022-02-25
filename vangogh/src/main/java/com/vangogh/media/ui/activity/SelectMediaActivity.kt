@@ -302,7 +302,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
 
         mediaPreview.setOnClickListener {
-            GalleryActivity.actionStart(this, 0, cbOriginal.isChecked, true)
+            cbOriginal?.isChecked?.let { it1 -> GalleryActivity.actionStart(this, 0, it1, true) }
         }
     }
 
@@ -358,7 +358,10 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         if (isAvatar) {
             AvatarActivity.actionStart(this, realPosition, isAvatar)
         } else {
-            GalleryActivity.actionStart(this, realPosition, cbOriginal.isChecked, false)
+            cbOriginal?.isChecked?.let {
+                GalleryActivity.actionStart(this, realPosition,
+                    it, false)
+            }
         }
     }
 
@@ -375,7 +378,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 mediaItemAdapter.notifyItemChanged(position)
                 return
             }
-            if (cbOriginal.isChecked) {
+            if (cbOriginal?.isChecked == true) {
                 mediaItem.isOriginal = true
             }
             VanGogh.selectMediaList.add(mediaItem)
@@ -423,7 +426,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             GalleryActivity.REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_CANCELED) {
                     if (data != null) {
-                        cbOriginal.isChecked =
+                        cbOriginal?.isChecked =
                             data.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL, false)
                         refreshMedia()
                     }

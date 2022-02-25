@@ -12,20 +12,20 @@
     <application>
         <activity android:name="com.vangogh.media.ui.activity.VideoPlayActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/picture.WeChat.style"
-            ></activity>
+            android:theme="@style/VanGogh.Theme.Activity" />
         <activity
             android:name="com.vangogh.media.ui.activity.GalleryActivity"
-            android:theme="@style/picture.WeChat.style" />
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/VanGogh.Theme.Activity" />
 
         <activity
             android:name="com.vangogh.media.ui.activity.AvatarActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/picture.WeChat.style" />
+            android:theme="@style/VanGogh.Theme.Activity" />
         <activity
             android:name="com.vangogh.media.ui.activity.SelectMediaActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/picture.WeChat.style" />
+            android:theme="@style/VanGogh.Theme.Activity" />
        <provider
             android:name="com.vangogh.media.utils.VanGoghProvider"
             android:authorities="${applicationId}.vangogh.provider"

@@ -46,4 +46,7 @@
     <color name="color_e5e5e5">#E5E5E5</color>
     <color name="media_item_checkCircle_backgroundColor">#1E8AE8</color>
     <color name="transparent_70_black">#4C000000</color>
+
+    <color name="albumSheetBottom">#992B2B2B</color>
+    <color name="albumSheetLayer">#EE2B2B2B</color>
 </resources>

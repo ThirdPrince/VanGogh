@@ -6,6 +6,7 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
@@ -41,10 +42,14 @@ class MediaPreviewAdapter(private val activity: FragmentActivity, var items: Lis
 
     inner class MediaViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
-        var photoView: PhotoView = view.findViewById(R.id.photo_view)
+        var photoView: PhotoView = PhotoView(activity)
+            //view.findViewById(R.id.photo_view)
+        var rootGroup:FrameLayout = view.findViewById(R.id.root)
         var ivPlay: ImageView = view.findViewById(R.id.iv_play)
 
         init {
+            rootGroup.addView(photoView)
+           // photoView.layoutParams = ViewGroup.LayoutParams(-1, -1)
             ivPlay.setOnClickListener(this)
         }
 

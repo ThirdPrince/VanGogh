@@ -4,31 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.vangogh.media.ui.activity.GalleryActivity">
+
+    >
 
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
-    <include layout="@layout/media_select_gallery_top"/>
+    <include layout="@layout/media_select_gallery_top" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_45"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:fitsSystemWindows="true">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/pic_editor"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_margin="@dimen/dimen_10dp"
             android:gravity="center"
-            android:textColor="@color/picture_color_white"
-            android:textSize="14sp"
             android:text="@string/picture_edit"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/picture_color_white"
+            android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/cb_original"
@@ -42,12 +44,9 @@
             android:paddingStart="5dp"
             android:text="@string/picture_original_image"
             android:textColor="@color/picture_color_white"
-            android:textSize="14sp"
-            />
+            android:textSize="14sp" />
 
-        <include
-            layout="@layout/media_select_checkbox"
-            />
+        <include layout="@layout/media_select_checkbox" />
 
     </RelativeLayout>
 </RelativeLayout>

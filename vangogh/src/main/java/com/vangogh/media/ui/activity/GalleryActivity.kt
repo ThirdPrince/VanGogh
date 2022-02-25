@@ -3,13 +3,20 @@ package com.vangogh.media.ui.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.core.log.EasyLog
@@ -17,12 +24,14 @@ import com.vangogh.media.picEdit.dialog.EditorFinishCallback
 import com.vangogh.media.picEdit.dialog.PictureEditorDialog
 import com.media.vangogh.R
 import com.vangogh.media.adapter.MediaPreviewAdapter
+import com.vangogh.media.adapter.PreviewAdapter
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.extend.toast
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.ImageUtils
 import com.vangogh.media.utils.MediaPreviewUtil
+import com.vangogh.media.utils.SystemBar
 import com.vangogh.media.view.AnimateCheckBox
 
 /**
@@ -70,6 +79,8 @@ class GalleryActivity : BaseSelectActivity() {
 
     private val mediaIndexTv by lazy { findViewById<TextView>(R.id.media_index_tv) }
 
+    //private val viewPager1 by lazy { findViewById<ViewPager>(R.id.view_pager1) }
+
     private val viewPager2 by lazy { findViewById<ViewPager2>(R.id.view_pager2) }
 
     private val checkbox by lazy { findViewById<AnimateCheckBox>(R.id.checkbox) }
@@ -82,9 +93,13 @@ class GalleryActivity : BaseSelectActivity() {
     private var currentMedia: MediaItem? = null
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        SystemBar.invasionStatusBar(this)
+        SystemBar.invasionNavigationBar(this)
+        SystemBar.setStatusBarColor(this, Color.TRANSPARENT)
+        SystemBar.setNavigationBarColor(this, ContextCompat.getColor(this,R.color.albumSheetBottom))
         initListener()
         viewPager2.apply {
             offscreenPageLimit = 1
@@ -142,7 +157,7 @@ class GalleryActivity : BaseSelectActivity() {
                             checkbox.isChecked = true
                             updateTitle()
                             currentMedia?.originalPath = path
-                            viewPager2.adapter?.notifyDataSetChanged()
+                            //viewPager2.adapter?.notifyDataSetChanged()
 
 
                         }
@@ -166,7 +181,7 @@ class GalleryActivity : BaseSelectActivity() {
                         return
                     }
                     if (!VanGogh.selectMediaList.contains(currentMedia)) {
-                        if (cbOriginal?.isChecked) {
+                        if (cbOriginal?.isChecked == true) {
                             currentMedia!!.isOriginal = true
                         }
                         VanGogh.selectMediaList.add(currentMedia!!)
@@ -194,9 +209,9 @@ class GalleryActivity : BaseSelectActivity() {
         Log.e(TAG, damage.toString())
         mediaIndexTv.text = "${mediaPos + 1} / ${previewMediaList!!.size}"
         if (currentMedia!!.isImage()) {
-            cbOriginal.visibility = View.VISIBLE
+            cbOriginal?.visibility = View.VISIBLE
         } else {
-            cbOriginal.visibility = View.GONE
+            cbOriginal?.visibility = View.GONE
         }
 
 

@@ -1,9 +1,12 @@
 package com.vangogh.media.ui.activity
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -18,6 +21,7 @@ import com.vangogh.media.life.VanGoghLifeObserver
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.dialog.LoadingDialog
 import com.vangogh.media.utils.MediaPreviewUtil
+import com.vangogh.media.utils.SystemBar
 import com.vangogh.media.viewmodel.CompressMediaViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -75,7 +79,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     /**
      *  check box for image isOriginal
      */
-    protected  lateinit var cbOriginal: AppCompatCheckBox
+    protected   var cbOriginal: AppCompatCheckBox ?= null
 //    by lazy {
 //        findViewById(R.id.cb_original)
 //    }
@@ -241,5 +245,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
             loadingDialog.dismiss()
         }
     }
+
+
 
 }
