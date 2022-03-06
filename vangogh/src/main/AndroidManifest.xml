@@ -16,7 +16,7 @@
         <activity
             android:name="com.vangogh.media.ui.activity.GalleryActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/VanGogh.Theme.Activity" />
+            android:theme="@style/Album.Theme.Activity"/>
 
         <activity
             android:name="com.vangogh.media.ui.activity.AvatarActivity"
@@ -26,6 +26,10 @@
             android:name="com.vangogh.media.ui.activity.SelectMediaActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VanGogh.Theme.Activity" />
+        <activity
+            android:name="com.vangogh.media.ui.activity.MediaGalleryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Album.Theme.Activity" />
        <provider
             android:name="com.vangogh.media.utils.VanGoghProvider"
             android:authorities="${applicationId}.vangogh.provider"

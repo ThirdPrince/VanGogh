@@ -89,10 +89,17 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.media_color_grey)
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            window.navigationBarColor = ContextCompat.getColor(this, R.color.media_color_grey)
+//        }
         setContentView(contentLayout())
+        SystemBar.invasionStatusBar(this)
+        SystemBar.invasionNavigationBar(this)
+        SystemBar.setStatusBarColor(this, Color.TRANSPARENT)
+        SystemBar.setNavigationBarColor(
+            this,
+            ContextCompat.getColor(this, R.color.albumSheetBottom)
+        )
         initView()
         initLoadingDialog()
         getData()

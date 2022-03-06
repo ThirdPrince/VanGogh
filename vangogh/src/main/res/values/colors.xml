@@ -49,4 +49,10 @@
 
     <color name="albumSheetBottom">#992B2B2B</color>
     <color name="albumSheetLayer">#EE2B2B2B</color>
+    <color name="albumColorPrimaryBlack">#2B2B2B</color>
+
+    <color name="albumFontDark">#333</color>
+    <color name="albumFontLight">#FFF</color>
+    <color name="albumColorPrimaryDark">#1E88E5</color>
+
 </resources>

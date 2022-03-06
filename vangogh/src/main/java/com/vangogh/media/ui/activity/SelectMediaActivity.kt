@@ -302,7 +302,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
 
         mediaPreview.setOnClickListener {
-            cbOriginal?.isChecked?.let { it1 -> GalleryActivity.actionStart(this, 0, it1, true) }
+            cbOriginal?.isChecked?.let { it1 -> MediaGalleryActivity.actionStart(this, 0, it1, true) }
         }
     }
 
@@ -359,7 +359,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             AvatarActivity.actionStart(this, realPosition, isAvatar)
         } else {
             cbOriginal?.isChecked?.let {
-                GalleryActivity.actionStart(this, realPosition,
+                MediaGalleryActivity.actionStart(this, realPosition,
                     it, false)
             }
         }

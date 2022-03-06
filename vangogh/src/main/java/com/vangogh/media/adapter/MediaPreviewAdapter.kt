@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.github.chrisbanes.photoview.PhotoView
 import com.media.vangogh.R
 import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.ui.activity.MediaGalleryActivity
 import java.io.File
 
 
@@ -27,7 +29,7 @@ import java.io.File
  * @Date 2020/1/7 9:36
  * @Version 1.0
  */
-class MediaPreviewAdapter(private val activity: FragmentActivity, var items: List<MediaItem>) :
+class MediaPreviewAdapter(private val activity: AppCompatActivity, var items: List<MediaItem>) :
     RecyclerView.Adapter<MediaPreviewAdapter.MediaViewHolder>() {
 
 

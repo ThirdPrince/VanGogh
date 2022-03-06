@@ -9,16 +9,20 @@
         <entry key="vangogh/src/main/res/drawable/media_album_bg.xml" value="0.1" />
         <entry key="vangogh/src/main/res/drawable/media_arrow_bg.xml" value="0.1" />
         <entry key="vangogh/src/main/res/drawable/media_send_bg.xml" value="0.17222222222222222" />
+        <entry key="vangogh/src/main/res/drawable/picture_original_wechat_checkbox.xml" value="0.1" />
         <entry key="vangogh/src/main/res/drawable/selector_btn_config.xml" value="0.17222222222222222" />
         <entry key="vangogh/src/main/res/drawable/selector_draw_line.xml" value="0.1" />
         <entry key="vangogh/src/main/res/layout/activity_gallery.xml" value="0.1" />
+        <entry key="vangogh/src/main/res/layout/activity_image_status_bar.xml" value="0.1514690982776089" />
         <entry key="vangogh/src/main/res/layout/activity_select_media.xml" value="0.1514690982776089" />
+        <entry key="vangogh/src/main/res/layout/album_activity_gallery.xml" value="0.18795289855072464" />
         <entry key="vangogh/src/main/res/layout/dialog_picture_clip.xml" value="0.1514690982776089" />
         <entry key="vangogh/src/main/res/layout/dialog_picture_editor.xml" value="0.1514690982776089" />
         <entry key="vangogh/src/main/res/layout/dialog_picture_text.xml" value="0.1514690982776089" />
         <entry key="vangogh/src/main/res/layout/item_preview_pages.xml" value="0.31145833333333334" />
         <entry key="vangogh/src/main/res/layout/media_grid_top_bar.xml" value="0.11684782608695653" />
         <entry key="vangogh/src/main/res/layout/media_select_button.xml" value="0.31145833333333334" />
+        <entry key="vangogh/src/main/res/layout/media_select_checkbox.xml" value="0.17844202898550723" />
         <entry key="vangogh/src/main/res/layout/media_select_gallery_top.xml" value="0.31145833333333334" />
       </map>
     </option>

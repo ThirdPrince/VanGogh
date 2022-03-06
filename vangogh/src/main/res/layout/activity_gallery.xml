@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_lay"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     >
-
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager2"
@@ -15,38 +14,45 @@
 
     <include layout="@layout/media_select_gallery_top" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_45"
-        android:layout_alignParentBottom="true"
-        android:fitsSystemWindows="true">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/pic_editor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_margin="@dimen/dimen_10dp"
-            android:gravity="center"
-            android:text="@string/picture_edit"
-            android:textColor="@color/picture_color_white"
-            android:textSize="14sp" />
 
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/cb_original"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:background="@color/picture_color_transparent"
-            android:button="@drawable/picture_original_wechat_checkbox"
-            android:gravity="center"
-            android:paddingStart="5dp"
-            android:text="@string/picture_original_image"
-            android:textColor="@color/picture_color_white"
-            android:textSize="14sp" />
+    <FrameLayout
+        style="@style/Album.WrapContent.WidthMatchParent"
+        android:layout_alignParentBottom="true">
 
-        <include layout="@layout/media_select_checkbox" />
+        <RelativeLayout
+            android:id="@+id/bottom_lay"
+            style="@style/Album.MatchParent.SheetBottom"
+            android:background="@color/albumSheetBottom">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/pic_editor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:gravity="center"
+                android:text="@string/picture_edit"
+                android:textColor="@color/picture_color_white"
+                android:textSize="14sp" />
 
-    </RelativeLayout>
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_original"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:background="@color/picture_color_transparent"
+                android:button="@drawable/picture_original_wechat_checkbox"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:text="@string/picture_original_image"
+                android:textColor="@color/picture_color_white"
+                android:textSize="14sp" />
+
+            <include layout="@layout/media_select_checkbox" />
+        </RelativeLayout>
+
+    </FrameLayout>
+
+
 </RelativeLayout>
