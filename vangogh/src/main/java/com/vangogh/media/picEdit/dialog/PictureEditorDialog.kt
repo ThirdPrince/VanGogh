@@ -22,6 +22,8 @@ import com.vangogh.media.picEdit.utils.ActivityHelper.startForResult
 import com.vangogh.media.picEdit.utils.AlbumUtils.getImagePath
 import com.vangogh.media.picEdit.utils.AlbumUtils.saveSystemAlbum
 import com.vangogh.media.picEdit.utils.ColorUtils
+import com.vangogh.media.picEdit.utils.MainThreadExecutor
+import com.vangogh.media.ui.dialog.LoadingDialog
 
 class PictureEditorDialog : PictureBaseDialog() {
 
@@ -39,6 +41,8 @@ class PictureEditorDialog : PictureBaseDialog() {
     private var bitmapPath = ""
     private var callback: EditorFinishCallback? = null
 
+    private lateinit var loadingDialog: LoadingDialog
+
     fun setBitmapPath(path: String): PictureEditorDialog {
         this.bitmapPath = path
         return this
@@ -55,11 +59,13 @@ class PictureEditorDialog : PictureBaseDialog() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DialogPictureEditorBinding.inflate(inflater, container, false)
+        loadingDialog = LoadingDialog(activity!!)
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        loadingDialog.dismiss()
         _binding = null
     }
 
@@ -81,11 +87,18 @@ class PictureEditorDialog : PictureBaseDialog() {
         binding.complete.setOnClickListener {
             if (binding.complete.isEnabled) {
                 binding.complete.isEnabled = false
-                //Toast.makeText(it.context, "正在保存中...", Toast.LENGTH_SHORT).show()
-                it.context.saveSystemAlbum(binding.picEditor.saveBitmap()) { path ->
-                    callback?.onFinish(path)
+                loadingDialog.show()
+                if(binding.picEditor.saveBitmap().byteCount == binding.picEditor.getParentBitmap().byteCount){
+                    callback?.onFinish(bitmapPath)
                     binding.complete.isEnabled = true
                     dismiss()
+
+                }else {
+                    it.context.saveSystemAlbum(binding.picEditor.saveBitmap()) { path ->
+                        callback?.onFinish(path)
+                        binding.complete.isEnabled = true
+                        dismiss()
+                    }
                 }
             }
         }
@@ -152,7 +165,7 @@ class PictureEditorDialog : PictureBaseDialog() {
         }
     }
 
-    private fun openTextDialog(attrs: StickerAttrs? = null) {
+    private fun  openTextDialog(attrs: StickerAttrs? = null) {
         PictureTextDialog.newInstance()
             .setStickerAttrs(attrs)
             .setTextFinishCallback(object : TextFinishCallback {

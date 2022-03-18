@@ -423,11 +423,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            GalleryActivity.REQUEST_CODE -> {
+            MediaGalleryActivity.REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_CANCELED) {
                     if (data != null) {
                         cbOriginal?.isChecked =
-                            data.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL, false)
+                            data.getBooleanExtra(MediaGalleryActivity.IMAGE_ORIGINAL, false)
                         refreshMedia()
                     }
                 }

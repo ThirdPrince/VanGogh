@@ -5,6 +5,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.LAYER_TYPE_HARDWARE
 import androidx.annotation.ColorInt
+import com.core.log.EasyLog
 import com.vangogh.media.picEdit.bean.PaintPath
 import java.util.*
 import kotlin.math.abs
@@ -67,6 +68,7 @@ class GraffitiLayer(private val parent: View) : ILayer {
             }
             parent.invalidate()
         }
+        EasyLog.e("undo = ",""+!paintPaths.empty());
         return !paintPaths.empty()
     }
 

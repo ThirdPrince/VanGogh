@@ -125,11 +125,11 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getData() {
-        mediaPos = intent!!.getIntExtra(GalleryActivity.MEDIA_POS, 0)
+        //mediaPos = intent!!.getIntExtra(GalleryActivity.MEDIA_POS, 0)
         isAvatar = intent!!.getBooleanExtra(SelectMediaActivity.IS_AVATAR, false)
         isCamera = intent!!.getBooleanExtra(SelectMediaActivity.IS_CAMERA, false)
-        imageOriginal = intent!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL, false)
-        mediaPreviewSelect = intent!!.getBooleanExtra(GalleryActivity.MEDIA_PREVIEW_SELECT, false)
+       // imageOriginal = intent!!.getBooleanExtra(GalleryActivity.IMAGE_ORIGINAL, false)
+       // mediaPreviewSelect = intent!!.getBooleanExtra(GalleryActivity.MEDIA_PREVIEW_SELECT, false)
         cbOriginal?.isChecked = imageOriginal
         if (isAvatar) {
             cbOriginal?.visibility = View.GONE

@@ -21,6 +21,7 @@ object AlbumUtils {
 
     fun Context.saveSystemAlbum(bitmap: Bitmap, onFinish: (String) -> Unit) {
         Thread {
+
             if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
                 val picPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)?.absolutePath
                 val recordPath = picPath + File.separator + System.currentTimeMillis() + ".png"

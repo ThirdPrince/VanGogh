@@ -190,6 +190,10 @@ class PictureEditorView @JvmOverloads constructor(
         mosaicLayer.undo()
     }
 
+    fun getParentBitmap():Bitmap{
+       return mosaicLayer.getParentBitmap()
+    }
+
     fun setSticker(attrs: StickerAttrs, listener: OnStickerClickListener? = null) {
         val stickerLayer = StickerLayer(this, attrs, object : OnStickerClickListener {
             override fun onClick(attrs: StickerAttrs) {

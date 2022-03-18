@@ -127,7 +127,7 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
                     it.path = it.compressPath
                 }
             }
-            //if(imageCompressFile?.listFiles()?.size!! >= MAX_IMG_CACHE_SIZE) {
+
             if (ImageCacheManager.lruImageCache.isEmpty()) {
                 ImageCacheManager.lruImageCache = getMap(compressCacheByImage)!!
             }
@@ -137,11 +137,11 @@ class CompressMediaViewModel(application: Application) : MediaBaseViewModel(appl
             }.forEach {
                 ImageCacheManager.lruImageCache[it.compressPath!!] = File(it.compressPath).length()
             }
-            EasyLog.e(TAG, ImageCacheManager.lruImageCache.size.toString())
+           // EasyLog.e(TAG, ImageCacheManager.lruImageCache.size.toString())
             saveMap(compressCacheByImage, ImageCacheManager.lruImageCache)
             //  }
-            EasyLog.e(TAG, "files = ${imageCompressFile?.listFiles()?.size!!}")
-            EasyLog.e(TAG, ImageCacheManager.lruImageCache.size.toString())
+           // EasyLog.e(TAG, "files = ${imageCompressFile?.listFiles()?.size!!}")
+            //EasyLog.e(TAG, ImageCacheManager.lruImageCache.size.toString())
             if(!preCompress) {
                 _lvMediaData.postValue(mediaList)
             }

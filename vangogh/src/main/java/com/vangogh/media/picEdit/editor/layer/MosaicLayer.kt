@@ -40,6 +40,12 @@ class MosaicLayer(private val parent: View) : ILayer {
         parentBitmap = bitmap
     }
 
+    fun getParentBitmap():Bitmap{
+        return parentBitmap!!
+    }
+
+
+
     fun setParentScale(scale: Float) {
         paint.strokeWidth = DEFAULT_PAINT_SIZE / scale
     }

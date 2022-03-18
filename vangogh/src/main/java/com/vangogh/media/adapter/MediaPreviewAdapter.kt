@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCrossFade
+import com.core.log.EasyLog
 import com.github.chrisbanes.photoview.PhotoView
 import com.media.vangogh.R
 import com.vangogh.media.itf.OnMediaItemClickListener
@@ -44,14 +45,10 @@ class MediaPreviewAdapter(private val activity: AppCompatActivity, var items: Li
 
     inner class MediaViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
-        var photoView: PhotoView = PhotoView(activity)
-            //view.findViewById(R.id.photo_view)
-        var rootGroup:FrameLayout = view.findViewById(R.id.root)
+        var photoView: PhotoView = view.findViewById(R.id.photo_view)
         var ivPlay: ImageView = view.findViewById(R.id.iv_play)
 
         init {
-            rootGroup.addView(photoView)
-           // photoView.layoutParams = ViewGroup.LayoutParams(-1, -1)
             ivPlay.setOnClickListener(this)
         }
 

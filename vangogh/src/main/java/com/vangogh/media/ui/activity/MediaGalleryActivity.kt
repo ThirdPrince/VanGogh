@@ -32,10 +32,11 @@ import com.vangogh.media.view.AnimateCheckBox
 import com.vangogh.media.viewmodel.CompressMediaViewModel
 
 /**
- * Created by Jaeger on 16/2/14.
- *
- * Email: chjie.jaeger@gmail.com
- * GitHub: https://github.com/laobie
+ * @ClassName MediaGalleryActivity
+ * @Description Gallery
+ * @Author dhl
+ * @Date 2022/2/18 9:36
+ * @Version 1.0
  */
 class MediaGalleryActivity : AppCompatActivity() {
 
@@ -171,9 +172,9 @@ class MediaGalleryActivity : AppCompatActivity() {
     }
 
     private fun initData(){
-        mediaPos = intent!!.getIntExtra(GalleryActivity.MEDIA_POS, 0)
-        imageOriginal = intent!!.getBooleanExtra(MediaGalleryActivity.IMAGE_ORIGINAL, false)
-        mediaPreviewSelect = intent!!.getBooleanExtra(MediaGalleryActivity.MEDIA_PREVIEW_SELECT, false)
+        mediaPos = intent!!.getIntExtra(MEDIA_POS, 0)
+        imageOriginal = intent!!.getBooleanExtra(IMAGE_ORIGINAL, false)
+        mediaPreviewSelect = intent!!.getBooleanExtra(MEDIA_PREVIEW_SELECT, false)
     }
 
     private fun initListener() {
@@ -242,12 +243,13 @@ class MediaGalleryActivity : AppCompatActivity() {
         currentMedia = previewMediaList!![mediaPos]
         if (!currentMedia?.isImage()!!) {
             picEdit.visibility = View.GONE
+        }else{
+            picEdit.visibility = View.VISIBLE
         }
         preCompressImage()
         val damage = currentMedia!!.isImage() && currentMedia!!.width === 0 && !ImageUtils.isImage(
             currentMedia!!.originalPath
         )
-        Log.e(BaseSelectActivity.TAG, damage.toString())
         mediaIndexTv.text = "${mediaPos + 1} / ${previewMediaList!!.size}"
         if (currentMedia!!.isImage()) {
             cbOriginal?.visibility = View.VISIBLE
