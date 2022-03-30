@@ -180,4 +180,6 @@
         <item name="android:textColor">@color/albumFontLight</item>
     </style>
 
+
+
 </resources>

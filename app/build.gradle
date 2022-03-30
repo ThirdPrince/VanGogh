@@ -6,10 +6,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
     buildToolsVersion "29.0.0"
 
     defaultConfig {
+
         applicationId "com.example.vangogh"
         minSdkVersion 21
         targetSdkVersion 29

@@ -11,12 +11,9 @@
 
     <application>
         <activity android:name="com.vangogh.media.ui.activity.VideoPlayActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait"
-            android:theme="@style/VanGogh.Theme.Activity" />
-        <activity
-            android:name="com.vangogh.media.ui.activity.GalleryActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Album.Theme.Activity"/>
+            android:theme="@style/Theme.AppCompat.Full" />
 
         <activity
             android:name="com.vangogh.media.ui.activity.AvatarActivity"

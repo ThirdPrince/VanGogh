@@ -27,7 +27,6 @@ android {
         targetSdkVersion 29
         versionCode 106
         versionName "1.0.6"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -72,6 +71,8 @@ dependencies {
     implementation 'id.zelory:compressor:3.0.1'
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    //implementation "com.google.android.exoplayer:exoplayer:2.16.1"
+    implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.1.9-release-jitpack'
 
 }
 

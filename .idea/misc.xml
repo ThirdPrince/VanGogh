@@ -14,7 +14,9 @@
         <entry key="vangogh/src/main/res/drawable/selector_draw_line.xml" value="0.1" />
         <entry key="vangogh/src/main/res/layout/activity_gallery.xml" value="0.1" />
         <entry key="vangogh/src/main/res/layout/activity_image_status_bar.xml" value="0.1514690982776089" />
+        <entry key="vangogh/src/main/res/layout/activity_preview_video.xml" value="0.16304347826086957" />
         <entry key="vangogh/src/main/res/layout/activity_select_media.xml" value="0.1514690982776089" />
+        <entry key="vangogh/src/main/res/layout/activity_video_play.xml" value="0.16304347826086957" />
         <entry key="vangogh/src/main/res/layout/album_activity_gallery.xml" value="0.18795289855072464" />
         <entry key="vangogh/src/main/res/layout/dialog_picture_clip.xml" value="0.1514690982776089" />
         <entry key="vangogh/src/main/res/layout/dialog_picture_editor.xml" value="0.1514690982776089" />

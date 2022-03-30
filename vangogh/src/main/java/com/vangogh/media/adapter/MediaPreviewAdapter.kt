@@ -20,6 +20,7 @@ import com.media.vangogh.R
 import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.MediaGalleryActivity
+import com.vangogh.media.ui.activity.VideoPlayActivity
 import java.io.File
 
 
@@ -54,27 +55,28 @@ class MediaPreviewAdapter(private val activity: AppCompatActivity, var items: Li
 
         override fun onClick(v: View?) {
             if (v?.id === R.id.iv_play) {
-                //VideoPlayActivity.actionStart(activity, items[adapterPosition])
-                val intent = Intent(Intent.ACTION_VIEW)
-                val uri: Uri
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    //判断版本是否在7.0以上
-                    uri = FileProvider.getUriForFile(
-                        activity,
-                        activity.packageName + ".vangogh.provider",
-                        File(items[adapterPosition].originalPath)
-                    )
-                    //添加这一句表示对目标应用临时授权该Uri所代表的文件
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                } else {
-                    uri = Uri.fromFile(File(items[adapterPosition].originalPath))
-                }
-                // Video files
-                intent.setDataAndType(uri, "video/*")
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                activity.startActivity(intent)
+                EasyLog.e("tag","play")
+                VideoPlayActivity.actionStart(activity, items[adapterPosition])
+//                val intent = Intent(Intent.ACTION_VIEW)
+//                val uri: Uri
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                    //判断版本是否在7.0以上
+//                    uri = FileProvider.getUriForFile(
+//                        activity,
+//                        activity.packageName + ".vangogh.provider",
+//                        File(items[adapterPosition].originalPath)
+//                    )
+//                    //添加这一句表示对目标应用临时授权该Uri所代表的文件
+//                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//                } else {
+//                    uri = Uri.fromFile(File(items[adapterPosition].originalPath))
+//                }
+//                // Video files
+//                intent.setDataAndType(uri, "video/*")
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+//                activity.startActivity(intent)
 
             }
         }
@@ -104,6 +106,9 @@ class MediaPreviewAdapter(private val activity: AppCompatActivity, var items: Li
         }
         if (mediaItem.isVideo()) {
             holder.ivPlay.visibility = View.VISIBLE
+            holder.ivPlay.setOnClickListener {
+                VideoPlayActivity.actionStart(activity, items[position])
+            }
         } else {
             holder.ivPlay.visibility = View.GONE
         }

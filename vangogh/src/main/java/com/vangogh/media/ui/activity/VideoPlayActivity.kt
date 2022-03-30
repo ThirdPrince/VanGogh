@@ -1,23 +1,19 @@
 package com.vangogh.media.ui.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.media.MediaPlayer
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.view.View
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.VideoView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.fragment.app.FragmentActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
+import com.github.chrisbanes.photoview.PhotoView
 import com.media.vangogh.R
+import com.shuyu.gsyvideoplayer.GSYVideoManager
+import com.shuyu.gsyvideoplayer.utils.OrientationUtils
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.vangogh.media.models.MediaItem
 
 /**
@@ -29,11 +25,11 @@ import com.vangogh.media.models.MediaItem
  */
 class VideoPlayActivity : AppCompatActivity() {
 
-    companion object{
-        fun actionStart(activity: FragmentActivity, mediaItem: MediaItem){
-             var intent = Intent(activity,VideoPlayActivity::class.java).apply {
-                 putExtra(MEDIA_ARG,mediaItem)
-             }
+    companion object {
+        fun actionStart(activity: FragmentActivity, mediaItem: MediaItem) {
+            var intent = Intent(activity, VideoPlayActivity::class.java).apply {
+                putExtra(MEDIA_ARG, mediaItem)
+            }
             activity.startActivity(intent)
         }
 
@@ -41,130 +37,76 @@ class VideoPlayActivity : AppCompatActivity() {
         private const val UPDATE_UI = 1024
     }
 
-    lateinit var back:ImageView
 
     lateinit var mediaItem: MediaItem
-    lateinit var videoView :VideoView
-    lateinit var videoPlay:ImageView
-    lateinit var playSeek:AppCompatSeekBar
-    lateinit var timeCurrentTv :TextView
-    lateinit var timeTotalTv :TextView
 
-    private  var currentPosition  = 0
 
-    private val videoHandler: Handler = object : Handler() {
-        @SuppressLint("HandlerLeak")
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            if (msg.what === UPDATE_UI) {
-                val currentPosition = videoView.currentPosition
-                val totalDuration = videoView.duration
-                updateTv(timeCurrentTv, currentPosition)
-                updateTv(timeTotalTv, totalDuration)
-                playSeek.max = totalDuration
-                playSeek.progress = currentPosition
-                sendEmptyMessageDelayed(UPDATE_UI, 500)
-            }
-        }
+    private val videoPlayer: StandardGSYVideoPlayer by lazy {
+        findViewById(R.id.video_player)
     }
+
+    var orientationUtils: OrientationUtils? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_video_play)
+        setContentView(R.layout.activity_preview_video)
         getData()
-        initView()
-        initEvent()
-
-    }
-    private fun initView(){
-        back = findViewById(R.id.ic_back)
-        videoPlay = findViewById(R.id.iv_play)
-        videoView = findViewById(R.id.video_view)
-        playSeek = findViewById(R.id.play_seek)
-        timeCurrentTv = findViewById(R.id.time_current_tv)
-        timeTotalTv = findViewById(R.id.time_total_tv)
-        videoView.setVideoURI(mediaItem.pathUri)
-        videoView.start()
-        videoHandler.sendEmptyMessageDelayed(UPDATE_UI,500)
-    }
-    private fun initEvent(){
-
-
-        back.setOnClickListener {
-            finish()
-        }
-        videoPlay.setOnClickListener(View.OnClickListener {
-            if (videoView.isPlaying) {
-                videoPlay.setImageResource(R.drawable.play_btn_style)
-                videoView.pause()
-                videoHandler.removeMessages(UPDATE_UI)
-            } else {
-                videoPlay.setImageResource(R.drawable.pause_btn_style)
-                videoView.start()
-                videoHandler.sendEmptyMessageDelayed(UPDATE_UI, 500)
-            }
-        })
-
-        videoView.setOnCompletionListener {
-            videoPlay.setImageResource(R.drawable.play_btn_style)
-           // playSeek.progress =0
-            videoHandler.removeMessages(UPDATE_UI)
-            playSeek.progress = 0
-            //playSeek.max = videoView.duration
-
-        }
-
-        playSeek.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-            override fun onProgressChanged(
-                seekBar: SeekBar,
-                progress: Int,
-                b: Boolean
-            ) {
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                videoHandler.removeMessages(UPDATE_UI)
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                val progress = seekBar.progress
-                videoView.seekTo(progress)
-                videoHandler.sendEmptyMessage(UPDATE_UI)
-            }
-        })
-    }
-
-    private fun getData(){
-        mediaItem = intent.getParcelableExtra(MEDIA_ARG)
+        playVideo()
     }
 
 
-    private fun updateTv(tv: TextView, milliSec: Int) {
-        val sec = milliSec / 1000
-        val hh = sec / 3600
-        val mm = sec % 3600 / 60
-        val ss = sec % 60
-        var str: String? = null
-        str = if (hh != 0) {
-            String.format("%02d:%02d:%02d", hh, mm, ss)
-        } else {
-            String.format("%02d:%02d", mm, ss)
-        }
-        tv.text = str
+    private fun getData() {
+        mediaItem = intent.getParcelableExtra(MEDIA_ARG)!!
+    }
+
+    private fun playVideo() {
+
+        val source1 = mediaItem.originalPath
+        val photoView = PhotoView(this)
+        Glide.with(this).asBitmap().load(mediaItem.originalPath).transition(
+            BitmapTransitionOptions.withCrossFade()
+        ).into(photoView)
+        videoPlayer.thumbImageView = photoView
+        videoPlayer.setUp(source1, true, "")
+        //设置返回键
+        videoPlayer.backButton.visibility = View.VISIBLE
+        //设置旋转
+        orientationUtils = OrientationUtils(this, videoPlayer)
+        //是否可以滑动调整
+        videoPlayer.setIsTouchWiget(true)
+        //设置返回按键功能
+        videoPlayer.backButton.setOnClickListener { onBackPressed() }
+        ///不需要屏幕旋转
+        videoPlayer.isNeedOrientationUtils = false
+        videoPlayer.startPlayLogic()
     }
 
     override fun onPause() {
         super.onPause()
-        currentPosition = videoView.currentPosition
-        videoView.suspend()
+        videoPlayer.onVideoPause()
     }
 
     override fun onResume() {
         super.onResume()
-        if (currentPosition >= 0) {
-            videoView.seekTo(currentPosition)
-            videoView.start()
-            currentPosition = -1
-        }
-
+        videoPlayer.onVideoResume()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        GSYVideoManager.releaseAllVideos()
+        if (orientationUtils != null) orientationUtils!!.releaseListener()
+    }
+
+    override fun onBackPressed() {
+///       不需要回归竖屏
+//        if (orientationUtils.getScreenType() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+//            videoPlayer.getFullscreenButton().performClick();
+//            return;
+//        }
+        //释放所有
+        videoPlayer.setVideoAllCallBack(null)
+        super.onBackPressed()
+    }
+
+
 }
