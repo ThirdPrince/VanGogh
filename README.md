@@ -36,13 +36,14 @@ Step 3. add
  
  1 , 获取图片 （默认包含 gif ）
  
- VanGogh.onlyImage().startForResult(this,
+VanGogh.onlyImage().startForResult(this,
     onMediaResult = object : OnMediaResult {
         override fun onResult(mediaItemList: List<MediaItem>) {
          
         }
- 
+
     })
+
 	
 	
  不包含 gif :
