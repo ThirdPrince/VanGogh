@@ -35,7 +35,8 @@ Step 3. add
  使用方法
  
  1 , 获取图片 （默认包含 gif ）
- 
+
+```
 VanGogh.onlyImage().startForResult(this,
     onMediaResult = object : OnMediaResult {
         override fun onResult(mediaItemList: List<MediaItem>) {
@@ -43,61 +44,72 @@ VanGogh.onlyImage().startForResult(this,
         }
 
     })
+```
 
 	
 	
  不包含 gif :
-	
- VanGogh.onlyImage(false).startForResult(this,
+
+```
+VanGogh.onlyImage(false).startForResult(this,
     onMediaResult = object : OnMediaResult {
         override fun onResult(mediaItemList: List<MediaItem>) {
           
         }
- 
+
     })
+```
 
 2 , 使用头像
-	
+
+```
 VanGogh.startForAvatarResult(this,onAvatarResult = object :
     OnAvatarResult {
     override fun onResult(image: MediaItem) {
      
     }
- 
+
 })
+```
 	
 3 , 获取Media
 
+```
 VanGogh.getMedia().startForResult(this,
     onMediaResult = object : OnMediaResult {
         override fun onResult(mediaItemList: List<MediaItem>) {
          
         }
- 
+
     })
+```
 	
 getMedia 默认参数 包含 gif。
 
 getMedia(false) 不包含 gif。
 	
 4 , 单独拍照
-	
+
+```
 VanGogh.startForCameraResult(this,object :OnCameraResult{
     override fun onResult(image: MediaItem) {
        
     }
- 
+
 })
+```
 
 5 , 相册添加拍照选择
-	
- VanGogh.getMedia().enableCamera().startForResult(this,
+
+```
+VanGogh.getMedia().enableCamera().startForResult(this,
     onMediaResult = object : OnMediaResult {
         override fun onResult(mediaItemList: List<MediaItem>) {
            
         }
- 
+
     })
+```
 6, MediaItem 使用字段
 	
 图片默认是压缩的（gif 没有压缩）
@@ -107,11 +119,13 @@ VanGogh.startForCameraResult(this,object :OnCameraResult{
 MeidiaItem 提供了判断是否是Video ,gif 的方法。
 	
 7 , 相册 选择 Media 个数
-	
+
+```
 VanGogh.getMedia().setMaxMediaCount(9).startForResult(this,
     onMediaResult = object : OnMediaResult {
    
     }
- 
-})	
+
+})
+```
 	
