@@ -17,6 +17,8 @@ import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.itf.OnAvatarResult
 import com.vangogh.media.itf.OnCameraResult
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.picEdit.utils.ActivityHelper.requestCalendarPermissions
+import com.vangogh.media.picEdit.utils.ActivityHelper.requestRecordAudioPermissions
 import com.vangogh.media.itf.OnMediaResult as OnMediaResult
 
 /**
@@ -98,7 +100,6 @@ class MainActivity : AppCompatActivity(), OnAddMediaListener{
 
     override fun onAddMediaClick() {
         selectFilter()
-
         if(justCamera.isChecked){
             vanGogh.startForCameraResult(this,object :OnCameraResult{
                 override fun onResult(image: MediaItem) {

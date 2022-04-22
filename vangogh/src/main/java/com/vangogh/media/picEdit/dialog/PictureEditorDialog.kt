@@ -59,7 +59,7 @@ class PictureEditorDialog : PictureBaseDialog() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DialogPictureEditorBinding.inflate(inflater, container, false)
-        loadingDialog = LoadingDialog(activity!!)
+        loadingDialog = LoadingDialog(requireActivity())
         return binding.root
     }
 

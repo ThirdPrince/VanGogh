@@ -24,32 +24,32 @@ object VanGogh {
 
     private const val TAG = "VanGogh"
 
-    lateinit var mOnMediaResult: OnMediaResult
+    private lateinit var mOnMediaResult: OnMediaResult
 
-    lateinit var mOnAvatarResult: OnAvatarResult
+    private lateinit var mOnAvatarResult: OnAvatarResult
 
-    lateinit var mOnCameraResult: OnCameraResult
+    private lateinit var mOnCameraResult: OnCameraResult
 
 
-    private var fragmentActivity: FragmentActivity? = null
+     private var fragmentActivity: FragmentActivity? = null
 
 
     /**
      * that selectMedia UI
      */
 
-    var selectMediaActivity = mutableListOf<Activity>()
+    private var selectMediaActivity = mutableListOf<Activity>()
 
 
-    var selectMediaList = mutableListOf<MediaItem>()
+    private var selectMediaList = mutableListOf<MediaItem>()
 
     /**
      * default select conditions
      */
 
-    var selection = MediaQueryConditions.MEDIA_SELECTION
+    private var selection = MediaQueryConditions.MEDIA_SELECTION
 
-    var selectArgs = MediaQueryConditions.MEDIA_SELECTION_ARGS
+    private var selectArgs = MediaQueryConditions.MEDIA_SELECTION_ARGS
 
 
     fun setMaxMediaCount(maxCount: Int): VanGogh {
