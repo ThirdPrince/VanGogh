@@ -12,11 +12,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.media.vangogh.R
-import com.vangogh.media.config.VanGogh.selectMediaList
+
 import com.vangogh.media.extend.loadUrl
 import com.vangogh.media.itf.OnItemCheckListener
 import com.vangogh.media.itf.OnMediaItemClickListener
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.utils.SelectedMediaManager.selectMediaList
 import com.vangogh.media.view.AnimateCheckBox
 import com.vangogh.media.view.CheckView
 import java.io.File

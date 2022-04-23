@@ -1,6 +1,8 @@
 package com.vangogh.media.config
 
 import androidx.annotation.IntDef
+import com.vangogh.media.itf.OnAvatarResult
+import com.vangogh.media.utils.SelectedMediaManager
 
 
 /**
@@ -62,12 +64,14 @@ object VanGoghConst {
     var COMPRESS_SIZE = 100 * 1024L // 100Kb
 
 
+
+
     fun reset() {
         MEDIA_TITLE = MediaTitle.MediaComplete
         MEDIA_TYPE = MediaType.MediaAll
         MAX_MEDIA = 9
         CAMERA_ENABLE = false
-        VanGogh.selectMediaList.clear()
+        SelectedMediaManager.selectMediaList.clear()
     }
 
 

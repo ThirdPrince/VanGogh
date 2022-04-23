@@ -1,7 +1,6 @@
 package com.vangogh.media.config
 
 import android.app.Activity
-import android.content.Intent
 import android.provider.MediaStore
 import androidx.fragment.app.FragmentActivity
 import com.vangogh.media.fragment.CameraFragment
@@ -9,9 +8,11 @@ import com.vangogh.media.itf.OnAvatarResult
 import com.vangogh.media.itf.OnCameraResult
 import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
-import com.vangogh.media.picEdit.utils.ActivityCallback
 import com.vangogh.media.ui.activity.SelectMediaActivity
 import com.vangogh.media.utils.MediaQueryConditions
+import com.vangogh.media.utils.SelectedMediaManager.selectArgs
+import com.vangogh.media.utils.SelectedMediaManager.selectMediaList
+import com.vangogh.media.utils.SelectedMediaManager.selection
 
 /**
  * @ClassName VanGogh
@@ -24,32 +25,8 @@ object VanGogh {
 
     private const val TAG = "VanGogh"
 
-    private lateinit var mOnMediaResult: OnMediaResult
 
-    private lateinit var mOnAvatarResult: OnAvatarResult
-
-    private lateinit var mOnCameraResult: OnCameraResult
-
-
-     private var fragmentActivity: FragmentActivity? = null
-
-
-    /**
-     * that selectMedia UI
-     */
-
-    private var selectMediaActivity = mutableListOf<Activity>()
-
-
-    private var selectMediaList = mutableListOf<MediaItem>()
-
-    /**
-     * default select conditions
-     */
-
-    private var selection = MediaQueryConditions.MEDIA_SELECTION
-
-    private var selectArgs = MediaQueryConditions.MEDIA_SELECTION_ARGS
+    private var fragmentActivity: FragmentActivity? = null
 
 
     fun setMaxMediaCount(maxCount: Int): VanGogh {
@@ -164,9 +141,9 @@ object VanGogh {
      */
     fun startForResult(context: FragmentActivity, onMediaResult: OnMediaResult): VanGogh {
 
-        SelectMediaActivity.actionStart(context, false)
+        SelectMediaActivity.actionStart(context, onMediaResult, false)
         fragmentActivity = context
-        mOnMediaResult = onMediaResult
+        // mOnMediaResult = onMediaResult
         return this
     }
 
@@ -180,10 +157,10 @@ object VanGogh {
         selection = MediaQueryConditions.IMAGE_SELECTION_NOT_GIF
         selectArgs = MediaQueryConditions.GIF_SELECTION_ARGS
         VanGoghConst.MEDIA_TYPE = VanGoghConst.MediaType.MediaOnlyImage
-        SelectMediaActivity.actionStart(context, true)
+        SelectMediaActivity.actionStart(context, onAvatarResult, true)
         fragmentActivity = context
         selectMediaList = mutableListOf()
-        mOnAvatarResult = onAvatarResult
+        //mOnAvatarResult = onAvatarResult
         return this
     }
 
@@ -194,16 +171,20 @@ object VanGogh {
      */
     fun startForCameraResult(context: FragmentActivity, onCameraResult: OnCameraResult): VanGogh {
 
-        context.supportFragmentManager.beginTransaction().replace(android.R.id.content,CameraFragment(),CameraFragment.TAG).commitAllowingStateLoss()
+        val cameraFragment = CameraFragment()
+        cameraFragment.mOnCameraResult = onCameraResult
+        context.supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, CameraFragment(), CameraFragment.TAG)
+            .commitAllowingStateLoss()
         fragmentActivity = context
-        mOnCameraResult = onCameraResult
+
         return this
     }
 
     /**
      * latest image
      */
-     //fun startForLatestImage()
+    //fun startForLatestImage()
 
 
 }

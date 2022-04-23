@@ -17,6 +17,7 @@ import com.vangogh.media.extend.registerObserver
 import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.utils.ImageUtils
+import com.vangogh.media.utils.SelectedMediaManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -102,8 +103,8 @@ class MediaViewModel(application: Application) : MediaBaseViewModel(application)
             val cursor = getApplication<Application>().contentResolver.query(
                 uri,
                 mediaProjection,
-                VanGogh.selection,
-                VanGogh.selectArgs,
+                SelectedMediaManager.selection,
+                SelectedMediaManager.selectArgs,
                 sortOrder
             )
             while (cursor!!.moveToNext()) {

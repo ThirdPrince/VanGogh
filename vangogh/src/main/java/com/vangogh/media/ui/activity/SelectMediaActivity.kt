@@ -29,9 +29,7 @@ import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.extend.toast
 import com.vangogh.media.fragment.CameraFragment
-import com.vangogh.media.itf.OnCameraClickListener
-import com.vangogh.media.itf.OnItemCheckListener
-import com.vangogh.media.itf.OnMediaItemClickListener
+import com.vangogh.media.itf.*
 import com.vangogh.media.life.VanGoghLifeObserver
 import com.vangogh.media.models.MediaDir
 import com.vangogh.media.models.MediaItem
@@ -65,13 +63,20 @@ const val CAMERA_REQUEST = 1025
 class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaItemClickListener,
     OnItemCheckListener, OnCameraClickListener {
 
+    
+
     companion object {
 
         const val IS_AVATAR = "isAvatar"
         const val IS_CAMERA = "isCamera"
+
+
         //const val SELECTED_LIST = "SelectedList"
 
-        fun actionStart(activity: FragmentActivity, isAvatar: Boolean, isCamera: Boolean = false) {
+        fun actionStart(
+            activity: FragmentActivity,  onMediaResult: OnMediaResult,isAvatar: Boolean, isCamera: Boolean = false,
+
+        ) {
             var intent = Intent(
                 activity,
                 SelectMediaActivity::class.java
@@ -80,6 +85,28 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                 putExtra(IS_CAMERA, isCamera)
                 //putExtra(SELECTED_LIST,selectedList)
             }
+            mOnMediaResult = onMediaResult
+            activity.startActivity(intent)
+            activity.overridePendingTransition(
+                R.anim.picture_anim_up_in,
+                R.anim.picture_anim_down_out
+            )
+
+        }
+
+        fun actionStart(
+            activity: FragmentActivity, onAvatarResult: OnAvatarResult, isAvatar: Boolean, isCamera: Boolean = false,
+
+        ) {
+            var intent = Intent(
+                activity,
+                SelectMediaActivity::class.java
+            ).apply {
+                putExtra(IS_AVATAR, isAvatar)
+                putExtra(IS_CAMERA, isCamera)
+                //putExtra(SELECTED_LIST,selectedList)
+            }
+            mOnAvatarResult = onAvatarResult
             activity.startActivity(intent)
             activity.overridePendingTransition(
                 R.anim.picture_anim_up_in,
@@ -302,12 +329,12 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         }
 
         mediaPreview.setOnClickListener {
-            cbOriginal?.isChecked?.let { it1 -> MediaGalleryActivity.actionStart(this, 0, it1, true) }
+            cbOriginal?.isChecked?.let { it1 -> MediaGalleryActivity.actionStart(this, 0, it1, true,onMediaResult = mOnMediaResult) }
         }
     }
 
     private fun refreshMedia() {
-        mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
+        mediaItemAdapter.selectMediaList = SelectedMediaManager.selectMediaList
         updateTitle()
         mediaItemAdapter.notifyDataSetChanged()
         updateMediaPreview()
@@ -360,7 +387,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
         } else {
             cbOriginal?.isChecked?.let {
                 MediaGalleryActivity.actionStart(this, realPosition,
-                    it, false)
+                    it, false, mOnMediaResult)
             }
         }
     }
@@ -369,11 +396,11 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
     override fun onItemCheckClick(view: View?, position: Int, isChecked: Boolean) {
 
         var mediaItem = mediaItemAdapter.getMedia(position)
-        if (VanGogh.selectMediaList.contains(mediaItem)) {
-            VanGogh.selectMediaList.remove(mediaItem)
+        if (SelectedMediaManager.selectMediaList.contains(mediaItem)) {
+            SelectedMediaManager.selectMediaList.remove(mediaItem)
             mediaItemAdapter.notifyDataSetChanged()
         } else {
-            if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
+            if (SelectedMediaManager.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
                 toast(getString(R.string.picture_message_max_num, VanGoghConst.MAX_MEDIA))
                 mediaItemAdapter.notifyItemChanged(position)
                 return
@@ -381,19 +408,19 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
             if (cbOriginal?.isChecked == true) {
                 mediaItem.isOriginal = true
             }
-            VanGogh.selectMediaList.add(mediaItem)
+            SelectedMediaManager.selectMediaList.add(mediaItem)
             mediaItemAdapter.notifyItemChanged(position)
         }
-        mediaItemAdapter.selectMediaList = VanGogh.selectMediaList
+        mediaItemAdapter.selectMediaList = SelectedMediaManager.selectMediaList
         updateTitle()
         updateMediaPreview()
     }
 
     @SuppressLint("StringFormatMatches")
     private fun updateMediaPreview() {
-        if (VanGogh.selectMediaList.size > 0) {
+        if (SelectedMediaManager.selectMediaList.size > 0) {
             mediaPreview.isEnabled = true
-            mediaPreview.text = getString(R.string.media_preview_num, VanGogh.selectMediaList.size)
+            mediaPreview.text = getString(R.string.media_preview_num, SelectedMediaManager.selectMediaList.size)
         } else {
             mediaPreview.isEnabled = false
             mediaPreview.text = getString(R.string.media_preview)
@@ -464,7 +491,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                             cameraItem.width = widthAndHeight[0]
                             cameraItem.height = widthAndHeight[1]
 
-                            if (VanGogh.selectMediaList.size >= VanGoghConst.MAX_MEDIA) {
+                            if (SelectedMediaManager.selectMediaList.size >= VanGoghConst.MAX_MEDIA) {
                                 toast(
                                     getString(
                                         R.string.picture_message_max_num,
@@ -474,7 +501,7 @@ class SelectMediaActivity : BaseSelectActivity(), View.OnClickListener, OnMediaI
                                 return@launch
                             }
                             MediaPreviewUtil.currentMediaList.add(0, cameraItem)
-                            VanGogh.selectMediaList.add(cameraItem)
+                            SelectedMediaManager.selectMediaList.add(cameraItem)
                             refreshMedia()
 
                         }

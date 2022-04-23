@@ -16,6 +16,7 @@ import com.core.log.EasyLog
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst.COMPRESS_SIZE
+import com.vangogh.media.itf.OnCameraResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.ui.activity.CAMERA_REQUEST
 import com.vangogh.media.utils.CameraManager
@@ -46,6 +47,9 @@ class CameraFragment : Fragment() {
     companion object {
         const val TAG = "CameraFragment"
     }
+
+     var mOnCameraResult: OnCameraResult?=null
+
 
     private val permissionCamera = arrayOf(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
@@ -123,7 +127,7 @@ class CameraFragment : Fragment() {
                     actualImage?.let { imageFile ->
                         lifecycleScope.launch {
                             val compressFile =
-                                Compressor.compress(activity!!, imageFile){
+                                Compressor.compress(requireActivity(), imageFile){
                                     default()
                                     size(COMPRESS_SIZE)//100K
                                     destination(imageFile)
@@ -147,7 +151,7 @@ class CameraFragment : Fragment() {
                             EasyLog.e(TAG,"compressFile path = ${compressFile.absolutePath}")
                             EasyLog.e(TAG,"compressFile size = ${compressFile.length()/1024}")
 
-                            VanGogh.mOnCameraResult.onResult(cameraItem)
+                            mOnCameraResult?.onResult(cameraItem)
                             activity?.supportFragmentManager?.beginTransaction()
                                 ?.remove(this@CameraFragment)?.commitAllowingStateLoss()
                             return@launch

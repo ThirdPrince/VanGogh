@@ -17,10 +17,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.media.vangogh.R
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
+import com.vangogh.media.itf.OnAvatarResult
+import com.vangogh.media.itf.OnCameraResult
+import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.life.VanGoghLifeObserver
 import com.vangogh.media.models.MediaItem
+import com.vangogh.media.picEdit.utils.AlbumUtils.getImagePath
 import com.vangogh.media.ui.dialog.LoadingDialog
 import com.vangogh.media.utils.MediaPreviewUtil
+import com.vangogh.media.utils.SelectedMediaManager
 import com.vangogh.media.utils.SystemBar
 import com.vangogh.media.viewmodel.CompressMediaViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -39,6 +44,8 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         const val TAG = "BaseSelectActivity"
+         lateinit var mOnAvatarResult: OnAvatarResult
+         lateinit var mOnMediaResult: OnMediaResult
     }
 
     val uiScope = CoroutineScope(Dispatchers.Main)
@@ -107,16 +114,16 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         initOriginalCheck()
         updateTitle()
         activity = this
-        VanGogh.selectMediaActivity.add(this)
+        SelectedMediaManager.selectMediaActivity.add(this)
         compressMediaViewModel =
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 CompressMediaViewModel::class.java
             )
         compressMediaViewModel.lvMediaData.observe(this, Observer {
             if (isAvatar) {
-                VanGogh.mOnAvatarResult.onResult(it[0])
+                mOnAvatarResult.onResult(it[0])
             } else {
-                VanGogh.mOnMediaResult.onResult(it)
+                mOnMediaResult.onResult(it)
             }
             dismissDialog()
             finishSelectMediaUi()
@@ -162,7 +169,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
      */
     private fun initOriginalCheck() {
         cbOriginal?.setOnCheckedChangeListener { buttonView, isChecked ->
-            VanGogh.selectMediaList.forEach {
+            SelectedMediaManager.selectMediaList.forEach {
                 it.isOriginal = isChecked
             }
 
@@ -174,28 +181,28 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.mediaLeftBack -> backPress()
             R.id.media_send -> {
-                if (VanGogh.selectMediaList.isEmpty()) {
-                    VanGogh.selectMediaList.add(MediaPreviewUtil.currentMediaList!![mediaPos])
+                if (SelectedMediaManager.selectMediaList.isEmpty()) {
+                    SelectedMediaManager.selectMediaList.add(MediaPreviewUtil.currentMediaList!![mediaPos])
                 }
                 showDialog()
-                compressMediaViewModel.compressImage(VanGogh.selectMediaList)
+                compressMediaViewModel.compressImage(SelectedMediaManager.selectMediaList)
             }
         }
     }
 
 
     protected fun updateTitle() {
-        if (VanGogh.selectMediaList.size > 0) {
+        if (SelectedMediaManager.selectMediaList.size > 0) {
             mediaSend?.isEnabled = true
             when (VanGoghConst.MEDIA_TITLE) {
                 VanGoghConst.MediaTitle.MediaComplete -> mediaSend?.text = getString(
                     R.string.media_complete_num,
-                    VanGogh.selectMediaList.size,
+                    SelectedMediaManager.selectMediaList.size,
                     VanGoghConst.MAX_MEDIA
                 )
                 VanGoghConst.MediaTitle.MediaSend -> mediaSend?.text = getString(
                     R.string.media_send_num,
-                    VanGogh.selectMediaList.size,
+                    SelectedMediaManager.selectMediaList.size,
                     VanGoghConst.MAX_MEDIA
                 )
             }
@@ -216,7 +223,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
      * finish mediaUI
      */
     private fun finishSelectMediaUi() {
-        VanGogh.selectMediaActivity.forEach {
+        SelectedMediaManager.selectMediaActivity.forEach {
             it.finish()
             if (it is SelectMediaActivity) {
                 overridePendingTransition(0, R.anim.picture_anim_down_out)
@@ -236,7 +243,7 @@ abstract class BaseSelectActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        VanGogh.selectMediaActivity.remove(this)
+        SelectedMediaManager.selectMediaActivity.remove(this)
     }
 
     override fun onBackPressed() {

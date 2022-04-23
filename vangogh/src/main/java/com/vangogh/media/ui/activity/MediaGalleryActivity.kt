@@ -21,12 +21,15 @@ import com.vangogh.media.adapter.MediaPreviewAdapter
 import com.vangogh.media.config.VanGogh
 import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.extend.toast
+import com.vangogh.media.itf.OnAvatarResult
+import com.vangogh.media.itf.OnMediaResult
 import com.vangogh.media.models.MediaItem
 import com.vangogh.media.picEdit.dialog.EditorFinishCallback
 import com.vangogh.media.picEdit.dialog.PictureEditorDialog
 import com.vangogh.media.ui.dialog.LoadingDialog
 import com.vangogh.media.utils.ImageUtils
 import com.vangogh.media.utils.MediaPreviewUtil
+import com.vangogh.media.utils.SelectedMediaManager
 import com.vangogh.media.utils.SystemBar
 import com.vangogh.media.view.AnimateCheckBox
 import com.vangogh.media.viewmodel.CompressMediaViewModel
@@ -54,17 +57,22 @@ class MediaGalleryActivity : AppCompatActivity() {
 
         const val REQUEST_CODE = 1024
 
+
+        lateinit var mOnMediaResult: OnMediaResult
+
+
         fun actionStart(
             activity: AppCompatActivity,
             mediaPos: Int,
             imageOriginal: Boolean,
-            isPreviewSelectMedia: Boolean
+            isPreviewSelectMedia: Boolean,onMediaResult: OnMediaResult
         ) {
             var intent = Intent(activity, MediaGalleryActivity::class.java).apply {
                 putExtra(MEDIA_POS, mediaPos)
                 putExtra(IMAGE_ORIGINAL, imageOriginal)
                 putExtra(MEDIA_PREVIEW_SELECT, isPreviewSelectMedia)
             }
+            mOnMediaResult = onMediaResult
             activity.startActivityForResult(intent, REQUEST_CODE)
 
         }
@@ -139,7 +147,7 @@ class MediaGalleryActivity : AppCompatActivity() {
             )
         compressMediaViewModel.lvMediaData.observe(this, Observer {
 
-            VanGogh.mOnMediaResult.onResult(it)
+           mOnMediaResult.onResult(it)
 
             dismissDialog()
             finishSelectMediaUi()
@@ -147,7 +155,7 @@ class MediaGalleryActivity : AppCompatActivity() {
         viewPager2.apply {
             offscreenPageLimit = 1
             previewMediaList = if (mediaPreviewSelect) {
-                VanGogh.selectMediaList
+                SelectedMediaManager.selectMediaList
             } else {
                 MediaPreviewUtil.currentMediaList!!
             }
@@ -183,11 +191,11 @@ class MediaGalleryActivity : AppCompatActivity() {
         }
 
         mediaSend.setOnClickListener {
-            if (VanGogh.selectMediaList.isEmpty()) {
-                VanGogh.selectMediaList.add(MediaPreviewUtil.currentMediaList!![mediaPos])
+            if (SelectedMediaManager.selectMediaList.isEmpty()) {
+                SelectedMediaManager.selectMediaList.add(MediaPreviewUtil.currentMediaList!![mediaPos])
             }
             showDialog()
-            compressMediaViewModel.compressImage(VanGogh.selectMediaList)
+            compressMediaViewModel.compressImage(SelectedMediaManager.selectMediaList)
         }
 
         picEdit.setOnClickListener {
@@ -212,7 +220,7 @@ class MediaGalleryActivity : AppCompatActivity() {
             override fun onCheckedChanged(checkBox: AnimateCheckBox, isChecked: Boolean) {
                 if (isChecked) {
                     imageOriginal = true
-                    if (VanGogh.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
+                    if (SelectedMediaManager.selectMediaList.size > VanGoghConst.MAX_MEDIA - 1) {
                         toast(
                             getString(
                                 R.string.picture_message_max_num,
@@ -222,16 +230,16 @@ class MediaGalleryActivity : AppCompatActivity() {
                         checkbox.isChecked = false
                         return
                     }
-                    if (!VanGogh.selectMediaList.contains(currentMedia)) {
+                    if (!SelectedMediaManager.selectMediaList.contains(currentMedia)) {
                         if (cbOriginal?.isChecked == true) {
                             currentMedia!!.isOriginal = true
                         }
-                        VanGogh.selectMediaList.add(currentMedia!!)
+                        SelectedMediaManager.selectMediaList.add(currentMedia!!)
                     }
 
                 } else {
                     imageOriginal = false
-                    VanGogh.selectMediaList.remove(currentMedia!!)
+                    SelectedMediaManager.selectMediaList.remove(currentMedia!!)
                 }
                 updateTitle()
             }
@@ -262,7 +270,7 @@ class MediaGalleryActivity : AppCompatActivity() {
 
     private fun setSelectMediaState() {
         checkbox.setChecked(
-            VanGogh.selectMediaList.contains(
+            SelectedMediaManager.selectMediaList.contains(
                 previewMediaList?.get(
                     mediaPos
                 )
@@ -278,17 +286,17 @@ class MediaGalleryActivity : AppCompatActivity() {
 
     private fun updateTitle() {
         mediaSend?.isEnabled = true
-        if (VanGogh.selectMediaList.size > 0) {
+        if (SelectedMediaManager.selectMediaList.size > 0) {
             mediaSend?.isEnabled = true
             when (VanGoghConst.MEDIA_TITLE) {
                 VanGoghConst.MediaTitle.MediaComplete -> mediaSend?.text = getString(
                     R.string.media_complete_num,
-                    VanGogh.selectMediaList.size,
+                    SelectedMediaManager.selectMediaList.size,
                     VanGoghConst.MAX_MEDIA
                 )
                 VanGoghConst.MediaTitle.MediaSend -> mediaSend?.text = getString(
                     R.string.media_send_num,
-                    VanGogh.selectMediaList.size,
+                    SelectedMediaManager.selectMediaList.size,
                     VanGoghConst.MAX_MEDIA
                 )
             }
@@ -319,7 +327,7 @@ class MediaGalleryActivity : AppCompatActivity() {
      */
     private fun finishSelectMediaUi() {
         finish()
-        VanGogh.selectMediaActivity.forEach {
+        SelectedMediaManager .selectMediaActivity.forEach {
             it.finish()
             if (it is SelectMediaActivity) {
                 overridePendingTransition(0, R.anim.picture_anim_down_out)

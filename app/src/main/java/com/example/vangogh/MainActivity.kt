@@ -13,6 +13,7 @@ import com.core.log.EasyLog
 import com.example.vangogh.adapter.GridMediaAdapter
 import com.example.vangogh.itf.OnAddMediaListener
 import com.vangogh.media.config.VanGogh
+import com.vangogh.media.config.VanGoghConst
 import com.vangogh.media.divider.GridSpacingItemDecoration
 import com.vangogh.media.itf.OnAvatarResult
 import com.vangogh.media.itf.OnCameraResult
